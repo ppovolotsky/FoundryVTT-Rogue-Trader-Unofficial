@@ -1,0 +1,130 @@
+{
+  "id": "rogue-trader",
+  "title": "Rogue Trader",
+  "description": "Rogue Trader - Foundry VTT",
+  "version": "0.0.0",
+  "compatibility": {
+    "minimum": 14,
+    "verified": "",
+    "maximum": 14
+  },
+  "authors": [
+    {
+      "name": "Pavel Povolotsky",
+      "discord": "koschei293"
+    }
+  ],
+  "styles": [
+    "css/"
+  ],
+  "scripts": [],
+  "packs": [
+    {
+      "name": "ammo",
+      "system": "rogue-trader",
+      "label": "Ammo",
+      "path": "./packs/ammo.db",
+      "type": "Item",
+      "entity": "Item"
+    },
+    {
+      "name": "career-pathss",
+      "system": "rogue-trader",
+      "label": "Career Paths",
+      "path": "./packs/career-paths.db",
+      "type": "Item",
+      "entity": "Item"
+    },
+    {
+      "name": "armour",
+      "system": "rogue-trader",
+      "label": "Armour",
+      "path": "./packs/armour.db",
+      "type": "Item",
+      "entity": "Item"
+    },
+    {
+      "name": "consumables",
+      "system": "rogue-trader",
+      "label": "Drugs and Consumables",
+      "path": "./packs/consumables.db",
+      "type": "Item",
+      "entity": "Item"
+    },
+    {
+      "name": "cybernetics",
+      "system": "rogue-trader",
+      "label": "Cybernetics",
+      "path": "./packs/cybernetics.db",
+      "type": "Item",
+      "entity": "Item"
+    },
+    {
+      "name": "psychic-powers",
+      "system": "drogue-traderd",
+      "label": "Psychic Powers",
+      "path": "./packs/psychic-powers.db",
+      "type": "Item",
+      "entity": "Item"
+    },
+    {
+      "name": "tables",
+      "system": "rogue-trader",
+      "label": "Tables",
+      "path": "./packs/tables.db",
+      "type": "RollTable",
+      "entity": "RollTable"
+    },
+    {
+      "name": "talents",
+      "system": "rogue-trader",
+      "label": "Talents",
+      "path": "./packs/talents.db",
+      "type": "Item",
+      "entity": "Item"
+    },
+    {
+      "name": "tools",
+      "system": "rogue-trader",
+      "label": "Tools",
+      "path": "./packs/tools.db",
+      "type": "Item",
+      "entity": "Item"
+    },
+    {
+      "name": "traits",
+      "system": "rogue-trader",
+      "label": "Traits",
+      "path": "./packs/traits.db",
+      "type": "Item",
+      "entity": "Item"
+    },
+    {
+      "name": "weapons",
+      "system": "rogue-trader",
+      "label": "Weapons",
+      "path": "./packs/weapons.db",
+      "type": "Item",
+      "entity": "Item"
+    },
+    {
+      "name": "weapon-mods",
+      "system": "rogue-trader",
+      "label": "Weapon Mods",
+      "path": "./packs/weapon-mods.db",
+      "type": "Item",
+      "entity": "Item"
+    }
+  ],
+  "grid": {
+    "distance": 1,
+    "units": "m"
+  },
+  "primaryTokenAttribute": "wounds",
+  "secondaryTokenAttribute": "fate",
+  "url": "https://github.com/ppovolotsky/FoundryVTT-Rogue-Trader-Unofficial",
+  "manifest": "",
+  "download": "",
+  "license": "",
+  "bugs": "https://github.com/ppovolotsky/FoundryVTT-Rogue-Trader-Unofficial/issues"
+}
