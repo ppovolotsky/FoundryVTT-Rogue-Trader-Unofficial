@@ -1,0 +1,16 @@
+data:
+    armourPoints:
+        body: 2
+        head: 0
+        leftArm: 2
+        leftLeg: 2
+        rightArm: 2
+        rightLeg: 2
+    availability: Common
+    craftsmanship: Common
+    description: ''
+    type: Basic
+    weight: 7
+img: systems/rogue-trader/...
+name: Heavy Leathers/Furs
+type: armour
