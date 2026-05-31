@@ -1,0 +1,28 @@
+data:
+    availability: Very Rare
+    class: Pistol
+    type: Bolt
+    craftsmanship: Common
+    description: ''
+    equipped: false
+    range: 30
+    damage: 1d10+5
+    damageType: Explosive
+    penetration: 4
+    rateOfFire:
+        single: 1
+        burst: 2
+        full: 0
+    clip:
+        max: 8
+        value: 8
+    reload: 'Full Action'
+    modifications: []
+    source: RT - 122
+    special:
+        tearing: true
+    weight: 7
+img: systems/rogue-trader/...
+name: Bolt Pistol, Ceres-Pattern
+type: weapon
+---
