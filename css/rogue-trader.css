@@ -294,6 +294,16 @@
   border-radius: 3px;
 }
 
+.rt-roll-card--critical.rt-roll-card--success .rt-roll-card__result {
+  background: var(--rt-gold);
+  color: var(--rt-dark);
+}
+
+.rt-roll-card--critical.rt-roll-card--failure .rt-roll-card__result {
+  background: #6e1a1a;
+  box-shadow: inset 0 0 0 1px var(--rt-gold-dim);
+}
+
 .rt-roll-card--success .rt-roll-card__result {
   color: #ffffff;
   background: var(--rt-success);

@@ -44,6 +44,16 @@ export async function rollTest({
     value = roll.total;
   }
 
+  // Натуральные 01 и 100: критический успех и критический провал независимо от цели.
+  const criticalSuccess = value === 1;
+  const criticalFailure = value === 100;
+  const success = criticalSuccess || (!criticalFailure && value <= finalTarget);
+
+  // Степени успеха/провала (RT Core): каждая полная десятка разницы между
+  // модифицированной целью и броском равна одной степени.
+  const difference = Math.max(0, success ? finalTarget - value : value - finalTarget);
+  const degrees = Math.floor(difference / 10);
+
   const test = {
     label,
     mode,
@@ -54,14 +64,12 @@ export async function rollTest({
     tens,
     units,
     value,
-    success: value <= finalTarget
+    success,
+    criticalSuccess,
+    criticalFailure,
+    degrees,
+    degreesKey: success ? "RT.Roll.DegreesOfSuccess" : "RT.Roll.DegreesOfFailure"
   };
-
-  // Степени успеха/провала (RT Core): каждая полная десятка разницы между
-  // модифицированной целью и броском равна одной степени.
-  const difference = test.success ? finalTarget - value : value - finalTarget;
-  test.degrees = Math.floor(difference / 10);
-  test.degreesKey = test.success ? "RT.Roll.DegreesOfSuccess" : "RT.Roll.DegreesOfFailure";
 
   if (createMessage) {
     const content = await renderTemplate("systems/rogue-trader/templates/dice/roll-card.hbs", test);

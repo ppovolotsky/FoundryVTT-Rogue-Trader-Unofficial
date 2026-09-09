@@ -24,6 +24,8 @@
   "RT.Roll.Target": "Target",
   "RT.Roll.Success": "Success",
   "RT.Roll.Failure": "Failure",
+  "RT.Roll.CriticalSuccess": "Critical Success",
+  "RT.Roll.CriticalFailure": "Critical Failure",
   "RT.Roll.DegreesOfSuccess": "Degrees of Success",
   "RT.Roll.DegreesOfFailure": "Degrees of Failure",
 

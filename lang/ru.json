@@ -24,6 +24,8 @@
   "RT.Roll.Target": "Цель",
   "RT.Roll.Success": "Успех",
   "RT.Roll.Failure": "Провал",
+  "RT.Roll.CriticalSuccess": "Критический успех",
+  "RT.Roll.CriticalFailure": "Критический провал",
   "RT.Roll.DegreesOfSuccess": "Степеней успеха",
   "RT.Roll.DegreesOfFailure": "Степеней провала",
 

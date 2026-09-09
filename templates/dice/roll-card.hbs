@@ -1,4 +1,4 @@
-<div class="rt-roll-card {{#if success}}rt-roll-card--success{{else}}rt-roll-card--failure{{/if}}">
+<div class="rt-roll-card {{#if (or criticalSuccess criticalFailure)}}rt-roll-card--critical{{/if}} {{#if success}}rt-roll-card--success{{else}}rt-roll-card--failure{{/if}}">
   <div class="rt-roll-card__header">
     {{#if label}}<span class="rt-roll-card__label">{{label}}</span>{{/if}}
     <span class="rt-roll-card__mode">{{localize modeLabel}}</span>
@@ -29,5 +29,5 @@
     {{localize degreesKey}}: <strong>{{degrees}}</strong>
   </div>
 
-  <div class="rt-roll-card__result">{{#if success}}{{localize "RT.Roll.Success"}}{{else}}{{localize "RT.Roll.Failure"}}{{/if}}</div>
+  <div class="rt-roll-card__result">{{#if criticalSuccess}}{{localize "RT.Roll.CriticalSuccess"}}{{else if criticalFailure}}{{localize "RT.Roll.CriticalFailure"}}{{else if success}}{{localize "RT.Roll.Success"}}{{else}}{{localize "RT.Roll.Failure"}}{{/if}}</div>
 </div>
