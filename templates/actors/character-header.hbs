@@ -1,0 +1,49 @@
+<div class="rt-sheet-header">
+  <div class="rt-sheet-header__row">
+    <div class="rt-field rt-field--grow">
+      <label>{{localize "RT.Sheet.Name"}}</label>
+      <input class="rt-sheet-header__name" name="name" type="text" value="{{actor.name}}"/>
+    </div>
+    <div class="rt-field rt-field--grow">
+      <label>{{localize "RT.Sheet.PlayerName"}}</label>
+      <input type="text" name="system.playerName" value="{{system.playerName}}"/>
+    </div>
+  </div>
+
+  <div class="rt-sheet-header__row">
+    <div class="rt-stat">
+      <label>{{localize "RT.Sheet.Fate"}}</label>
+      <i class="fa-solid fa-circle-question rt-tooltip-icon" data-tooltip="{{localize "RT.Tooltips.Fate"}}"></i>
+      <div class="rt-stepper">
+        <input type="number" name="system.fate.value" value="{{system.fate.value}}" data-dtype="Number"/>
+        <div class="rt-stepper__buttons">
+          <button type="button" class="rt-stepper__btn" data-action="adjustValue" data-path="system.fate.value" data-delta="1" title="+1"><i class="fa-solid fa-chevron-up"></i></button>
+          <button type="button" class="rt-stepper__btn" data-action="adjustValue" data-path="system.fate.value" data-delta="-1" title="-1"><i class="fa-solid fa-chevron-down"></i></button>
+        </div>
+      </div>
+      <span class="rt-resource__sep">/</span>
+      <input class="rt-stat__max" type="number" name="system.fate.max" value="{{system.fate.max}}" data-dtype="Number"/>
+    </div>
+
+    <div class="rt-header-buttons">
+      <button type="button" class="rt-button" data-action="rollD5">1d5</button>
+      <button type="button" class="rt-button" data-action="openRollDialog">2d10</button>
+    </div>
+
+    <div class="rt-stat">
+      <label>{{localize "RT.Sheet.Fatigue"}}</label>
+      <div class="rt-stepper">
+        <input type="number" name="system.fatigue.value" value="{{system.fatigue.value}}" data-dtype="Number"/>
+        <div class="rt-stepper__buttons">
+          <button type="button" class="rt-stepper__btn" data-action="adjustValue" data-path="system.fatigue.value" data-delta="1" title="+1"><i class="fa-solid fa-chevron-up"></i></button>
+          <button type="button" class="rt-stepper__btn" data-action="adjustValue" data-path="system.fatigue.value" data-delta="-1" title="-1"><i class="fa-solid fa-chevron-down"></i></button>
+        </div>
+      </div>
+      <span class="rt-resource__sep">/</span>
+      <input class="rt-stat__max rt-stat__max--derived" type="number" value="{{system.fatigue.limit}}" disabled title="{{localize "RT.Sheet.FatigueLimitHint"}}"/>
+      <button type="button" class="rt-fatigue-toggle {{#if system.fatigue.penalty}}active{{/if}}" data-action="toggleFatigue" data-tooltip="{{localize "RT.Tooltips.Fatigue"}}">
+        <i class="fa-solid fa-circle-question"></i>
+      </button>
+    </div>
+  </div>
+</div>

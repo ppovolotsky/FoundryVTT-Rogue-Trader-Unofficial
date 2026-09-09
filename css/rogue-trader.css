@@ -1,4 +1,4 @@
-/* Rogue Trader (Unofficial) — базовые стили системы */
+/* Rogue Trader (Unofficial) - basic system styles */
 
 :root {
   --rt-gold: #c9a227;
@@ -7,56 +7,60 @@
   --rt-panel: #26262c;
   --rt-panel-light: #33333b;
   --rt-text: #d8d5cc;
+  --rt-muted: #9a978f;
   --rt-success: #3f8f4f;
   --rt-failure: #a13333;
 }
 
-/* ---------- Заголовок листа ---------- */
+/* ---------- Sheet header ---------- */
 
 .rogue-trader.sheet .rt-sheet-header {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .rogue-trader.sheet .rt-sheet-header__row {
   display: flex;
   gap: 12px;
   align-items: center;
-  justify-content: space-between;
 }
 
-.rogue-trader.sheet .rt-filepick {
+.rogue-trader.sheet .rt-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rogue-trader.sheet .rt-field--grow {
   flex: 1;
   min-width: 0;
 }
 
-.rogue-trader.sheet .rt-filepick input {
+.rogue-trader.sheet .rt-field label {
+  font-size: 0.78em;
+  color: var(--rt-muted);
+}
+
+.rogue-trader.sheet .rt-sheet-header__name {
+  width: 100%;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: var(--rt-gold);
+  background: var(--rt-panel);
+  border: 1px solid var(--rt-gold-dim);
+  border-radius: 3px;
+  padding: 3px 8px;
+}
+
+.rogue-trader.sheet .rt-field input[type="text"] {
   width: 100%;
   background: var(--rt-panel);
   border: 1px solid #55555f;
   color: var(--rt-text);
   border-radius: 3px;
   padding: 2px 6px;
-}
-
-.rogue-trader.sheet .rt-sheet-header__main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.rogue-trader.sheet .rt-sheet-header__name {
-  width: 100%;
-  font-size: 1.35em;
-  font-weight: bold;
-  color: var(--rt-gold);
-  background: var(--rt-panel);
-  border: 1px solid var(--rt-gold-dim);
-  border-radius: 3px;
-  padding: 4px 8px;
 }
 
 .rogue-trader.sheet .rt-item-sheet__type {
@@ -66,27 +70,260 @@
   color: var(--rt-gold-dim);
 }
 
-/* ---------- Ресурсы (раны, судьба) ---------- */
+/* ---------- Stat blocks (fate, fatigue, wounds) ---------- */
 
-.rogue-trader.sheet .rt-resources {
-  display: flex;
-  gap: 16px;
-}
-
-.rogue-trader.sheet .rt-resource {
+.rogue-trader.sheet .rt-stat {
   display: flex;
   align-items: center;
   gap: 5px;
 }
 
-.rogue-trader.sheet .rt-resource label {
+.rogue-trader.sheet .rt-stat--block {
+  margin: 8px 0;
+}
+
+.rogue-trader.sheet .rt-stat label {
+  font-weight: bold;
   color: var(--rt-text);
+  white-space: nowrap;
+}
+
+.rogue-trader.sheet .rt-stat input[type="number"] {
+  width: 48px;
+  text-align: center;
+  background: var(--rt-panel);
+  border: 1px solid #55555f;
+  color: var(--rt-text);
+  border-radius: 3px;
+  padding: 2px 3px;
+}
+
+.rogue-trader.sheet .rt-stat__max--derived {
+  color: var(--rt-muted);
+  background: var(--rt-panel-light);
+}
+
+.rogue-trader.sheet .rt-resource__sep {
+  color: var(--rt-gold-dim);
+}
+
+.rogue-trader.sheet .rt-tooltip-icon {
+  color: var(--rt-gold-dim);
+  cursor: help;
+  font-size: 0.85em;
+}
+
+/* ---------- Stepper (appears on hover) ---------- */
+
+.rogue-trader.sheet .rt-stepper {
+  position: relative;
+  display: inline-flex;
+}
+
+.rogue-trader.sheet .rt-stepper__buttons {
+  display: none;
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  flex-direction: column;
+  gap: 1px;
+  z-index: 10;
+}
+
+.rogue-trader.sheet .rt-stepper:hover .rt-stepper__buttons {
+  display: flex;
+}
+
+.rogue-trader.sheet .rt-stepper__btn {
+  width: 18px;
+  height: 15px;
+  padding: 0;
+  font-size: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--rt-panel-light);
+  border: 1px solid var(--rt-gold-dim);
+  color: var(--rt-gold);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.rogue-trader.sheet .rt-stepper__btn:hover {
+  background: var(--rt-gold);
+  color: var(--rt-dark);
+}
+
+/* ---------- Header buttons and fatigue toggle ---------- */
+
+.rogue-trader.sheet .rt-header-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.rogue-trader.sheet .rt-button {
+  padding: 3px 10px;
+  background: var(--rt-panel);
+  border: 1px solid var(--rt-gold-dim);
+  color: var(--rt-gold);
+  border-radius: 3px;
+  cursor: pointer;
   font-weight: bold;
 }
 
-.rogue-trader.sheet .rt-resource input {
-  width: 55px;
+.rogue-trader.sheet .rt-button:hover {
+  background: var(--rt-gold);
+  color: var(--rt-dark);
+}
+
+.rogue-trader.sheet .rt-fatigue-toggle {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  font-size: 0.8em;
+  background: var(--rt-panel-light);
+  border: 1px solid #55555f;
+  color: var(--rt-muted);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.rogue-trader.sheet .rt-fatigue-toggle.active {
+  background: var(--rt-failure);
+  border-color: var(--rt-failure);
+  color: #ffffff;
+}
+
+/* ---------- Tabs ---------- */
+
+.rogue-trader.sheet .rt-sheet-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  border-bottom: 1px solid var(--rt-gold-dim);
+  margin-bottom: 8px;
+}
+
+.rogue-trader.sheet .rt-sheet-tabs .item {
+  padding: 4px 10px;
+  font-size: 0.9em;
+  color: var(--rt-text);
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+}
+
+.rogue-trader.sheet .rt-sheet-tabs .item.active {
+  color: var(--rt-gold);
+  font-weight: bold;
+  background: var(--rt-panel);
+  border-color: var(--rt-gold-dim);
+}
+
+.rogue-trader.sheet .tab {
+  display: none;
+}
+
+.rogue-trader.sheet .tab.active {
+  display: block;
+}
+
+/* ---------- Characteristics (single line) ---------- */
+
+.rogue-trader.sheet .rt-characteristics {
+  display: flex;
+  gap: 4px;
+  margin: 8px 0;
+}
+
+.rogue-trader.sheet .rt-characteristic {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--rt-panel);
+  border: 1px solid #55555f;
+  border-radius: 4px;
+  padding: 4px 5px;
+}
+
+.rogue-trader.sheet .rt-characteristic__abbr {
   text-align: center;
+  font-weight: bold;
+  font-size: 0.85em;
+  color: var(--rt-gold);
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.rogue-trader.sheet .rt-characteristic__values {
+  display: flex;
+  gap: 3px;
+}
+
+.rogue-trader.sheet .rt-characteristic__base {
+  flex: 0 0 40%;
+  min-width: 0;
+  text-align: center;
+  font-size: 0.85em;
+  background: var(--rt-panel-light);
+  border: 1px solid #55555f;
+  color: var(--rt-muted);
+  border-radius: 3px;
+  padding: 2px 1px;
+}
+
+.rogue-trader.sheet .rt-characteristic__total {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  font-weight: bold;
+  background: var(--rt-panel-light);
+  border: 1px solid #55555f;
+  color: var(--rt-text);
+  border-radius: 3px;
+  padding: 2px 1px;
+  cursor: pointer;
+}
+
+.rogue-trader.sheet .rt-characteristic:hover .rt-characteristic__total {
+  border-color: var(--rt-gold);
+  color: var(--rt-gold);
+}
+
+/* ---------- XP tab ---------- */
+
+.rogue-trader.sheet .rt-xp {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rogue-trader.sheet .rt-xp__row {
+  display: grid;
+  grid-template-columns: 50px 1.1fr 1fr 0.7fr 1.1fr;
+  gap: 6px;
+  align-items: center;
+}
+
+.rogue-trader.sheet .rt-xp__row--header label {
+  font-weight: bold;
+  font-size: 0.82em;
+  color: var(--rt-gold);
+}
+
+.rogue-trader.sheet .rt-xp__abbr {
+  font-weight: bold;
+  color: var(--rt-gold);
+  text-align: center;
+}
+
+.rogue-trader.sheet .rt-xp__row input,
+.rogue-trader.sheet .rt-xp__row select {
+  width: 100%;
   background: var(--rt-panel);
   border: 1px solid #55555f;
   color: var(--rt-text);
@@ -94,52 +331,12 @@
   padding: 2px 4px;
 }
 
-.rogue-trader.sheet .rt-resource__sep {
-  color: var(--rt-gold-dim);
-}
-
-/* ---------- Характеристики ---------- */
-
-.rogue-trader.sheet .rt-characteristics {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin: 10px 0;
-}
-
-.rogue-trader.sheet .rt-characteristic {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--rt-panel);
-  border: 1px solid #55555f;
-  border-radius: 4px;
-  padding: 6px 8px;
-  cursor: pointer;
-  transition: border-color 0.15s ease;
-}
-
-.rogue-trader.sheet .rt-characteristic:hover {
-  border-color: var(--rt-gold);
-}
-
-.rogue-trader.sheet .rt-characteristic__abbr {
-  flex: 1;
-  font-weight: bold;
-  color: var(--rt-gold);
-}
-
-.rogue-trader.sheet .rt-characteristic__value {
-  width: 60px;
-  text-align: center;
+.rogue-trader.sheet .rt-xp__row input:disabled {
+  color: var(--rt-muted);
   background: var(--rt-panel-light);
-  border: 1px solid #55555f;
-  color: var(--rt-text);
-  border-radius: 3px;
-  padding: 3px;
 }
 
-/* ---------- Прочее на листах ---------- */
+/* ---------- Misc sheet styles ---------- */
 
 .rogue-trader.sheet .rt-movement {
   display: flex;
@@ -178,7 +375,7 @@
   padding: 8px 10px;
   border: 1px dashed var(--rt-gold-dim);
   border-radius: 4px;
-  color: #9a978f;
+  color: var(--rt-muted);
   font-style: italic;
   font-size: 0.9em;
 }
@@ -187,7 +384,7 @@
   margin: 0;
 }
 
-/* ---------- Диалог броска ---------- */
+/* ---------- Roll dialog ---------- */
 
 .rt-roll-dialog__label {
   font-weight: bold;
@@ -195,7 +392,7 @@
   margin-bottom: 8px;
 }
 
-/* ---------- Чат-карточка броска ---------- */
+/* ---------- Roll chat card ---------- */
 
 .rt-roll-card {
   background: var(--rt-panel);
@@ -224,7 +421,7 @@
   font-size: 0.8em;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #9a978f;
+  color: var(--rt-muted);
 }
 
 .rt-roll-card__dice {
@@ -249,7 +446,7 @@
 .rt-roll-card__die-caption {
   font-size: 0.7em;
   text-transform: uppercase;
-  color: #9a978f;
+  color: var(--rt-muted);
 }
 
 .rt-roll-card__die-value {
@@ -259,7 +456,7 @@
 
 .rt-roll-card__operator {
   font-size: 1.1em;
-  color: #9a978f;
+  color: var(--rt-muted);
 }
 
 .rt-roll-card__value {
@@ -270,7 +467,7 @@
 .rt-roll-card__target {
   text-align: center;
   font-size: 0.9em;
-  color: #9a978f;
+  color: var(--rt-muted);
 }
 
 .rt-roll-card__modifier {
@@ -280,7 +477,7 @@
 .rt-roll-card__degrees {
   text-align: center;
   font-size: 0.85em;
-  color: #9a978f;
+  color: var(--rt-muted);
   margin-top: 2px;
 }
 
@@ -294,16 +491,6 @@
   border-radius: 3px;
 }
 
-.rt-roll-card--critical.rt-roll-card--success .rt-roll-card__result {
-  background: var(--rt-gold);
-  color: var(--rt-dark);
-}
-
-.rt-roll-card--critical.rt-roll-card--failure .rt-roll-card__result {
-  background: #6e1a1a;
-  box-shadow: inset 0 0 0 1px var(--rt-gold-dim);
-}
-
 .rt-roll-card--success .rt-roll-card__result {
   color: #ffffff;
   background: var(--rt-success);
@@ -312,4 +499,14 @@
 .rt-roll-card--failure .rt-roll-card__result {
   color: #ffffff;
   background: var(--rt-failure);
+}
+
+.rt-roll-card--critical.rt-roll-card--success .rt-roll-card__result {
+  background: var(--rt-gold);
+  color: var(--rt-dark);
+}
+
+.rt-roll-card--critical.rt-roll-card--failure .rt-roll-card__result {
+  background: #6e1a1a;
+  box-shadow: inset 0 0 0 1px var(--rt-gold-dim);
 }

@@ -1,0 +1,16 @@
+<section class="tab {{tabs.settings.cssClass}}" data-tab="settings" data-group="main">
+  <div class="form-group">
+    <label>{{localize "RT.Sheet.Edition"}}</label>
+    <div class="form-fields">
+      <select class="rt-edition-select">
+        {{#each editions as |edition|}}
+        <option value="{{edition.id}}" {{#if edition.selected}}selected{{/if}}>{{localize edition.label}}</option>
+        {{/each}}
+      </select>
+    </div>
+  </div>
+
+  <section class="rt-stub-note">
+    <p>{{localize "RT.Sheet.SettingsNote"}}</p>
+  </section>
+</section>

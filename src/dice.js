@@ -5,8 +5,8 @@ const { renderTemplate } = foundry.applications.handlebars;
 const { Roll } = foundry.dice;
 const { ChatMessage } = foundry.documents;
 
-// Формирование значения стогранника из двух d10: первый куб — десятки, второй — единицы.
-// Выпавшая «10» на d10 читается как 0; комбинация 0+0 — это 100.
+// Building the d100 value from two d10: the first die is tens, the second is units.
+// A rolled "10" on a d10 reads as 0; the 0+0 combination is 100.
 function rollTensAndUnits(rawTens, rawUnits) {
   const tens = rawTens % 10;
   const units = rawUnits % 10;
@@ -15,8 +15,8 @@ function rollTensAndUnits(rawTens, rawUnits) {
 }
 
 /**
- * Базовый тест: успех, если результат броска меньше или равен цели.
- * Режимы: "1d100" — обычный стогранник; "2d10" — десятки и единицы двумя d10.
+ * Basic test: success if the roll is less than or equal to the target.
+ * Modes: "1d100" - a single percentile die; "2d10" - tens and units from two d10.
  */
 export async function rollTest({
   target = 0,
@@ -44,13 +44,13 @@ export async function rollTest({
     value = roll.total;
   }
 
-  // Натуральные 01 и 100: критический успех и критический провал независимо от цели.
+  // Natural 01 and 100: critical success and critical failure regardless of the target.
   const criticalSuccess = value === 1;
   const criticalFailure = value === 100;
   const success = criticalSuccess || (!criticalFailure && value <= finalTarget);
 
-  // Степени успеха/провала (RT Core): каждая полная десятка разницы между
-  // модифицированной целью и броском равна одной степени.
+  // Degrees of success/failure (RT Core): every full ten points of difference
+  // between the modified target and the roll equals one degree.
   const difference = Math.max(0, success ? finalTarget - value : value - finalTarget);
   const degrees = Math.floor(difference / 10);
 
@@ -85,8 +85,8 @@ export async function rollTest({
 }
 
 /**
- * Диалог броска: цель и модификатор. Режим броска (1d100 / 2d10) берётся только
- * из глобальной настройки системы; переопределить его можно лишь через API rollTest.
+ * Roll dialog: target and modifier. The roll mode (1d100 / 2d10) comes only
+ * from the global system setting; it can only be overridden via the rollTest API.
  */
 export async function showRollDialog({
   target = 0,

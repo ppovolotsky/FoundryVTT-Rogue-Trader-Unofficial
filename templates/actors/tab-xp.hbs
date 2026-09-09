@@ -1,0 +1,24 @@
+<section class="tab {{tabs.xp.cssClass}}" data-tab="xp" data-group="main">
+  <div class="rt-xp">
+    <div class="rt-xp__row rt-xp__row--header">
+      <label>{{localize "RT.Sheet.Name"}}</label>
+      <label>{{localize "RT.Sheet.XP.Advance"}}</label>
+      <label>{{localize "RT.Sheet.XP.BaseValue"}}</label>
+      <label>{{localize "RT.Sheet.XP.BaseBonus"}}</label>
+      <label>{{localize "RT.Sheet.XP.BonusModifier"}}</label>
+    </div>
+    {{#each characteristics as |c|}}
+    <div class="rt-xp__row" title="{{c.label}}">
+      <label class="rt-xp__abbr">{{c.abbr}}</label>
+      <select name="system.characteristics.{{c.key}}.advance" data-dtype="Number">
+        {{#each c.advanceOptions as |option|}}
+        <option value="{{option.value}}" {{#if option.selected}}selected{{/if}}>+{{option.value}}</option>
+        {{/each}}
+      </select>
+      <input type="number" name="system.characteristics.{{c.key}}.value" value="{{c.value}}" data-dtype="Number"/>
+      <input type="text" disabled value="{{c.baseBonus}}"/>
+      <input type="number" name="system.characteristics.{{c.key}}.bonusMod" value="{{c.bonusMod}}" data-dtype="Number"/>
+    </div>
+    {{/each}}
+  </div>
+</section>

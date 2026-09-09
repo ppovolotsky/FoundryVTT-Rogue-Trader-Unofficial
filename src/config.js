@@ -1,16 +1,19 @@
 export const SYSTEM_ID = "rogue-trader";
 
 export const CHARACTERISTICS = {
-  ws: { abbr: "WS", label: "RT.Characteristics.WS" },
-  bs: { abbr: "BS", label: "RT.Characteristics.BS" },
-  s: { abbr: "S", label: "RT.Characteristics.S" },
-  t: { abbr: "T", label: "RT.Characteristics.T" },
-  ag: { abbr: "Ag", label: "RT.Characteristics.Ag" },
-  int: { abbr: "Int", label: "RT.Characteristics.Int" },
-  per: { abbr: "Per", label: "RT.Characteristics.Per" },
-  wp: { abbr: "WP", label: "RT.Characteristics.WP" },
-  fel: { abbr: "Fel", label: "RT.Characteristics.Fel" }
+  bs: { abbrKey: "RT.CharacteristicsAbbr.BS", label: "RT.Characteristics.BS" },
+  ws: { abbrKey: "RT.CharacteristicsAbbr.WS", label: "RT.Characteristics.WS" },
+  s: { abbrKey: "RT.CharacteristicsAbbr.S", label: "RT.Characteristics.S" },
+  t: { abbrKey: "RT.CharacteristicsAbbr.T", label: "RT.Characteristics.T" },
+  ag: { abbrKey: "RT.CharacteristicsAbbr.Ag", label: "RT.Characteristics.Ag" },
+  int: { abbrKey: "RT.CharacteristicsAbbr.Int", label: "RT.Characteristics.Int" },
+  per: { abbrKey: "RT.CharacteristicsAbbr.Per", label: "RT.Characteristics.Per" },
+  wp: { abbrKey: "RT.CharacteristicsAbbr.WP", label: "RT.Characteristics.WP" },
+  fel: { abbrKey: "RT.CharacteristicsAbbr.Fel", label: "RT.Characteristics.Fel" }
 };
+
+// Characteristic advance steps: +0, +5, +10, +15, +20.
+export const ADVANCE_STEPS = [0, 5, 10, 15, 20];
 
 export const ROLL_MODES = {
   "1d100": "RT.Modes.OneD100",
@@ -31,7 +34,7 @@ export const ITEM_TYPES = {
   ammo: "RT.ItemTypes.Ammo"
 };
 
-// Плоские поля, выводимые на заглушке листа предмета; вложенные (rateOfFire, clip, locations, special) — на следующих этапах.
+// Flat fields shown on the item sheet stub; nested ones (rateOfFire, clip, locations, special) come later.
 export const ITEM_FIELDS = {
   weapon: [
     { path: "class", label: "RT.Items.Weapon.Class", input: "text" },

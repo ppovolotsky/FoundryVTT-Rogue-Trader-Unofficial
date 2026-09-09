@@ -1,0 +1,18 @@
+<section class="tab {{tabs.combat.cssClass}}" data-tab="combat" data-group="main">
+  <div class="rt-stat rt-stat--block">
+    <label>{{localize "RT.Sheet.Wounds"}}</label>
+    <div class="rt-stepper">
+      <input type="number" name="system.wounds.value" value="{{system.wounds.value}}" data-dtype="Number"/>
+      <div class="rt-stepper__buttons">
+        <button type="button" class="rt-stepper__btn" data-action="adjustValue" data-path="system.wounds.value" data-delta="1" title="+1"><i class="fa-solid fa-chevron-up"></i></button>
+        <button type="button" class="rt-stepper__btn" data-action="adjustValue" data-path="system.wounds.value" data-delta="-1" title="-1"><i class="fa-solid fa-chevron-down"></i></button>
+      </div>
+    </div>
+    <span class="rt-resource__sep">/</span>
+    <input class="rt-stat__max" type="number" name="system.wounds.max" value="{{system.wounds.max}}" data-dtype="Number"/>
+  </div>
+
+  <section class="rt-stub-note">
+    <p>{{localize "RT.Sheet.StubNote"}}</p>
+  </section>
+</section>

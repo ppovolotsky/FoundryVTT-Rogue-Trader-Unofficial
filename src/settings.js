@@ -11,13 +11,15 @@ export function registerSettings() {
     choices: ROLL_MODES
   });
 
-  // Заготовка под будущую функциональность: сейчас ни на что не влияет.
-  game.settings.register(SYSTEM_ID, "autoSuccessFail", {
-    name: "RT.Settings.AutoSuccessFail.Name",
-    hint: "RT.Settings.AutoSuccessFail.Hint",
+  game.settings.register(SYSTEM_ID, "edition", {
+    name: "RT.Settings.Edition.Name",
+    hint: "RT.Settings.Edition.Hint",
     scope: "world",
     config: true,
-    type: Boolean,
-    default: false
+    type: String,
+    default: "rogue-trader",
+    choices: {
+      "rogue-trader": "RT.Editions.RogueTrader"
+    }
   });
 }

@@ -40,10 +40,10 @@ Hooks.once("init", () => {
 });
 
 Hooks.once("ready", () => {
-  // Публичный API для макросов: game.rogueTrader.roll({target, modifier, mode}) и game.rogueTrader.rollDialog({...}).
+  // Public macro API: game.rogueTrader.roll({target, modifier, mode}) and game.rogueTrader.rollDialog({...}).
   game.rogueTrader = { roll: rollTest, rollDialog: showRollDialog };
 
-  // Диагностика: если для какого-то типа актёра нет листа по умолчанию, показать это в консоли.
+  // Diagnostics: warn in the console if any actor type has no default sheet.
   for (const type of Object.keys(ACTOR_TYPES)) {
     const registered = CONFIG.Actor.sheetClasses[type] ?? {};
     if (!Object.values(registered).some((entry) => entry.default)) {

@@ -1,6 +1,6 @@
 {
-  "RT.Characteristics.WS": "Weapon Skill",
   "RT.Characteristics.BS": "Ballistic Skill",
+  "RT.Characteristics.WS": "Weapon Skill",
   "RT.Characteristics.S": "Strength",
   "RT.Characteristics.T": "Toughness",
   "RT.Characteristics.Ag": "Agility",
@@ -9,8 +9,26 @@
   "RT.Characteristics.WP": "Willpower",
   "RT.Characteristics.Fel": "Fellowship",
 
+  "RT.CharacteristicsAbbr.BS": "BS",
+  "RT.CharacteristicsAbbr.WS": "WS",
+  "RT.CharacteristicsAbbr.S": "S",
+  "RT.CharacteristicsAbbr.T": "T",
+  "RT.CharacteristicsAbbr.Ag": "Ag",
+  "RT.CharacteristicsAbbr.Int": "Int",
+  "RT.CharacteristicsAbbr.Per": "Per",
+  "RT.CharacteristicsAbbr.WP": "WP",
+  "RT.CharacteristicsAbbr.Fel": "Fel",
+
+  "RT.Tabs.Skills": "Skills",
+  "RT.Tabs.Combat": "Combat",
+  "RT.Tabs.Psykana": "Psykana",
+  "RT.Tabs.Ship": "Ship",
+  "RT.Tabs.Journal": "Journal",
+  "RT.Tabs.XP": "XP",
+  "RT.Tabs.Settings": "Settings",
+
   "RT.Modes.OneD100": "1d100",
-  "RT.Modes.TwoD10": "2d10 (tens + units)",
+  "RT.Modes.TwoD10": "2d10",
 
   "RT.Dialog.Title": "d100 Test",
   "RT.Dialog.Target": "Target",
@@ -31,20 +49,35 @@
 
   "RT.Settings.DefaultRollMode.Name": "Default Roll Mode",
   "RT.Settings.DefaultRollMode.Hint": "How the d100 is rolled: a single 1d100 roll, or two d10 (tens + units).",
-  "RT.Settings.AutoSuccessFail.Name": "Auto-Success 01–05 and Auto-Failure 96–00 (in development)",
-  "RT.Settings.AutoSuccessFail.Hint": "Placeholder: automatic success on 01–05 and automatic failure on 96–00.",
+  "RT.Settings.Edition.Name": "Rules Edition",
+  "RT.Settings.Edition.Hint": "The ruleset used for calculations. Can also be switched on the character sheet's Settings tab.",
+
+  "RT.Editions.RogueTrader": "Rogue Trader (FFG)",
 
   "RT.Sheets.Character": "Character Sheet",
   "RT.Sheets.Ship": "Ship Sheet",
   "RT.Sheets.Colony": "Colony Sheet",
   "RT.Sheets.Item": "Item Sheet",
 
-  "RT.Sheet.Name": "Name",
+  "RT.Sheet.Name": "Character Name",
+  "RT.Sheet.PlayerName": "Player Name",
   "RT.Sheet.Wounds": "Wounds",
   "RT.Sheet.Fate": "Fate Points",
+  "RT.Sheet.Fatigue": "Fatigue",
+  "RT.Sheet.FatigueLimitHint": "The fatigue limit equals the Toughness bonus",
   "RT.Sheet.Movement": "Movement",
   "RT.Sheet.Description": "Description",
   "RT.Sheet.StubNote": "Sheet scaffold. Full functionality will be added in upcoming development stages.",
+  "RT.Sheet.SettingsNote": "Additional settings will appear as the system develops.",
+  "RT.Sheet.Edition": "Rules Edition",
+
+  "RT.Sheet.XP.Advance": "Advance",
+  "RT.Sheet.XP.BaseValue": "Base Value",
+  "RT.Sheet.XP.BaseBonus": "Bonus",
+  "RT.Sheet.XP.BonusModifier": "Bonus Mod.",
+
+  "RT.Tooltips.Fate": "Spending Fate Points\nAs a Free Action or Reaction, a player may spend a Fate Point to gain one of the following effects:\nRe-roll one failed test once. The results of the re-roll are final.\nGain a +10 bonus to a test. This option must be chosen before the roll.\nAdd one Degree of Success to a test. This option may be chosen after the roll.\nCount an Initiative roll result as 10.\nInstantly remove 1d5 Damage (this does not affect Critical Damage).\nInstantly shake off being Stunned.\n\nFate Points are restored each session, at the GM's discretion.\n\nBurning Fate Points\nAn Explorer may reduce their Fate Points by 1 in order to survive something that would otherwise kill them, but only just barely.\nA Fate Point can be burnt even if it has already been spent during the session.",
+  "RT.Tooltips.Fatigue": "Any level of fatigue imposes a -10 penalty on all tests.\nClick the button to apply the penalty — it will be reflected in the characteristic values.\nClick again to remove the penalty.\nThe fatigue limit equals the Toughness bonus.\nIf a character exceeds their fatigue threshold, they fall unconscious for 10 minutes minus their Toughness bonus.",
 
   "RT.ActorTypes.Character": "Character",
   "RT.ActorTypes.Npc": "NPC",

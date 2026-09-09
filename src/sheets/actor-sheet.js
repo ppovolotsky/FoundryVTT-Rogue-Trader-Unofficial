@@ -1,9 +1,10 @@
 import { showRollDialog } from "../dice.js";
-import { CHARACTERISTICS } from "../config.js";
+import { SYSTEM_ID, CHARACTERISTICS, ADVANCE_STEPS } from "../config.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
 const { ChatMessage } = foundry.documents;
+const { Roll } = foundry.dice;
 
 export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static DEFAULT_OPTIONS = {
@@ -13,19 +14,39 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       title: "RT.Sheets.Character",
       contentClasses: ["rogue-trader", "sheet", "actor"]
     },
-    position: { width: 640, height: "auto" },
+    position: { width: 780, height: "auto" },
+    tabs: [
+      {
+        group: "main",
+        navSelector: ".rt-sheet-tabs",
+        contentSelector: ".window-content",
+        initial: "skills"
+      }
+    ],
     form: {
       handler: RTCharacterSheet.#onFormSubmit,
       submitOnChange: true,
       closeOnSubmit: false
     },
     actions: {
-      rollCharacteristic: RTCharacterSheet.#onRollCharacteristic
+      rollCharacteristic: RTCharacterSheet.#onRollCharacteristic,
+      adjustValue: RTCharacterSheet.#onAdjustValue,
+      toggleFatigue: RTCharacterSheet.#onToggleFatigue,
+      rollD5: RTCharacterSheet.#onRollD5,
+      openRollDialog: RTCharacterSheet.#onOpenRollDialog
     }
   };
 
   static PARTS = {
-    main: { template: "systems/rogue-trader/templates/actors/character-sheet.hbs" }
+    header: { template: "systems/rogue-trader/templates/actors/character-header.hbs" },
+    tabs: { template: "systems/rogue-trader/templates/actors/character-tabs.hbs" },
+    skills: { template: "systems/rogue-trader/templates/actors/tab-skills.hbs" },
+    combat: { template: "systems/rogue-trader/templates/actors/tab-combat.hbs" },
+    psykana: { template: "systems/rogue-trader/templates/actors/tab-psykana.hbs" },
+    ship: { template: "systems/rogue-trader/templates/actors/tab-ship.hbs" },
+    journal: { template: "systems/rogue-trader/templates/actors/tab-journal.hbs" },
+    xp: { template: "systems/rogue-trader/templates/actors/tab-xp.hbs" },
+    settings: { template: "systems/rogue-trader/templates/actors/tab-settings.hbs" }
   };
 
   static async #onFormSubmit(event, form, formData) {
@@ -33,13 +54,39 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
 
   static async #onRollCharacteristic(event, target) {
-    if (event.target.closest("input, select, textarea, button, a")) return;
     const key = target.dataset.key;
     const cfg = CHARACTERISTICS[key];
     if (!cfg) return;
     await showRollDialog({
-      target: this.document.system.characteristics?.[key]?.value ?? 0,
+      target: this.document.system.characteristics?.[key]?.total ?? 0,
       label: game.i18n.localize(cfg.label),
+      speaker: ChatMessage.getSpeaker({ actor: this.document })
+    });
+  }
+
+  static async #onAdjustValue(event, target) {
+    const path = target.dataset.path;
+    const delta = Number(target.dataset.delta || 0);
+    const current = Number(foundry.utils.getProperty(this.document, path) ?? 0);
+    await this.document.update({ [path]: Math.max(0, current + delta) });
+  }
+
+  static async #onToggleFatigue(event) {
+    const current = this.document.system.fatigue?.penalty ?? false;
+    await this.document.update({ "system.fatigue.penalty": !current });
+  }
+
+  static async #onRollD5(event) {
+    const roll = await new Roll("1d5").evaluate();
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      flavor: "1d5",
+      rolls: [roll]
+    });
+  }
+
+  static async #onOpenRollDialog(event) {
+    await showRollDialog({
       speaker: ChatMessage.getSpeaker({ actor: this.document })
     });
   }
@@ -48,17 +95,41 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const context = await super._prepareContext(options);
     context.actor = this.document;
     context.system = this.document.system;
-    context.characteristics = Object.entries(CHARACTERISTICS).map(([key, cfg]) => ({
-      key,
-      abbr: cfg.abbr,
-      label: game.i18n.localize(cfg.label),
-      value: this.document.system.characteristics?.[key]?.value ?? 0
+    context.characteristics = Object.entries(CHARACTERISTICS).map(([key, cfg]) => {
+      const c = this.document.system.characteristics?.[key] ?? {};
+      return {
+        key,
+        label: game.i18n.localize(cfg.label),
+        abbr: game.i18n.localize(cfg.abbrKey),
+        value: c.value ?? 0,
+        advance: c.advance ?? 0,
+        bonusMod: c.bonusMod ?? 0,
+        baseBonus: c.baseBonus ?? 0,
+        total: c.total ?? 0,
+        advanceOptions: ADVANCE_STEPS.map((step) => ({
+          value: step,
+          selected: (c.advance ?? 0) === step
+        }))
+      };
+    });
+    context.edition = game.settings.get(SYSTEM_ID, "edition");
+    context.editions = [{ id: "rogue-trader", label: "RT.Editions.RogueTrader" }].map((edition) => ({
+      ...edition,
+      selected: context.edition === edition.id
     }));
     return context;
   }
+
+  _onRender(context, options) {
+    super._onRender?.(context, options);
+    // The edition list lives in world settings, not in actor data - handle it manually.
+    this.element.querySelector(".rt-edition-select")?.addEventListener("change", async (event) => {
+      await game.settings.set(SYSTEM_ID, "edition", event.target.value);
+    });
+  }
 }
 
-// Общая заготовка для типов актёров, чьи листы будут реализованы позже (корабль, колония).
+// Common stub for actor types whose sheets will be implemented later (ship, colony).
 class RTStubActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static DEFAULT_OPTIONS = {
     tag: "form",
