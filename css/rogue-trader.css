@@ -32,6 +32,15 @@
   min-width: 0;
 }
 
+.rogue-trader.sheet .rt-filepick input {
+  width: 100%;
+  background: var(--rt-panel);
+  border: 1px solid #55555f;
+  color: var(--rt-text);
+  border-radius: 3px;
+  padding: 2px 6px;
+}
+
 .rogue-trader.sheet .rt-sheet-header__main {
   flex: 1;
   display: flex;

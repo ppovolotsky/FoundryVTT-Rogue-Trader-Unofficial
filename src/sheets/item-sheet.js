@@ -23,10 +23,6 @@ export class RTItemSheet extends HandlebarsApplicationMixin(DocumentSheetV2) {
     main: { template: "systems/rogue-trader/templates/items/item-sheet.hbs" }
   };
 
-  get title() {
-    return this.document.name || super.title;
-  }
-
   static async #onFormSubmit(event, form, formData) {
     await this.document.update(formData.object);
   }

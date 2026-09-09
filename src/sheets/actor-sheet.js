@@ -27,10 +27,6 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     main: { template: "systems/rogue-trader/templates/actors/character-sheet.hbs" }
   };
 
-  get title() {
-    return this.actor.name || super.title;
-  }
-
   static async #onFormSubmit(event, form, formData) {
     await this.document.update(formData.object);
   }
@@ -41,21 +37,21 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const cfg = CHARACTERISTICS[key];
     if (!cfg) return;
     await showRollDialog({
-      target: this.actor.system.characteristics?.[key]?.value ?? 0,
+      target: this.document.system.characteristics?.[key]?.value ?? 0,
       label: game.i18n.localize(cfg.label),
-      speaker: ChatMessage.getSpeaker({ actor: this.actor })
+      speaker: ChatMessage.getSpeaker({ actor: this.document })
     });
   }
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
-    context.actor = this.actor;
-    context.system = this.actor.system;
+    context.actor = this.document;
+    context.system = this.document.system;
     context.characteristics = Object.entries(CHARACTERISTICS).map(([key, cfg]) => ({
       key,
       abbr: cfg.abbr,
       label: game.i18n.localize(cfg.label),
-      value: this.actor.system.characteristics?.[key]?.value ?? 0
+      value: this.document.system.characteristics?.[key]?.value ?? 0
     }));
     return context;
   }
@@ -82,18 +78,14 @@ class RTStubActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     main: { template: "systems/rogue-trader/templates/actors/stub-sheet.hbs" }
   };
 
-  get title() {
-    return this.actor.name || super.title;
-  }
-
   static async #onFormSubmit(event, form, formData) {
     await this.document.update(formData.object);
   }
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
-    context.actor = this.actor;
-    context.system = this.actor.system;
+    context.actor = this.document;
+    context.system = this.document.system;
     return context;
   }
 }
