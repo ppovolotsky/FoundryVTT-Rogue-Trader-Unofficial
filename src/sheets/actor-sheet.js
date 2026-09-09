@@ -1,9 +1,10 @@
 import { showRollDialog } from "../dice.js";
 import { CHARACTERISTICS } from "../config.js";
 
-const { ApplicationV2, DocumentSheetMixin } = foundry.applications.api;
+const { HandlebarsApplicationMixin } = foundry.applications.api;
+const { ActorSheetV2 } = foundry.applications.sheets;
 
-export class RTCharacterSheet extends DocumentSheetMixin(ApplicationV2) {
+export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static DEFAULT_OPTIONS = {
     tag: "form",
     classes: ["rogue-trader", "sheet", "actor", "rt-character-sheet"],
@@ -27,7 +28,7 @@ export class RTCharacterSheet extends DocumentSheetMixin(ApplicationV2) {
   };
 
   get title() {
-    return this.document.name || super.title;
+    return this.actor.name || super.title;
   }
 
   static async #onFormSubmit(event, form, formData) {
@@ -40,28 +41,28 @@ export class RTCharacterSheet extends DocumentSheetMixin(ApplicationV2) {
     const cfg = CHARACTERISTICS[key];
     if (!cfg) return;
     await showRollDialog({
-      target: this.document.system.characteristics?.[key]?.value ?? 0,
+      target: this.actor.system.characteristics?.[key]?.value ?? 0,
       label: game.i18n.localize(cfg.label),
-      speaker: ChatMessage.getSpeaker({ actor: this.document })
+      speaker: ChatMessage.getSpeaker({ actor: this.actor })
     });
   }
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
-    context.actor = this.document;
-    context.system = this.document.system;
+    context.actor = this.actor;
+    context.system = this.actor.system;
     context.characteristics = Object.entries(CHARACTERISTICS).map(([key, cfg]) => ({
       key,
       abbr: cfg.abbr,
       label: game.i18n.localize(cfg.label),
-      value: this.document.system.characteristics?.[key]?.value ?? 0
+      value: this.actor.system.characteristics?.[key]?.value ?? 0
     }));
     return context;
   }
 }
 
 // Общая заготовка для типов актёров, чьи листы будут реализованы позже (корабль, колония).
-class RTStubActorSheet extends DocumentSheetMixin(ApplicationV2) {
+class RTStubActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static DEFAULT_OPTIONS = {
     tag: "form",
     classes: ["rogue-trader", "sheet", "actor", "rt-stub-sheet"],
@@ -82,7 +83,7 @@ class RTStubActorSheet extends DocumentSheetMixin(ApplicationV2) {
   };
 
   get title() {
-    return this.document.name || super.title;
+    return this.actor.name || super.title;
   }
 
   static async #onFormSubmit(event, form, formData) {
@@ -91,8 +92,8 @@ class RTStubActorSheet extends DocumentSheetMixin(ApplicationV2) {
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
-    context.actor = this.document;
-    context.system = this.document.system;
+    context.actor = this.actor;
+    context.system = this.actor.system;
     return context;
   }
 }

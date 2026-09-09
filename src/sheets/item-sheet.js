@@ -1,8 +1,9 @@
 import { ITEM_FIELDS, ITEM_TYPES } from "../config.js";
 
-const { ApplicationV2, DocumentSheetMixin } = foundry.applications.api;
+const { HandlebarsApplicationMixin } = foundry.applications.api;
+const { DocumentSheetV2 } = foundry.applications.sheets;
 
-export class RTItemSheet extends DocumentSheetMixin(ApplicationV2) {
+export class RTItemSheet extends HandlebarsApplicationMixin(DocumentSheetV2) {
   static DEFAULT_OPTIONS = {
     tag: "form",
     classes: ["rogue-trader", "sheet", "item", "rt-item-sheet"],
