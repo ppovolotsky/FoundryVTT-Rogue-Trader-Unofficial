@@ -1,12 +1,12 @@
 {
   "id": "rogue-trader",
   "title": "Rogue Trader",
-  "description": "Rogue Trader - Foundry VTT",
-  "version": "0.0.0",
+  "description": "Неофициальная фанатская адаптация системы правил Rogue Trader от Fantasy Flight Games для Foundry Virtual Tabletop. Unofficial fan adaptation of the FFG Rogue Trader ruleset for Foundry VTT.",
+  "version": "0.1.0",
   "compatibility": {
-    "minimum": 14,
-    "verified": "",
-    "maximum": 14
+    "minimum": "14",
+    "verified": "14.367",
+    "maximum": "14"
   },
   "authors": [
     {
@@ -14,106 +14,96 @@
       "discord": "koschei293"
     }
   ],
-  "styles": [
-    "css/"
+  "esmodules": [
+    "src/rogue-trader.js"
   ],
-  "scripts": [],
+  "styles": [
+    "css/rogue-trader.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "ru",
+      "name": "Русский",
+      "path": "lang/ru.json"
+    }
+  ],
   "packs": [
     {
       "name": "ammo",
-      "system": "rogue-trader",
       "label": "Ammo",
-      "path": "./packs/ammo.db",
       "type": "Item",
-      "entity": "Item"
+      "path": "./packs/ammo.db"
     },
     {
-      "name": "career-pathss",
-      "system": "rogue-trader",
+      "name": "career-paths",
       "label": "Career Paths",
-      "path": "./packs/career-paths.db",
       "type": "Item",
-      "entity": "Item"
+      "path": "./packs/career-paths.db"
     },
     {
       "name": "armour",
-      "system": "rogue-trader",
       "label": "Armour",
-      "path": "./packs/armour.db",
       "type": "Item",
-      "entity": "Item"
+      "path": "./packs/armour.db"
     },
     {
       "name": "consumables",
-      "system": "rogue-trader",
       "label": "Drugs and Consumables",
-      "path": "./packs/consumables.db",
       "type": "Item",
-      "entity": "Item"
+      "path": "./packs/consumables.db"
     },
     {
       "name": "cybernetics",
-      "system": "rogue-trader",
       "label": "Cybernetics",
-      "path": "./packs/cybernetics.db",
       "type": "Item",
-      "entity": "Item"
+      "path": "./packs/cybernetics.db"
     },
     {
       "name": "psychic-powers",
-      "system": "drogue-traderd",
       "label": "Psychic Powers",
-      "path": "./packs/psychic-powers.db",
       "type": "Item",
-      "entity": "Item"
+      "path": "./packs/psychic-powers.db"
     },
     {
       "name": "tables",
-      "system": "rogue-trader",
       "label": "Tables",
-      "path": "./packs/tables.db",
       "type": "RollTable",
-      "entity": "RollTable"
+      "path": "./packs/tables.db"
     },
     {
       "name": "talents",
-      "system": "rogue-trader",
       "label": "Talents",
-      "path": "./packs/talents.db",
       "type": "Item",
-      "entity": "Item"
+      "path": "./packs/talents.db"
     },
     {
       "name": "tools",
-      "system": "rogue-trader",
       "label": "Tools",
-      "path": "./packs/tools.db",
       "type": "Item",
-      "entity": "Item"
+      "path": "./packs/tools.db"
     },
     {
       "name": "traits",
-      "system": "rogue-trader",
       "label": "Traits",
-      "path": "./packs/traits.db",
       "type": "Item",
-      "entity": "Item"
+      "path": "./packs/traits.db"
     },
     {
       "name": "weapons",
-      "system": "rogue-trader",
       "label": "Weapons",
-      "path": "./packs/weapons.db",
       "type": "Item",
-      "entity": "Item"
+      "path": "./packs/weapons.db"
     },
     {
       "name": "weapon-mods",
-      "system": "rogue-trader",
       "label": "Weapon Mods",
-      "path": "./packs/weapon-mods.db",
       "type": "Item",
-      "entity": "Item"
+      "path": "./packs/weapon-mods.db"
     }
   ],
   "grid": {
@@ -123,8 +113,8 @@
   "primaryTokenAttribute": "wounds",
   "secondaryTokenAttribute": "fate",
   "url": "https://github.com/ppovolotsky/FoundryVTT-Rogue-Trader-Unofficial",
-  "manifest": "",
-  "download": "",
-  "license": "",
+  "manifest": "https://raw.githubusercontent.com/ppovolotsky/FoundryVTT-Rogue-Trader-Unofficial/main/system.json",
+  "download": "https://github.com/ppovolotsky/FoundryVTT-Rogue-Trader-Unofficial/releases/latest/download/system.zip",
+  "license": "LICENSE",
   "bugs": "https://github.com/ppovolotsky/FoundryVTT-Rogue-Trader-Unofficial/issues"
 }

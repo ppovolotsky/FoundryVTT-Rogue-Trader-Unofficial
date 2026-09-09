@@ -1,0 +1,25 @@
+<form class="{{cssClass}}" autocomplete="off">
+  <header class="rt-sheet-header">
+    <img class="rt-sheet-header__portrait" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+    <div class="rt-sheet-header__main">
+      <div class="rt-item-sheet__type">{{typeLabel}}</div>
+      <input class="rt-sheet-header__name" name="name" type="text" value="{{item.name}}" placeholder="{{localize "RT.Items.Name"}}"/>
+    </div>
+  </header>
+
+  <section class="rt-sheet-section">
+    {{#each fields as |field|}}
+    <div class="form-group">
+      <label>{{localize field.label}}</label>
+      <div class="form-fields">
+        <input type="{{field.input}}" name="{{field.name}}" value="{{field.value}}" data-dtype="{{#if (eq field.input "number")}}Number{{else}}String{{/if}}"/>
+      </div>
+    </div>
+    {{/each}}
+  </section>
+
+  <section class="rt-sheet-section">
+    <label class="rt-sheet-section__title">{{localize "RT.Items.Description"}}</label>
+    {{editor enrichedDescription target="system.description" button=true editable=editable}}
+  </section>
+</form>

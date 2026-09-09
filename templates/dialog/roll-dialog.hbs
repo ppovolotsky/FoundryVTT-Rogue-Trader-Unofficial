@@ -1,0 +1,33 @@
+<form class="rt-roll-dialog" autocomplete="off">
+  {{#if label}}
+  <div class="rt-roll-dialog__label">{{label}}</div>
+  {{/if}}
+
+  <div class="form-group">
+    <label>{{localize "RT.Dialog.Target"}}</label>
+    <div class="form-fields">
+      <input type="number" name="target" value="{{target}}" step="1"/>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>{{localize "RT.Dialog.Modifier"}}</label>
+    <div class="form-fields">
+      <input type="number" name="modifier" value="{{modifier}}" step="1"/>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>{{localize "RT.Dialog.RollMode"}}</label>
+    <div class="form-fields rt-roll-dialog__modes">
+      <label class="rt-roll-dialog__mode">
+        <input type="radio" name="mode" value="1d100" {{checked (eq mode "1d100")}}/>
+        <span>{{localize "RT.Modes.OneD100"}}</span>
+      </label>
+      <label class="rt-roll-dialog__mode">
+        <input type="radio" name="mode" value="2d10" {{checked (eq mode "2d10")}}/>
+        <span>{{localize "RT.Modes.TwoD10"}}</span>
+      </label>
+    </div>
+  </div>
+</form>

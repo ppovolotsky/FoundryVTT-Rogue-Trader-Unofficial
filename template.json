@@ -1,0 +1,152 @@
+{
+  "Actor": {
+    "types": [
+      "character",
+      "npc",
+      "ship",
+      "colony"
+    ],
+    "templates": {
+      "common": {
+        "wounds": {
+          "value": 0,
+          "max": 0
+        },
+        "fate": {
+          "value": 0,
+          "max": 0
+        }
+      },
+      "living": {
+        "characteristics": {
+          "ws": {
+            "value": 0
+          },
+          "bs": {
+            "value": 0
+          },
+          "s": {
+            "value": 0
+          },
+          "t": {
+            "value": 0
+          },
+          "ag": {
+            "value": 0
+          },
+          "int": {
+            "value": 0
+          },
+          "per": {
+            "value": 0
+          },
+          "wp": {
+            "value": 0
+          },
+          "fel": {
+            "value": 0
+          }
+        },
+        "bio": ""
+      }
+    },
+    "character": {
+      "templates": [
+        "common",
+        "living"
+      ]
+    },
+    "npc": {
+      "templates": [
+        "common",
+        "living"
+      ]
+    },
+    "ship": {
+      "templates": [
+        "common"
+      ],
+      "description": ""
+    },
+    "colony": {
+      "templates": [
+        "common"
+      ],
+      "description": ""
+    }
+  },
+  "Item": {
+    "types": [
+      "weapon",
+      "armour",
+      "gear",
+      "ammo"
+    ],
+    "templates": {
+      "common": {
+        "description": "",
+        "availability": "",
+        "weight": 0,
+        "source": ""
+      }
+    },
+    "weapon": {
+      "templates": [
+        "common"
+      ],
+      "class": "",
+      "weaponType": "",
+      "craftsmanship": "",
+      "equipped": false,
+      "range": 0,
+      "damage": "",
+      "damageType": "",
+      "penetration": 0,
+      "reload": "",
+      "rateOfFire": {
+        "single": 0,
+        "burst": 0,
+        "full": 0
+      },
+      "clip": {
+        "value": 0,
+        "max": 0
+      },
+      "special": {
+        "tearing": false,
+        "accurate": false,
+        "reliable": false,
+        "unreliable": false
+      }
+    },
+    "armour": {
+      "templates": [
+        "common"
+      ],
+      "armourType": "",
+      "locations": {
+        "head": 0,
+        "body": 0,
+        "leftArm": 0,
+        "rightArm": 0,
+        "leftLeg": 0,
+        "rightLeg": 0
+      },
+      "maxAgilityPenalty": 0,
+      "equipped": false
+    },
+    "gear": {
+      "templates": [
+        "common"
+      ],
+      "quantity": 1
+    },
+    "ammo": {
+      "templates": [
+        "common"
+      ],
+      "weaponType": "",
+      "quantity": 0
+    }
+  }
+}

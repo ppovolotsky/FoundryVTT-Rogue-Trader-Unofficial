@@ -1,0 +1,42 @@
+<form class="{{cssClass}}" autocomplete="off">
+  <header class="rt-sheet-header">
+    <img class="rt-sheet-header__portrait" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
+    <div class="rt-sheet-header__main">
+      <input class="rt-sheet-header__name" name="name" type="text" value="{{actor.name}}" placeholder="{{localize "RT.Sheet.Name"}}"/>
+      <div class="rt-resources">
+        <div class="rt-resource">
+          <label>{{localize "RT.Sheet.Wounds"}}</label>
+          <input type="number" name="system.wounds.value" value="{{system.wounds.value}}" data-dtype="Number"/>
+          <span class="rt-resource__sep">/</span>
+          <input type="number" name="system.wounds.max" value="{{system.wounds.max}}" data-dtype="Number"/>
+        </div>
+        <div class="rt-resource">
+          <label>{{localize "RT.Sheet.Fate"}}</label>
+          <input type="number" name="system.fate.value" value="{{system.fate.value}}" data-dtype="Number"/>
+          <span class="rt-resource__sep">/</span>
+          <input type="number" name="system.fate.max" value="{{system.fate.max}}" data-dtype="Number"/>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="rt-characteristics">
+    {{#each characteristics as |c|}}
+    <div class="rt-characteristic" data-key="{{c.key}}" title="{{c.label}}">
+      <span class="rt-characteristic__abbr">{{c.abbr}}</span>
+      <input class="rt-characteristic__value" type="number" name="system.characteristics.{{c.key}}.value" value="{{c.value}}" data-dtype="Number"/>
+    </div>
+    {{/each}}
+  </section>
+
+  {{#if system.movement}}
+  <div class="rt-movement">
+    <span>{{localize "RT.Sheet.Movement"}}:</span>
+    <span>{{system.movement.half}} / {{system.movement.full}} / {{system.movement.charge}} / {{system.movement.run}}</span>
+  </div>
+  {{/if}}
+
+  <section class="rt-stub-note">
+    <p>{{localize "RT.Sheet.StubNote"}}</p>
+  </section>
+</form>

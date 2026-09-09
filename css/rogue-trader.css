@@ -1,0 +1,289 @@
+/* Rogue Trader (Unofficial) — базовые стили системы */
+
+:root {
+  --rt-gold: #c9a227;
+  --rt-gold-dim: #8a6d1d;
+  --rt-dark: #1b1b1f;
+  --rt-panel: #26262c;
+  --rt-panel-light: #33333b;
+  --rt-text: #d8d5cc;
+  --rt-success: #3f8f4f;
+  --rt-failure: #a13333;
+}
+
+/* ---------- Заголовок листа ---------- */
+
+.rogue-trader.sheet .rt-sheet-header {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.rogue-trader.sheet .rt-sheet-header__portrait {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border: 2px solid var(--rt-gold-dim);
+  border-radius: 3px;
+  flex: 0 0 auto;
+  cursor: pointer;
+}
+
+.rogue-trader.sheet .rt-sheet-header__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rogue-trader.sheet .rt-sheet-header__name {
+  width: 100%;
+  font-size: 1.35em;
+  font-weight: bold;
+  color: var(--rt-gold);
+  background: var(--rt-panel);
+  border: 1px solid var(--rt-gold-dim);
+  border-radius: 3px;
+  padding: 4px 8px;
+}
+
+.rogue-trader.sheet .rt-item-sheet__type {
+  font-size: 0.85em;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--rt-gold-dim);
+}
+
+/* ---------- Ресурсы (раны, судьба) ---------- */
+
+.rogue-trader.sheet .rt-resources {
+  display: flex;
+  gap: 16px;
+}
+
+.rogue-trader.sheet .rt-resource {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.rogue-trader.sheet .rt-resource label {
+  color: var(--rt-text);
+  font-weight: bold;
+}
+
+.rogue-trader.sheet .rt-resource input {
+  width: 55px;
+  text-align: center;
+  background: var(--rt-panel);
+  border: 1px solid #55555f;
+  color: var(--rt-text);
+  border-radius: 3px;
+  padding: 2px 4px;
+}
+
+.rogue-trader.sheet .rt-resource__sep {
+  color: var(--rt-gold-dim);
+}
+
+/* ---------- Характеристики ---------- */
+
+.rogue-trader.sheet .rt-characteristics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.rogue-trader.sheet .rt-characteristic {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--rt-panel);
+  border: 1px solid #55555f;
+  border-radius: 4px;
+  padding: 6px 8px;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.rogue-trader.sheet .rt-characteristic:hover {
+  border-color: var(--rt-gold);
+}
+
+.rogue-trader.sheet .rt-characteristic__abbr {
+  flex: 1;
+  font-weight: bold;
+  color: var(--rt-gold);
+}
+
+.rogue-trader.sheet .rt-characteristic__value {
+  width: 60px;
+  text-align: center;
+  background: var(--rt-panel-light);
+  border: 1px solid #55555f;
+  color: var(--rt-text);
+  border-radius: 3px;
+  padding: 3px;
+}
+
+/* ---------- Прочее на листах ---------- */
+
+.rogue-trader.sheet .rt-movement {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 8px;
+  margin: 6px 0;
+  background: var(--rt-panel);
+  border: 1px solid #55555f;
+  border-radius: 4px;
+  color: var(--rt-text);
+}
+
+.rogue-trader.sheet .rt-sheet-section {
+  margin: 10px 0;
+}
+
+.rogue-trader.sheet .rt-sheet-section__title {
+  display: block;
+  font-weight: bold;
+  color: var(--rt-gold);
+  margin-bottom: 4px;
+}
+
+.rogue-trader.sheet .rt-stub-note {
+  margin: 10px 0;
+  padding: 8px 10px;
+  border: 1px dashed var(--rt-gold-dim);
+  border-radius: 4px;
+  color: #9a978f;
+  font-style: italic;
+  font-size: 0.9em;
+}
+
+.rogue-trader.sheet .rt-stub-note p {
+  margin: 0;
+}
+
+/* ---------- Диалог броска ---------- */
+
+.rt-roll-dialog__label {
+  font-weight: bold;
+  color: var(--rt-gold);
+  margin-bottom: 8px;
+}
+
+.rt-roll-dialog__modes {
+  display: flex;
+  gap: 14px;
+}
+
+.rt-roll-dialog__mode {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+/* ---------- Чат-карточка броска ---------- */
+
+.rt-roll-card {
+  background: var(--rt-panel);
+  border: 1px solid var(--rt-gold-dim);
+  border-radius: 5px;
+  padding: 8px 10px;
+  color: var(--rt-text);
+}
+
+.rt-roll-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  border-bottom: 1px solid #44444d;
+  padding-bottom: 4px;
+  margin-bottom: 6px;
+}
+
+.rt-roll-card__label {
+  font-weight: bold;
+  color: var(--rt-gold);
+}
+
+.rt-roll-card__mode {
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #9a978f;
+}
+
+.rt-roll-card__dice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 6px 0;
+}
+
+.rt-roll-card__die {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--rt-panel-light);
+  border: 1px solid #55555f;
+  border-radius: 5px;
+  padding: 4px 10px;
+  min-width: 48px;
+}
+
+.rt-roll-card__die-caption {
+  font-size: 0.7em;
+  text-transform: uppercase;
+  color: #9a978f;
+}
+
+.rt-roll-card__die-value {
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
+.rt-roll-card__operator {
+  font-size: 1.1em;
+  color: #9a978f;
+}
+
+.rt-roll-card__value {
+  font-size: 1.8em;
+  font-weight: bold;
+}
+
+.rt-roll-card__target {
+  text-align: center;
+  font-size: 0.9em;
+  color: #9a978f;
+}
+
+.rt-roll-card__modifier {
+  margin-left: 4px;
+}
+
+.rt-roll-card__result {
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 6px;
+  padding: 3px;
+  border-radius: 3px;
+}
+
+.rt-roll-card--success .rt-roll-card__result {
+  color: #ffffff;
+  background: var(--rt-success);
+}
+
+.rt-roll-card--failure .rt-roll-card__result {
+  color: #ffffff;
+  background: var(--rt-failure);
+}
