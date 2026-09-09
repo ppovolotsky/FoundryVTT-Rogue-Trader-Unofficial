@@ -1,4 +1,4 @@
-import { SYSTEM_ID, registerConfig } from "./config.js";
+import { SYSTEM_ID, ACTOR_TYPES, registerConfig } from "./config.js";
 import { registerSettings } from "./settings.js";
 import { RTActor } from "./documents/actor.js";
 import { RTItem } from "./documents/item.js";
@@ -40,4 +40,12 @@ Hooks.once("init", () => {
 Hooks.once("ready", () => {
   // Публичный API для макросов: game.rogueTrader.roll({target, modifier, mode}) и game.rogueTrader.rollDialog({...}).
   game.rogueTrader = { roll: rollTest, rollDialog: showRollDialog };
+
+  // Диагностика: если для какого-то типа актёра нет листа по умолчанию, показать это в консоли.
+  for (const type of Object.keys(ACTOR_TYPES)) {
+    const registered = CONFIG.Actor.sheetClasses[type] ?? {};
+    if (!Object.values(registered).some((entry) => entry.default)) {
+      console.warn(`Rogue Trader (Unofficial) | No default sheet registered for actor type "${type}"`);
+    }
+  }
 });
