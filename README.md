@@ -38,8 +38,20 @@
 
 например `git clone https://github.com/ppovolotsky/FoundryVTT-Rogue-Trader-Unofficial.git "systems/rogue-trader"`, затем перезапустите Foundry и создайте мир с системой «Rogue Trader».
 
-**Обычная установка:** после выпуска релиза — через установку по манифесту:
-`https://raw.githubusercontent.com/ppovolotsky/FoundryVTT-Rogue-Trader-Unofficial/main/system.json`
+**Обычная установка:** через установку по манифест-ссылке:
+
+```
+https://raw.githubusercontent.com/ppovolotsky/FoundryVTT-Rogue-Trader-Unofficial/main/system.json
+```
+
+## Релизы и обновления
+
+Релизы собираются автоматически: пуш тега `vX.Y.Z` запускает GitHub Action, который проверяет, что версия в `system.json` совпадает с тегом, собирает `system.zip` и публикует релиз. Ссылки в манифесте постоянные, поэтому Foundry обновляет систему без переустановки:
+
+1. Установите систему один раз по манифест-ссылке выше.
+2. Когда выходит новая версия, на экране настройки Foundry (Setup → Game Systems) появится «Update Available» — нажмите кнопку обновления: Foundry сам скачает архив последнего релиза и применит его. Скачивать и переустанавливать систему вручную не нужно.
+
+Порядок выпуска новой версии: поднять `version` в `system.json` → закоммитить → создать тег `vX.Y.Z` на этом коммите → запушить `main` вместе с тегом. Релиз опубликуется сам.
 
 ## Использование
 
