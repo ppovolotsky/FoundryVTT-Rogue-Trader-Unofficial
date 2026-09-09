@@ -15,14 +15,6 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       contentClasses: ["rogue-trader", "sheet", "actor"]
     },
     position: { width: 780, height: "auto" },
-    tabs: [
-      {
-        group: "main",
-        navSelector: ".rt-sheet-tabs",
-        contentSelector: ".window-content",
-        initial: "skills"
-      }
-    ],
     form: {
       handler: RTCharacterSheet.#onFormSubmit,
       submitOnChange: true,
@@ -33,9 +25,13 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       adjustValue: RTCharacterSheet.#onAdjustValue,
       toggleFatigue: RTCharacterSheet.#onToggleFatigue,
       rollD5: RTCharacterSheet.#onRollD5,
-      openRollDialog: RTCharacterSheet.#onOpenRollDialog
+      openRollDialog: RTCharacterSheet.#onOpenRollDialog,
+      switchTab: RTCharacterSheet.#onSwitchTab
     }
   };
+
+  // Currently displayed tab; switched directly via DOM classes (see #onSwitchTab).
+  activeTab = "skills";
 
   static PARTS = {
     header: { template: "systems/rogue-trader/templates/actors/character-header.hbs" },
@@ -91,10 +87,22 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     });
   }
 
+  static #onSwitchTab(event, target) {
+    this.activeTab = target.dataset.tab;
+    const root = this.element;
+    root.querySelectorAll(".window-content .tab[data-group='main']").forEach((section) => {
+      section.classList.toggle("active", section.dataset.tab === this.activeTab);
+    });
+    root.querySelectorAll(".rt-tab-button").forEach((button) => {
+      button.classList.toggle("active", button.dataset.tab === this.activeTab);
+    });
+  }
+
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     context.actor = this.document;
     context.system = this.document.system;
+    context.activeTab = this.activeTab;
     context.characteristics = Object.entries(CHARACTERISTICS).map(([key, cfg]) => {
       const c = this.document.system.characteristics?.[key] ?? {};
       return {

@@ -1,9 +1,9 @@
-<nav class="rt-sheet-tabs tabs">
-  <a class="item" data-tab="skills" data-group="main">{{localize "RT.Tabs.Skills"}}</a>
-  <a class="item" data-tab="combat" data-group="main">{{localize "RT.Tabs.Combat"}}</a>
-  <a class="item" data-tab="psykana" data-group="main">{{localize "RT.Tabs.Psykana"}}</a>
-  <a class="item" data-tab="ship" data-group="main">{{localize "RT.Tabs.Ship"}}</a>
-  <a class="item" data-tab="journal" data-group="main">{{localize "RT.Tabs.Journal"}}</a>
-  <a class="item" data-tab="xp" data-group="main">{{localize "RT.Tabs.XP"}}</a>
-  <a class="item" data-tab="settings" data-group="main">{{localize "RT.Tabs.Settings"}}</a>
+<nav class="rt-sheet-tabs">
+  <button type="button" class="rt-tab-button {{#if (eq activeTab "skills")}}active{{/if}}" data-action="switchTab" data-tab="skills">{{localize "RT.Tabs.Skills"}}</button>
+  <button type="button" class="rt-tab-button {{#if (eq activeTab "combat")}}active{{/if}}" data-action="switchTab" data-tab="combat">{{localize "RT.Tabs.Combat"}}</button>
+  <button type="button" class="rt-tab-button {{#if (eq activeTab "psykana")}}active{{/if}}" data-action="switchTab" data-tab="psykana">{{localize "RT.Tabs.Psykana"}}</button>
+  <button type="button" class="rt-tab-button {{#if (eq activeTab "ship")}}active{{/if}}" data-action="switchTab" data-tab="ship">{{localize "RT.Tabs.Ship"}}</button>
+  <button type="button" class="rt-tab-button {{#if (eq activeTab "journal")}}active{{/if}}" data-action="switchTab" data-tab="journal">{{localize "RT.Tabs.Journal"}}</button>
+  <button type="button" class="rt-tab-button {{#if (eq activeTab "xp")}}active{{/if}}" data-action="switchTab" data-tab="xp">{{localize "RT.Tabs.XP"}}</button>
+  <button type="button" class="rt-tab-button {{#if (eq activeTab "settings")}}active{{/if}}" data-action="switchTab" data-tab="settings">{{localize "RT.Tabs.Settings"}}</button>
 </nav>

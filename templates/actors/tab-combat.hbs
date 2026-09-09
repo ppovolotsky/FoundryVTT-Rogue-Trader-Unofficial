@@ -1,4 +1,4 @@
-<section class="tab {{tabs.combat.cssClass}}" data-tab="combat" data-group="main">
+<section class="tab {{#if (eq activeTab "combat")}}active{{/if}}" data-tab="combat" data-group="main">
   <div class="rt-stat rt-stat--block">
     <label>{{localize "RT.Sheet.Wounds"}}</label>
     <div class="rt-stepper">

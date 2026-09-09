@@ -10,10 +10,20 @@
     </div>
   </div>
 
+  <div class="rt-header-characteristics">
+    {{#each characteristics as |c|}}
+    <button type="button" class="rt-char-chip" data-action="rollCharacteristic" data-key="{{c.key}}" title="{{c.label}}">
+      <span class="rt-char-chip__abbr">{{c.abbr}}</span>
+      <span class="rt-char-chip__total">{{c.total}}</span>
+      <span class="rt-char-chip__bonus">{{c.bonus}}</span>
+    </button>
+    {{/each}}
+  </div>
+
   <div class="rt-sheet-header__row">
     <div class="rt-stat">
       <label>{{localize "RT.Sheet.Fate"}}</label>
-      <i class="fa-solid fa-circle-question rt-tooltip-icon" data-tooltip="{{localize "RT.Tooltips.Fate"}}"></i>
+      <button type="button" class="rt-help-btn" data-tooltip="{{localize "RT.Tooltips.Fate"}}"><i class="fa-solid fa-circle-question"></i></button>
       <div class="rt-stepper">
         <input type="number" name="system.fate.value" value="{{system.fate.value}}" data-dtype="Number"/>
         <div class="rt-stepper__buttons">
@@ -31,7 +41,9 @@
     </div>
 
     <div class="rt-stat">
-      <label>{{localize "RT.Sheet.Fatigue"}}</label>
+      <button type="button" class="rt-fatigue-toggle {{#if system.fatigue.penalty}}active{{/if}}" data-action="toggleFatigue" data-tooltip="{{localize "RT.Tooltips.Fatigue"}}">
+        {{localize "RT.Sheet.Fatigue"}} <i class="fa-solid fa-circle-question"></i>
+      </button>
       <div class="rt-stepper">
         <input type="number" name="system.fatigue.value" value="{{system.fatigue.value}}" data-dtype="Number"/>
         <div class="rt-stepper__buttons">
@@ -41,9 +53,6 @@
       </div>
       <span class="rt-resource__sep">/</span>
       <input class="rt-stat__max rt-stat__max--derived" type="number" value="{{system.fatigue.limit}}" disabled title="{{localize "RT.Sheet.FatigueLimitHint"}}"/>
-      <button type="button" class="rt-fatigue-toggle {{#if system.fatigue.penalty}}active{{/if}}" data-action="toggleFatigue" data-tooltip="{{localize "RT.Tooltips.Fatigue"}}">
-        <i class="fa-solid fa-circle-question"></i>
-      </button>
     </div>
   </div>
 </div>

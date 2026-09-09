@@ -1,4 +1,4 @@
-<section class="tab {{tabs.settings.cssClass}}" data-tab="settings" data-group="main">
+<section class="tab {{#if (eq activeTab "settings")}}active{{/if}}" data-tab="settings" data-group="main">
   <div class="form-group">
     <label>{{localize "RT.Sheet.Edition"}}</label>
     <div class="form-fields">

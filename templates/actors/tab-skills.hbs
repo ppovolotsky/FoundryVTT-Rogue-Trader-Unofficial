@@ -1,4 +1,4 @@
-<section class="tab {{tabs.skills.cssClass}}" data-tab="skills" data-group="main">
+<section class="tab {{#if (eq activeTab "skills")}}active{{/if}}" data-tab="skills" data-group="main">
   <div class="rt-characteristics">
     {{#each characteristics as |c|}}
     <div class="rt-characteristic" title="{{c.label}}">
