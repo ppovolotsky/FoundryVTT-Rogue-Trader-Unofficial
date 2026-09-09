@@ -66,23 +66,21 @@ export async function rollTest({
 }
 
 /**
- * Диалог броска: цель, модификатор и переключение режима 1d100 / 2d10.
- * По умолчанию режим берётся из настроек системы.
+ * Диалог броска: цель и модификатор. Режим броска (1d100 / 2d10) берётся только
+ * из глобальной настройки системы; переопределить его можно лишь через API rollTest.
  */
 export async function showRollDialog({
   target = 0,
   modifier = 0,
-  mode = null,
   label = "",
   speaker = null
 } = {}) {
-  if (!mode) mode = game.settings.get(SYSTEM_ID, "defaultRollMode");
+  const mode = game.settings.get(SYSTEM_ID, "defaultRollMode");
 
   const content = await renderTemplate("systems/rogue-trader/templates/dialog/roll-dialog.hbs", {
     label,
     target: Number(target),
-    modifier: Number(modifier),
-    mode
+    modifier: Number(modifier)
   });
 
   return DialogV2.wait({
@@ -99,7 +97,7 @@ export async function showRollDialog({
           return rollTest({
             target: Number(data.target || 0),
             modifier: Number(data.modifier || 0),
-            mode: data.mode,
+            mode,
             label,
             speaker
           });

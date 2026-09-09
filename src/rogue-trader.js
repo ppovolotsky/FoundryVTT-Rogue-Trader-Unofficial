@@ -35,14 +35,6 @@ Hooks.once("init", () => {
     makeDefault: true,
     label: "RT.Sheets.Item"
   });
-
-  loadTemplates([
-    "systems/rogue-trader/templates/dialog/roll-dialog.hbs",
-    "systems/rogue-trader/templates/dice/roll-card.hbs",
-    "systems/rogue-trader/templates/actors/character-sheet.hbs",
-    "systems/rogue-trader/templates/actors/stub-sheet.hbs",
-    "systems/rogue-trader/templates/items/item-sheet.hbs"
-  ]);
 });
 
 Hooks.once("ready", () => {

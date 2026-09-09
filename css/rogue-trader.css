@@ -15,19 +15,21 @@
 
 .rogue-trader.sheet .rt-sheet-header {
   display: flex;
-  gap: 10px;
-  align-items: center;
+  flex-direction: column;
+  gap: 8px;
   margin-bottom: 10px;
 }
 
-.rogue-trader.sheet .rt-sheet-header__portrait {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border: 2px solid var(--rt-gold-dim);
-  border-radius: 3px;
-  flex: 0 0 auto;
-  cursor: pointer;
+.rogue-trader.sheet .rt-sheet-header__row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rogue-trader.sheet .rt-filepick {
+  flex: 1;
+  min-width: 0;
 }
 
 .rogue-trader.sheet .rt-sheet-header__main {
@@ -152,6 +154,16 @@
   margin-bottom: 4px;
 }
 
+.rogue-trader.sheet .rt-description {
+  width: 100%;
+  min-height: 90px;
+  background: var(--rt-panel);
+  border: 1px solid #55555f;
+  color: var(--rt-text);
+  border-radius: 3px;
+  padding: 4px 6px;
+}
+
 .rogue-trader.sheet .rt-stub-note {
   margin: 10px 0;
   padding: 8px 10px;
@@ -172,18 +184,6 @@
   font-weight: bold;
   color: var(--rt-gold);
   margin-bottom: 8px;
-}
-
-.rt-roll-dialog__modes {
-  display: flex;
-  gap: 14px;
-}
-
-.rt-roll-dialog__mode {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  cursor: pointer;
 }
 
 /* ---------- Чат-карточка броска ---------- */

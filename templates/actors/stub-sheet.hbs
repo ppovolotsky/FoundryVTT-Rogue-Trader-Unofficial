@@ -1,15 +1,13 @@
-<form class="{{cssClass}}" autocomplete="off">
-  <header class="rt-sheet-header">
-    <img class="rt-sheet-header__portrait" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
-    <input class="rt-sheet-header__name" name="name" type="text" value="{{actor.name}}" placeholder="{{localize "RT.Sheet.Name"}}"/>
-  </header>
+<header class="rt-sheet-header">
+  <input class="rt-sheet-header__name" name="name" type="text" value="{{actor.name}}" placeholder="{{localize "RT.Sheet.Name"}}"/>
+  <div class="rt-filepick">{{filePicker target="img" type="image"}}</div>
+</header>
 
-  <section class="rt-stub-note">
-    <p>{{localize "RT.Sheet.StubNote"}}</p>
-  </section>
+<section class="rt-stub-note">
+  <p>{{localize "RT.Sheet.StubNote"}}</p>
+</section>
 
-  <section class="rt-sheet-section">
-    <label class="rt-sheet-section__title">{{localize "RT.Sheet.Description"}}</label>
-    {{editor enrichedDescription target="system.description" button=true editable=editable}}
-  </section>
-</form>
+<section class="rt-sheet-section">
+  <label class="rt-sheet-section__title">{{localize "RT.Sheet.Description"}}</label>
+  <textarea class="rt-description" name="system.description" rows="8">{{system.description}}</textarea>
+</section>

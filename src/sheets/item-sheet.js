@@ -1,28 +1,47 @@
 import { ITEM_FIELDS, ITEM_TYPES } from "../config.js";
 
-export class RTItemSheet extends ItemSheet {
-  static get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: ["rogue-trader", "sheet", "item", "rt-item-sheet"],
-      template: "systems/rogue-trader/templates/items/item-sheet.hbs",
-      width: 520,
-      height: "auto"
-    });
+const { ApplicationV2, DocumentSheetMixin } = foundry.applications.api;
+
+export class RTItemSheet extends DocumentSheetMixin(ApplicationV2) {
+  static DEFAULT_OPTIONS = {
+    tag: "form",
+    classes: ["rogue-trader", "sheet", "item", "rt-item-sheet"],
+    window: {
+      title: "RT.Sheets.Item",
+      contentClasses: ["rogue-trader", "sheet", "item"]
+    },
+    position: { width: 520, height: "auto" },
+    form: {
+      handler: RTItemSheet.#onFormSubmit,
+      submitOnChange: true,
+      closeOnSubmit: false
+    }
+  };
+
+  static PARTS = {
+    main: { template: "systems/rogue-trader/templates/items/item-sheet.hbs" }
+  };
+
+  get title() {
+    return this.document.name || super.title;
   }
 
-  async getData(options) {
-    const context = await super.getData(options);
-    context.typeLabel = game.i18n.localize(ITEM_TYPES[this.item.type] ?? this.item.type);
+  static async #onFormSubmit(event, form, formData) {
+    await this.document.update(formData.object);
+  }
 
-    const fields = ITEM_FIELDS[this.item.type] ?? [];
-    context.fields = fields.map((field) => ({
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+    const item = this.document;
+    context.item = item;
+    context.system = item.system;
+    context.typeLabel = game.i18n.localize(ITEM_TYPES[item.type] ?? item.type);
+    context.fields = (ITEM_FIELDS[item.type] ?? []).map((field) => ({
       name: `system.${field.path}`,
       label: field.label,
       input: field.input,
-      value: foundry.utils.getProperty(this.item, `system.${field.path}`) ?? ""
+      value: foundry.utils.getProperty(item, `system.${field.path}`) ?? ""
     }));
-
-    context.enrichedDescription = await TextEditor.enrichHTML(this.item.system.description ?? "", { async: true });
     return context;
   }
 }
