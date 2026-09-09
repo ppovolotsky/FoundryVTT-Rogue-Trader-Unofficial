@@ -24,11 +24,11 @@
   "RT.Roll.Target": "Цель",
   "RT.Roll.Success": "Успех",
   "RT.Roll.Failure": "Провал",
+  "RT.Roll.DegreesOfSuccess": "Степеней успеха",
+  "RT.Roll.DegreesOfFailure": "Степеней провала",
 
   "RT.Settings.DefaultRollMode.Name": "Режим бросков по умолчанию",
   "RT.Settings.DefaultRollMode.Hint": "Как формируется стогранник: один бросок 1d100 или два d10 (десятки + единицы).",
-  "RT.Settings.DegreesOfSuccess.Name": "Степени успеха и провала (в разработке)",
-  "RT.Settings.DegreesOfSuccess.Hint": "Заготовка: подсчёт степеней успеха/провала по цифре десятков.",
   "RT.Settings.AutoSuccessFail.Name": "Автоуспех 01–05 и автопровал 96–00 (в разработке)",
   "RT.Settings.AutoSuccessFail.Hint": "Заготовка: автоматический успех на 01–05 и автоматический провал на 96–00.",
 

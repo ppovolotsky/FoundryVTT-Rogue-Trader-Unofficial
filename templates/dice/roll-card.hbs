@@ -25,5 +25,9 @@
     {{#if modifier}}<span class="rt-roll-card__modifier">({{#if (gt modifier 0)}}+{{/if}}{{modifier}})</span>{{/if}}
   </div>
 
+  <div class="rt-roll-card__degrees">
+    {{localize degreesKey}}: <strong>{{degrees}}</strong>
+  </div>
+
   <div class="rt-roll-card__result">{{#if success}}{{localize "RT.Roll.Success"}}{{else}}{{localize "RT.Roll.Failure"}}{{/if}}</div>
 </div>

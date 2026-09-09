@@ -24,11 +24,11 @@
   "RT.Roll.Target": "Target",
   "RT.Roll.Success": "Success",
   "RT.Roll.Failure": "Failure",
+  "RT.Roll.DegreesOfSuccess": "Degrees of Success",
+  "RT.Roll.DegreesOfFailure": "Degrees of Failure",
 
   "RT.Settings.DefaultRollMode.Name": "Default Roll Mode",
   "RT.Settings.DefaultRollMode.Hint": "How the d100 is rolled: a single 1d100 roll, or two d10 (tens + units).",
-  "RT.Settings.DegreesOfSuccess.Name": "Degrees of Success and Failure (in development)",
-  "RT.Settings.DegreesOfSuccess.Hint": "Placeholder: count degrees of success/failure based on the tens digit.",
   "RT.Settings.AutoSuccessFail.Name": "Auto-Success 01–05 and Auto-Failure 96–00 (in development)",
   "RT.Settings.AutoSuccessFail.Hint": "Placeholder: automatic success on 01–05 and automatic failure on 96–00.",
 

@@ -11,16 +11,7 @@ export function registerSettings() {
     choices: ROLL_MODES
   });
 
-  // Заготовки под будущую функциональность: сейчас ни на что не влияют.
-  game.settings.register(SYSTEM_ID, "degreesOfSuccess", {
-    name: "RT.Settings.DegreesOfSuccess.Name",
-    hint: "RT.Settings.DegreesOfSuccess.Hint",
-    scope: "world",
-    config: true,
-    type: Boolean,
-    default: false
-  });
-
+  // Заготовка под будущую функциональность: сейчас ни на что не влияет.
   game.settings.register(SYSTEM_ID, "autoSuccessFail", {
     name: "RT.Settings.AutoSuccessFail.Name",
     hint: "RT.Settings.AutoSuccessFail.Hint",

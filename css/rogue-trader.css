@@ -277,6 +277,13 @@
   margin-left: 4px;
 }
 
+.rt-roll-card__degrees {
+  text-align: center;
+  font-size: 0.85em;
+  color: #9a978f;
+  margin-top: 2px;
+}
+
 .rt-roll-card__result {
   text-align: center;
   font-weight: bold;

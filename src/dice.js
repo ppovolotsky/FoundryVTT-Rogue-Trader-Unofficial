@@ -57,6 +57,12 @@ export async function rollTest({
     success: value <= finalTarget
   };
 
+  // Степени успеха/провала (RT Core): каждая полная десятка разницы между
+  // модифицированной целью и броском равна одной степени.
+  const difference = test.success ? finalTarget - value : value - finalTarget;
+  test.degrees = Math.floor(difference / 10);
+  test.degreesKey = test.success ? "RT.Roll.DegreesOfSuccess" : "RT.Roll.DegreesOfFailure";
+
   if (createMessage) {
     const content = await renderTemplate("systems/rogue-trader/templates/dice/roll-card.hbs", test);
     await ChatMessage.create({
