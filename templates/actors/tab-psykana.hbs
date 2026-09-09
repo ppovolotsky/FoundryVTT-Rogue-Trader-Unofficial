@@ -1,4 +1,13 @@
 <section class="tab {{#if (eq activeTab "psykana")}}active{{/if}}" data-tab="psykana" data-group="main">
+  <div class="form-group">
+    <label>{{localize "RT.Tabs.Psykana"}}</label>
+    <div class="form-fields">
+      <button type="button" class="rt-button rt-psykana-toggle" data-action="togglePsyType">
+        {{#if (eq system.psykana.type "navigator")}}{{localize "RT.Psykana.Navigator"}}{{else}}{{localize "RT.Psykana.Psyker"}}{{/if}}
+      </button>
+    </div>
+  </div>
+
   <section class="rt-stub-note">
     <p>{{localize "RT.Sheet.StubNote"}}</p>
   </section>

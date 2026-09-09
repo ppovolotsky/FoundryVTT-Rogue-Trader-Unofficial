@@ -27,6 +27,14 @@
   "RT.Tabs.XP": "XP",
   "RT.Tabs.Settings": "Settings",
 
+  "RT.Tabs.XP.Characteristics": "Characteristics",
+  "RT.Tabs.XP.Skills": "Skills",
+  "RT.Tabs.XP.Talents": "Talents",
+  "RT.Tabs.XP.Progression": "Progression",
+
+  "RT.Psykana.Psyker": "Psyker",
+  "RT.Psykana.Navigator": "Navigator",
+
   "RT.Modes.OneD100": "1d100",
   "RT.Modes.TwoD10": "2d10",
 
@@ -75,6 +83,12 @@
   "RT.Sheet.XP.BaseValue": "Base Value",
   "RT.Sheet.XP.BaseBonus": "Bonus",
   "RT.Sheet.XP.BonusModifier": "Bonus Mod.",
+  "RT.Sheet.XP.BonusModifierHint": "Unnatural characteristic: bonus multiplier (1 = normal, 2 = x2, 3 = x3, ...)",
+  "RT.Sheet.XP.Reduction": "Reduction",
+  "RT.Sheet.XP.XP": "XP",
+  "RT.Sheet.XP.Total": "Total XP",
+  "RT.Sheet.XP.Spent": "Spent XP",
+  "RT.Sheet.XP.Free": "Free XP",
 
   "RT.Tooltips.Fate": "Spending Fate Points\nAs a Free Action or Reaction, a player may spend a Fate Point to gain one of the following effects:\nRe-roll one failed test once. The results of the re-roll are final.\nGain a +10 bonus to a test. This option must be chosen before the roll.\nAdd one Degree of Success to a test. This option may be chosen after the roll.\nCount an Initiative roll result as 10.\nInstantly remove 1d5 Damage (this does not affect Critical Damage).\nInstantly shake off being Stunned.\n\nFate Points are restored each session, at the GM's discretion.\n\nBurning Fate Points\nAn Explorer may reduce their Fate Points by 1 in order to survive something that would otherwise kill them, but only just barely.\nA Fate Point can be burnt even if it has already been spent during the session.",
   "RT.Tooltips.Fatigue": "Any level of fatigue imposes a -10 penalty on all tests.\nClick the button to apply the penalty — it will be reflected in the characteristic values.\nClick again to remove the penalty.\nThe fatigue limit equals the Toughness bonus.\nIf a character exceeds their fatigue threshold, they fall unconscious for 10 minutes minus their Toughness bonus.",

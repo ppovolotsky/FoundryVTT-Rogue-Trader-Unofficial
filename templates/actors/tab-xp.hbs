@@ -1,24 +1,70 @@
 <section class="tab {{#if (eq activeTab "xp")}}active{{/if}}" data-tab="xp" data-group="main">
-  <div class="rt-xp">
-    <div class="rt-xp__row rt-xp__row--header">
-      <label>{{localize "RT.Sheet.Name"}}</label>
-      <label>{{localize "RT.Sheet.XP.Advance"}}</label>
-      <label>{{localize "RT.Sheet.XP.BaseValue"}}</label>
-      <label>{{localize "RT.Sheet.XP.BaseBonus"}}</label>
-      <label>{{localize "RT.Sheet.XP.BonusModifier"}}</label>
+  <div class="rt-xp-totals">
+    <div class="rt-field">
+      <label>{{localize "RT.Sheet.XP.Total"}}</label>
+      <input type="number" name="system.xp.total" value="{{system.xp.total}}" data-dtype="Number"/>
     </div>
-    {{#each characteristics as |c|}}
-    <div class="rt-xp__row" title="{{c.label}}">
-      <label class="rt-xp__abbr">{{c.abbr}}</label>
-      <select name="system.characteristics.{{c.key}}.advance" data-dtype="Number">
-        {{#each c.advanceOptions as |option|}}
-        <option value="{{option.value}}" {{#if option.selected}}selected{{/if}}>+{{option.value}}</option>
-        {{/each}}
-      </select>
-      <input type="number" name="system.characteristics.{{c.key}}.value" value="{{c.value}}" data-dtype="Number"/>
-      <input type="text" disabled value="{{c.baseBonus}}"/>
-      <input type="number" name="system.characteristics.{{c.key}}.bonusMod" value="{{c.bonusMod}}" data-dtype="Number"/>
+    <div class="rt-field">
+      <label>{{localize "RT.Sheet.XP.Spent"}}</label>
+      <input type="number" value="{{system.xp.spent}}" disabled/>
     </div>
-    {{/each}}
+    <div class="rt-field">
+      <label>{{localize "RT.Sheet.XP.Free"}}</label>
+      <input type="number" value="{{system.xp.free}}" disabled/>
+    </div>
   </div>
+
+  <nav class="rt-sub-tabs">
+    <button type="button" class="rt-tab-button {{#if (eq activeXpTab "characteristics")}}active{{/if}}" data-action="switchTab" data-group="xp" data-tab="characteristics">{{localize "RT.Tabs.XP.Characteristics"}}</button>
+    <button type="button" class="rt-tab-button {{#if (eq activeXpTab "skills")}}active{{/if}}" data-action="switchTab" data-group="xp" data-tab="skills">{{localize "RT.Tabs.XP.Skills"}}</button>
+    <button type="button" class="rt-tab-button {{#if (eq activeXpTab "talents")}}active{{/if}}" data-action="switchTab" data-group="xp" data-tab="talents">{{localize "RT.Tabs.XP.Talents"}}</button>
+    <button type="button" class="rt-tab-button {{#if (eq activeXpTab "progression")}}active{{/if}}" data-action="switchTab" data-group="xp" data-tab="progression">{{localize "RT.Tabs.XP.Progression"}}</button>
+  </nav>
+
+  <section class="tab {{#if (eq activeXpTab "characteristics")}}active{{/if}}" data-tab="characteristics" data-group="xp">
+    <div class="rt-xp">
+      <div class="rt-xp__row rt-xp__row--header">
+        <label></label>
+        <label>{{localize "RT.Sheet.XP.Advance"}}</label>
+        <label>{{localize "RT.Sheet.XP.BaseValue"}}</label>
+        <label>{{localize "RT.Sheet.XP.BaseBonus"}}</label>
+        <label>{{localize "RT.Sheet.XP.BonusModifier"}}</label>
+        <label>{{localize "RT.Sheet.XP.Reduction"}}</label>
+        <label>{{localize "RT.Sheet.XP.XP"}}</label>
+      </div>
+      {{#each characteristics as |c|}}
+      <div class="rt-xp__row" title="{{c.label}}">
+        <label class="rt-xp__abbr">{{c.abbr}}</label>
+        <select name="system.characteristics.{{c.key}}.advance" data-dtype="Number">
+          {{#each c.advanceOptions as |option|}}
+          <option value="{{option.value}}" {{#if option.selected}}selected{{/if}}>+{{option.value}}</option>
+          {{/each}}
+        </select>
+        <input type="number" name="system.characteristics.{{c.key}}.value" value="{{c.value}}" data-dtype="Number"/>
+        <input type="text" disabled value="{{c.baseBonus}}"/>
+        <input type="number" name="system.characteristics.{{c.key}}.bonusMod" value="{{c.bonusMod}}" data-dtype="Number" title="{{localize "RT.Sheet.XP.BonusModifierHint"}}"/>
+        <input type="number" name="system.characteristics.{{c.key}}.reduction" value="{{c.reduction}}" data-dtype="Number"/>
+        <input type="number" name="system.characteristics.{{c.key}}.xp" value="{{c.xp}}" data-dtype="Number"/>
+      </div>
+      {{/each}}
+    </div>
+  </section>
+
+  <section class="tab {{#if (eq activeXpTab "skills")}}active{{/if}}" data-tab="skills" data-group="xp">
+    <section class="rt-stub-note">
+      <p>{{localize "RT.Sheet.StubNote"}}</p>
+    </section>
+  </section>
+
+  <section class="tab {{#if (eq activeXpTab "talents")}}active{{/if}}" data-tab="talents" data-group="xp">
+    <section class="rt-stub-note">
+      <p>{{localize "RT.Sheet.StubNote"}}</p>
+    </section>
+  </section>
+
+  <section class="tab {{#if (eq activeXpTab "progression")}}active{{/if}}" data-tab="progression" data-group="xp">
+    <section class="rt-stub-note">
+      <p>{{localize "RT.Sheet.StubNote"}}</p>
+    </section>
+  </section>
 </section>

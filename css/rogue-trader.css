@@ -1,16 +1,6 @@
 /* Rogue Trader (Unofficial) - basic system styles.
-   Colors follow the active Foundry theme (light/dark) via core CSS variables. */
-
-:root {
-  --rt-accent: var(--color-text-emphasis, #c9a227);
-  --rt-panel: var(--color-bg-secondary, #26262c);
-  --rt-field-bg: var(--color-bg-option, #33333b);
-  --rt-text: var(--color-text-primary, #d8d5cc);
-  --rt-muted: var(--color-text-secondary, #9a978f);
-  --rt-border: var(--color-border-secondary, #55555f);
-  --rt-success: var(--color-success, #3f8f4f);
-  --rt-failure: var(--color-failure, #a13333);
-}
+   Colors reference core Foundry theme variables directly so the sheet
+   follows the active Light/Dark theme. */
 
 /* ---------- Sheet header ---------- */
 
@@ -40,25 +30,25 @@
 
 .rogue-trader.sheet .rt-field label {
   font-size: 0.8em;
-  color: var(--rt-text);
+  color: var(--color-text-primary);
 }
 
 .rogue-trader.sheet .rt-sheet-header__name {
   width: 100%;
   font-size: 1.2em;
   font-weight: bold;
-  color: var(--rt-text);
-  background: var(--rt-field-bg);
-  border: 1px solid var(--rt-border);
+  color: var(--color-text-primary);
+  background: var(--color-bg-option);
+  border: 1px solid var(--color-border-secondary);
   border-radius: 3px;
   padding: 3px 8px;
 }
 
 .rogue-trader.sheet .rt-field input[type="text"] {
   width: 100%;
-  background: var(--rt-field-bg);
-  border: 1px solid var(--rt-border);
-  color: var(--rt-text);
+  background: var(--color-bg-option);
+  border: 1px solid var(--color-border-secondary);
+  color: var(--color-text-primary);
   border-radius: 3px;
   padding: 2px 6px;
 }
@@ -67,7 +57,7 @@
   font-size: 0.85em;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--rt-muted);
+  color: var(--color-text-secondary);
 }
 
 /* ---------- Compact characteristics strip (header) ---------- */
@@ -84,34 +74,34 @@
   flex-direction: column;
   align-items: center;
   gap: 1px;
-  background: var(--rt-panel);
-  border: 1px solid var(--rt-border);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-secondary);
   border-radius: 4px;
   padding: 3px 2px;
   cursor: pointer;
 }
 
 .rogue-trader.sheet .rt-char-chip:hover {
-  border-color: var(--rt-accent);
+  border-color: var(--color-text-emphasis);
 }
 
 .rogue-trader.sheet .rt-char-chip__abbr {
   font-size: 0.72em;
   font-weight: bold;
-  color: var(--rt-muted);
+  color: var(--color-text-secondary);
   white-space: nowrap;
 }
 
 .rogue-trader.sheet .rt-char-chip__total {
   font-size: 1.05em;
   font-weight: bold;
-  color: var(--rt-text);
+  color: var(--color-text-primary);
   line-height: 1.15;
 }
 
 .rogue-trader.sheet .rt-char-chip__bonus {
   font-size: 0.7em;
-  color: var(--rt-accent);
+  color: var(--color-text-emphasis);
 }
 
 /* ---------- Stat blocks (fate, fatigue, wounds) ---------- */
@@ -128,26 +118,26 @@
 
 .rogue-trader.sheet .rt-stat label {
   font-weight: bold;
-  color: var(--rt-text);
+  color: var(--color-text-primary);
   white-space: nowrap;
 }
 
 .rogue-trader.sheet .rt-stat input[type="number"] {
   width: 48px;
   text-align: center;
-  background: var(--rt-field-bg);
-  border: 1px solid var(--rt-border);
-  color: var(--rt-text);
+  background: var(--color-bg-option);
+  border: 1px solid var(--color-border-secondary);
+  color: var(--color-text-primary);
   border-radius: 3px;
   padding: 2px 3px;
 }
 
 .rogue-trader.sheet .rt-stat__max--derived {
-  color: var(--rt-muted);
+  color: var(--color-text-secondary);
 }
 
 .rogue-trader.sheet .rt-resource__sep {
-  color: var(--rt-muted);
+  color: var(--color-text-secondary);
 }
 
 /* ---------- Help and fatigue toggle buttons ---------- */
@@ -160,16 +150,16 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--rt-panel);
-  border: 1px solid var(--rt-border);
-  color: var(--rt-muted);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-secondary);
+  color: var(--color-text-secondary);
   border-radius: 4px;
   cursor: help;
 }
 
 .rogue-trader.sheet .rt-help-btn:hover {
-  border-color: var(--rt-accent);
-  color: var(--rt-accent);
+  border-color: var(--color-text-emphasis);
+  color: var(--color-text-emphasis);
 }
 
 .rogue-trader.sheet .rt-fatigue-toggle {
@@ -180,21 +170,21 @@
   font-weight: bold;
   display: inline-flex;
   align-items: center;
-  background: var(--rt-panel);
-  border: 1px solid var(--rt-border);
-  color: var(--rt-text);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-secondary);
+  color: var(--color-text-primary);
   border-radius: 4px;
   cursor: pointer;
   white-space: nowrap;
 }
 
 .rogue-trader.sheet .rt-fatigue-toggle:hover {
-  border-color: var(--rt-accent);
+  border-color: var(--color-text-emphasis);
 }
 
 .rogue-trader.sheet .rt-fatigue-toggle.active {
-  background: var(--rt-failure);
-  border-color: var(--rt-failure);
+  background: var(--color-failure, #a13333);
+  border-color: var(--color-failure, #a13333);
   color: #ffffff;
 }
 
@@ -228,15 +218,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--rt-field-bg);
-  border: 1px solid var(--rt-border);
-  color: var(--rt-accent);
+  background: var(--color-bg-option);
+  border: 1px solid var(--color-border-secondary);
+  color: var(--color-text-emphasis);
   border-radius: 3px;
   cursor: pointer;
 }
 
 .rogue-trader.sheet .rt-stepper__btn:hover {
-  background: var(--rt-accent);
+  background: var(--color-text-emphasis);
   color: var(--color-bg-base, #1b1b1f);
 }
 
@@ -249,22 +239,23 @@
 
 .rogue-trader.sheet .rt-button {
   padding: 3px 10px;
-  background: var(--rt-panel);
-  border: 1px solid var(--rt-border);
-  color: var(--rt-text);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-secondary);
+  color: var(--color-text-primary);
   border-radius: 3px;
   cursor: pointer;
   font-weight: bold;
 }
 
 .rogue-trader.sheet .rt-button:hover {
-  border-color: var(--rt-accent);
-  color: var(--rt-accent);
+  border-color: var(--color-text-emphasis);
+  color: var(--color-text-emphasis);
 }
 
 /* ---------- Tabs (buttons) ---------- */
 
-.rogue-trader.sheet .rt-sheet-tabs {
+.rogue-trader.sheet .rt-sheet-tabs,
+.rogue-trader.sheet .rt-sub-tabs {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
@@ -274,21 +265,26 @@
 .rogue-trader.sheet .rt-tab-button {
   padding: 4px 12px;
   font-size: 0.9em;
-  background: var(--rt-panel);
-  border: 1px solid var(--rt-border);
-  color: var(--rt-text);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-secondary);
+  color: var(--color-text-primary);
   border-radius: 4px;
   cursor: pointer;
 }
 
+.rogue-trader.sheet .rt-sub-tabs .rt-tab-button {
+  font-size: 0.82em;
+  padding: 3px 9px;
+}
+
 .rogue-trader.sheet .rt-tab-button:hover {
-  border-color: var(--rt-accent);
-  color: var(--rt-accent);
+  border-color: var(--color-text-emphasis);
+  color: var(--color-text-emphasis);
 }
 
 .rogue-trader.sheet .rt-tab-button.active {
-  background: var(--rt-accent);
-  border-color: var(--rt-accent);
+  background: var(--color-text-emphasis);
+  border-color: var(--color-text-emphasis);
   color: var(--color-bg-base, #1b1b1f);
   font-weight: bold;
 }
@@ -314,8 +310,8 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  background: var(--rt-panel);
-  border: 1px solid var(--rt-border);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-secondary);
   border-radius: 4px;
   padding: 4px 5px;
 }
@@ -324,7 +320,7 @@
   text-align: center;
   font-weight: bold;
   font-size: 0.85em;
-  color: var(--rt-accent);
+  color: var(--color-text-emphasis);
   margin-bottom: 3px;
   white-space: nowrap;
   overflow: hidden;
@@ -340,9 +336,9 @@
   min-width: 0;
   text-align: center;
   font-size: 0.85em;
-  background: var(--rt-field-bg);
-  border: 1px solid var(--rt-border);
-  color: var(--rt-muted);
+  background: var(--color-bg-option);
+  border: 1px solid var(--color-border-secondary);
+  color: var(--color-text-secondary);
   border-radius: 3px;
   padding: 2px 1px;
 }
@@ -352,20 +348,39 @@
   min-width: 0;
   text-align: center;
   font-weight: bold;
-  background: var(--rt-field-bg);
-  border: 1px solid var(--rt-border);
-  color: var(--rt-text);
+  background: var(--color-bg-option);
+  border: 1px solid var(--color-border-secondary);
+  color: var(--color-text-primary);
   border-radius: 3px;
   padding: 2px 1px;
   cursor: pointer;
 }
 
 .rogue-trader.sheet .rt-characteristic:hover .rt-characteristic__total {
-  border-color: var(--rt-accent);
-  color: var(--rt-accent);
+  border-color: var(--color-text-emphasis);
+  color: var(--color-text-emphasis);
 }
 
 /* ---------- XP tab ---------- */
+
+.rogue-trader.sheet .rt-xp-totals {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.rogue-trader.sheet .rt-xp-totals .rt-field input {
+  width: 90px;
+  background: var(--color-bg-option);
+  border: 1px solid var(--color-border-secondary);
+  color: var(--color-text-primary);
+  border-radius: 3px;
+  padding: 2px 5px;
+}
+
+.rogue-trader.sheet .rt-xp-totals .rt-field input:disabled {
+  color: var(--color-text-secondary);
+}
 
 .rogue-trader.sheet .rt-xp {
   display: flex;
@@ -375,35 +390,41 @@
 
 .rogue-trader.sheet .rt-xp__row {
   display: grid;
-  grid-template-columns: 50px 1.1fr 1fr 0.7fr 1.1fr;
-  gap: 6px;
+  grid-template-columns: 44px 0.9fr 1fr 0.6fr 0.9fr 0.9fr 0.7fr;
+  gap: 5px;
   align-items: center;
 }
 
 .rogue-trader.sheet .rt-xp__row--header label {
   font-weight: bold;
-  font-size: 0.82em;
-  color: var(--rt-text);
+  font-size: 0.78em;
+  color: var(--color-text-primary);
 }
 
 .rogue-trader.sheet .rt-xp__abbr {
   font-weight: bold;
-  color: var(--rt-accent);
+  color: var(--color-text-emphasis);
   text-align: center;
 }
 
 .rogue-trader.sheet .rt-xp__row input,
 .rogue-trader.sheet .rt-xp__row select {
   width: 100%;
-  background: var(--rt-field-bg);
-  border: 1px solid var(--rt-border);
-  color: var(--rt-text);
+  background: var(--color-bg-option);
+  border: 1px solid var(--color-border-secondary);
+  color: var(--color-text-primary);
   border-radius: 3px;
   padding: 2px 4px;
 }
 
 .rogue-trader.sheet .rt-xp__row input:disabled {
-  color: var(--rt-muted);
+  color: var(--color-text-secondary);
+}
+
+/* ---------- Psykana ---------- */
+
+.rogue-trader.sheet .rt-psykana-toggle {
+  font-weight: bold;
 }
 
 /* ---------- Misc sheet styles ---------- */
@@ -413,10 +434,10 @@
   justify-content: space-between;
   padding: 4px 8px;
   margin: 6px 0;
-  background: var(--rt-panel);
-  border: 1px solid var(--rt-border);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-secondary);
   border-radius: 4px;
-  color: var(--rt-text);
+  color: var(--color-text-primary);
 }
 
 .rogue-trader.sheet .rt-sheet-section {
@@ -426,16 +447,16 @@
 .rogue-trader.sheet .rt-sheet-section__title {
   display: block;
   font-weight: bold;
-  color: var(--rt-text);
+  color: var(--color-text-primary);
   margin-bottom: 4px;
 }
 
 .rogue-trader.sheet .rt-description {
   width: 100%;
   min-height: 90px;
-  background: var(--rt-field-bg);
-  border: 1px solid var(--rt-border);
-  color: var(--rt-text);
+  background: var(--color-bg-option);
+  border: 1px solid var(--color-border-secondary);
+  color: var(--color-text-primary);
   border-radius: 3px;
   padding: 4px 6px;
 }
@@ -443,9 +464,9 @@
 .rogue-trader.sheet .rt-stub-note {
   margin: 10px 0;
   padding: 8px 10px;
-  border: 1px dashed var(--rt-accent);
+  border: 1px dashed var(--color-text-emphasis);
   border-radius: 4px;
-  color: var(--rt-muted);
+  color: var(--color-text-secondary);
   font-style: italic;
   font-size: 0.9em;
 }
@@ -454,22 +475,29 @@
   margin: 0;
 }
 
+/* ---------- Core tooltip tweaks (line breaks + smaller font) ---------- */
+
+#tooltip {
+  white-space: pre-line;
+  font-size: 0.85rem;
+}
+
 /* ---------- Roll dialog ---------- */
 
 .rt-roll-dialog__label {
   font-weight: bold;
-  color: var(--rt-accent);
+  color: var(--color-text-emphasis);
   margin-bottom: 8px;
 }
 
 /* ---------- Roll chat card ---------- */
 
 .rt-roll-card {
-  background: var(--rt-panel);
-  border: 1px solid var(--rt-accent);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-text-emphasis);
   border-radius: 5px;
   padding: 8px 10px;
-  color: var(--rt-text);
+  color: var(--color-text-primary);
 }
 
 .rt-roll-card__header {
@@ -477,21 +505,21 @@
   justify-content: space-between;
   align-items: baseline;
   gap: 8px;
-  border-bottom: 1px solid var(--rt-border);
+  border-bottom: 1px solid var(--color-border-secondary);
   padding-bottom: 4px;
   margin-bottom: 6px;
 }
 
 .rt-roll-card__label {
   font-weight: bold;
-  color: var(--rt-accent);
+  color: var(--color-text-emphasis);
 }
 
 .rt-roll-card__mode {
   font-size: 0.8em;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--rt-muted);
+  color: var(--color-text-secondary);
 }
 
 .rt-roll-card__dice {
@@ -506,8 +534,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: var(--rt-field-bg);
-  border: 1px solid var(--rt-border);
+  background: var(--color-bg-option);
+  border: 1px solid var(--color-border-secondary);
   border-radius: 5px;
   padding: 4px 10px;
   min-width: 48px;
@@ -516,7 +544,7 @@
 .rt-roll-card__die-caption {
   font-size: 0.7em;
   text-transform: uppercase;
-  color: var(--rt-muted);
+  color: var(--color-text-secondary);
 }
 
 .rt-roll-card__die-value {
@@ -526,7 +554,7 @@
 
 .rt-roll-card__operator {
   font-size: 1.1em;
-  color: var(--rt-muted);
+  color: var(--color-text-secondary);
 }
 
 .rt-roll-card__value {
@@ -537,7 +565,7 @@
 .rt-roll-card__target {
   text-align: center;
   font-size: 0.9em;
-  color: var(--rt-muted);
+  color: var(--color-text-secondary);
 }
 
 .rt-roll-card__modifier {
@@ -547,7 +575,7 @@
 .rt-roll-card__degrees {
   text-align: center;
   font-size: 0.85em;
-  color: var(--rt-muted);
+  color: var(--color-text-secondary);
   margin-top: 2px;
 }
 
@@ -563,18 +591,18 @@
 }
 
 .rt-roll-card--success .rt-roll-card__result {
-  background: var(--rt-success);
+  background: var(--color-success, #3f8f4f);
 }
 
 .rt-roll-card--failure .rt-roll-card__result {
-  background: var(--rt-failure);
+  background: var(--color-failure, #a13333);
 }
 
 .rt-roll-card--critical.rt-roll-card--success .rt-roll-card__result {
-  box-shadow: inset 0 0 0 2px var(--rt-accent);
+  box-shadow: inset 0 0 0 2px var(--color-text-emphasis);
 }
 
 .rt-roll-card--critical.rt-roll-card--failure .rt-roll-card__result {
-  box-shadow: inset 0 0 0 2px var(--rt-accent);
+  box-shadow: inset 0 0 0 2px var(--color-text-emphasis);
   filter: brightness(0.75);
 }

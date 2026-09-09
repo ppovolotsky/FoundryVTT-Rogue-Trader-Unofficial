@@ -22,46 +22,64 @@
           "bs": {
             "value": 0,
             "advance": 0,
+            "reduction": 0,
+            "xp": 0,
             "bonusMod": 0
           },
           "ws": {
             "value": 0,
             "advance": 0,
+            "reduction": 0,
+            "xp": 0,
             "bonusMod": 0
           },
           "s": {
             "value": 0,
             "advance": 0,
+            "reduction": 0,
+            "xp": 0,
             "bonusMod": 0
           },
           "t": {
             "value": 0,
             "advance": 0,
+            "reduction": 0,
+            "xp": 0,
             "bonusMod": 0
           },
           "ag": {
             "value": 0,
             "advance": 0,
+            "reduction": 0,
+            "xp": 0,
             "bonusMod": 0
           },
           "int": {
             "value": 0,
             "advance": 0,
+            "reduction": 0,
+            "xp": 0,
             "bonusMod": 0
           },
           "per": {
             "value": 0,
             "advance": 0,
+            "reduction": 0,
+            "xp": 0,
             "bonusMod": 0
           },
           "wp": {
             "value": 0,
             "advance": 0,
+            "reduction": 0,
+            "xp": 0,
             "bonusMod": 0
           },
           "fel": {
             "value": 0,
             "advance": 0,
+            "reduction": 0,
+            "xp": 0,
             "bonusMod": 0
           }
         },
@@ -69,6 +87,12 @@
         "fatigue": {
           "value": 0,
           "penalty": false
+        },
+        "xp": {
+          "total": 0
+        },
+        "psykana": {
+          "type": "psyker"
         },
         "bio": ""
       }

@@ -92,14 +92,16 @@ export async function showRollDialog({
   target = 0,
   modifier = 0,
   label = "",
-  speaker = null
+  speaker = null,
+  showTarget = true
 } = {}) {
   const mode = game.settings.get(SYSTEM_ID, "defaultRollMode");
 
   const content = await renderTemplate("systems/rogue-trader/templates/dialog/roll-dialog.hbs", {
     label,
     target: Number(target),
-    modifier: Number(modifier)
+    modifier: Number(modifier),
+    showTarget
   });
 
   return DialogV2.wait({

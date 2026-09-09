@@ -26,12 +26,13 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       toggleFatigue: RTCharacterSheet.#onToggleFatigue,
       rollD5: RTCharacterSheet.#onRollD5,
       openRollDialog: RTCharacterSheet.#onOpenRollDialog,
-      switchTab: RTCharacterSheet.#onSwitchTab
+      switchTab: RTCharacterSheet.#onSwitchTab,
+      togglePsyType: RTCharacterSheet.#onTogglePsyType
     }
   };
 
-  // Currently displayed tab; switched directly via DOM classes (see #onSwitchTab).
-  activeTab = "skills";
+  // Currently displayed tabs per group; switched directly via DOM classes (see #onSwitchTab).
+  activeTabs = { main: "skills", xp: "characteristics" };
 
   static PARTS = {
     header: { template: "systems/rogue-trader/templates/actors/character-header.hbs" },
@@ -56,7 +57,9 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     await showRollDialog({
       target: this.document.system.characteristics?.[key]?.total ?? 0,
       label: game.i18n.localize(cfg.label),
-      speaker: ChatMessage.getSpeaker({ actor: this.document })
+      speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      // The target is known, so the dialog only asks for the modifier.
+      showTarget: false
     });
   }
 
@@ -88,21 +91,29 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
 
   static #onSwitchTab(event, target) {
-    this.activeTab = target.dataset.tab;
+    const group = target.dataset.group || "main";
+    const tab = target.dataset.tab;
+    this.activeTabs[group] = tab;
     const root = this.element;
-    root.querySelectorAll(".window-content .tab[data-group='main']").forEach((section) => {
-      section.classList.toggle("active", section.dataset.tab === this.activeTab);
+    root.querySelectorAll(`.tab[data-group='${group}']`).forEach((section) => {
+      section.classList.toggle("active", section.dataset.tab === tab);
     });
-    root.querySelectorAll(".rt-tab-button").forEach((button) => {
-      button.classList.toggle("active", button.dataset.tab === this.activeTab);
+    root.querySelectorAll(`.rt-tab-button[data-group='${group}']`).forEach((button) => {
+      button.classList.toggle("active", button.dataset.tab === tab);
     });
+  }
+
+  static async #onTogglePsyType(event) {
+    const current = this.document.system.psykana?.type ?? "psyker";
+    await this.document.update({ "system.psykana.type": current === "psyker" ? "navigator" : "psyker" });
   }
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     context.actor = this.document;
     context.system = this.document.system;
-    context.activeTab = this.activeTab;
+    context.activeTab = this.activeTabs.main;
+    context.activeXpTab = this.activeTabs.xp;
     context.characteristics = Object.entries(CHARACTERISTICS).map(([key, cfg]) => {
       const c = this.document.system.characteristics?.[key] ?? {};
       return {
@@ -111,9 +122,12 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         abbr: game.i18n.localize(cfg.abbrKey),
         value: c.value ?? 0,
         advance: c.advance ?? 0,
+        reduction: c.reduction ?? 0,
+        xp: c.xp ?? 0,
         bonusMod: c.bonusMod ?? 0,
         baseBonus: c.baseBonus ?? 0,
         total: c.total ?? 0,
+        bonus: c.bonus ?? 0,
         advanceOptions: ADVANCE_STEPS.map((step) => ({
           value: step,
           selected: (c.advance ?? 0) === step

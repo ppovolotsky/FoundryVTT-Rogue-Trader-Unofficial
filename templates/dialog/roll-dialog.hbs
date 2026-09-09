@@ -3,12 +3,14 @@
   <div class="rt-roll-dialog__label">{{label}}</div>
   {{/if}}
 
+  {{#if showTarget}}
   <div class="form-group">
     <label>{{localize "RT.Dialog.Target"}}</label>
     <div class="form-fields">
       <input type="number" name="target" value="{{target}}" step="1"/>
     </div>
   </div>
+  {{/if}}
 
   <div class="form-group">
     <label>{{localize "RT.Dialog.Modifier"}}</label>

@@ -1,16 +1,4 @@
 <section class="tab {{#if (eq activeTab "skills")}}active{{/if}}" data-tab="skills" data-group="main">
-  <div class="rt-characteristics">
-    {{#each characteristics as |c|}}
-    <div class="rt-characteristic" title="{{c.label}}">
-      <div class="rt-characteristic__abbr">{{c.abbr}}</div>
-      <div class="rt-characteristic__values">
-        <input class="rt-characteristic__base" type="text" disabled value="{{c.value}}"/>
-        <button type="button" class="rt-characteristic__total" data-action="rollCharacteristic" data-key="{{c.key}}">{{c.total}}</button>
-      </div>
-    </div>
-    {{/each}}
-  </div>
-
   <section class="rt-stub-note">
     <p>{{localize "RT.Sheet.StubNote"}}</p>
   </section>
