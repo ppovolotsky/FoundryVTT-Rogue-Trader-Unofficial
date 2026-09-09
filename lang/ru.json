@@ -83,7 +83,7 @@
   "RT.Sheet.XP.BaseValue": "Базовое значение",
   "RT.Sheet.XP.BaseBonus": "Бонус",
   "RT.Sheet.XP.BonusModifier": "Мод. бонуса",
-  "RT.Sheet.XP.BonusModifierHint": "Неестественная характеристика: множитель бонуса (1 — обычная, 2 — x2, 3 — x3, ...)",
+  "RT.Sheet.XP.BonusModifierHint": "Неестественная характеристика: прибавляется к бонусу характеристики (плоский учёт)",
   "RT.Sheet.XP.Reduction": "Снижение",
   "RT.Sheet.XP.XP": "Опыт",
   "RT.Sheet.XP.Total": "Всего опыта",

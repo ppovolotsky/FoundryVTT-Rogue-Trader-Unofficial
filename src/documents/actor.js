@@ -20,9 +20,9 @@ export class RTActor extends Actor {
       characteristic.total = Math.max(0, characteristic.unpenalized - penalty);
       characteristic.baseBonus = Math.floor(base / 10);
 
-      // Bonus modifier acts as the unnatural multiplier (1 = normal, 2 = x2, ...).
-      const multiplier = Math.max(1, characteristic.bonusMod ?? 1);
-      characteristic.bonus = Math.max(0, Math.floor(characteristic.total / 10)) * multiplier;
+      // The bonus modifier is flat (added to the bonus): sources of unnatural
+      // characteristics and homebrew grant fixed bonuses rather than multipliers.
+      characteristic.bonus = Math.max(0, Math.floor(characteristic.total / 10)) + (characteristic.bonusMod ?? 0);
 
       xpSpent += characteristic.xp ?? 0;
     }

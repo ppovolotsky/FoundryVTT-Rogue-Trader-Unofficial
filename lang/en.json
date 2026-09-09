@@ -83,7 +83,7 @@
   "RT.Sheet.XP.BaseValue": "Base Value",
   "RT.Sheet.XP.BaseBonus": "Bonus",
   "RT.Sheet.XP.BonusModifier": "Bonus Mod.",
-  "RT.Sheet.XP.BonusModifierHint": "Unnatural characteristic: bonus multiplier (1 = normal, 2 = x2, 3 = x3, ...)",
+  "RT.Sheet.XP.BonusModifierHint": "Unnatural characteristic: added flat to the characteristic bonus",
   "RT.Sheet.XP.Reduction": "Reduction",
   "RT.Sheet.XP.XP": "XP",
   "RT.Sheet.XP.Total": "Total XP",
