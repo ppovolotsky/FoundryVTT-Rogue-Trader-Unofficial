@@ -1,5 +1,10 @@
 import { SYSTEM_ID, ROLL_MODES } from "./config.js";
 
+const { DialogV2 } = foundry.applications.api;
+const { renderTemplate } = foundry.applications.handlebars;
+const { Roll } = foundry.dice;
+const { ChatMessage } = foundry.documents;
+
 // Формирование значения стогранника из двух d10: первый куб — десятки, второй — единицы.
 // Выпавшая «10» на d10 читается как 0; комбинация 0+0 — это 100.
 function rollTensAndUnits(rawTens, rawUnits) {

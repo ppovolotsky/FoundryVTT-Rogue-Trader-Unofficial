@@ -2,7 +2,7 @@
   "id": "rogue-trader",
   "title": "Rogue Trader",
   "description": "Неофициальная фанатская адаптация системы правил Rogue Trader от Fantasy Flight Games для Foundry Virtual Tabletop. Unofficial fan adaptation of the FFG Rogue Trader ruleset for Foundry VTT.",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "compatibility": {
     "minimum": "14",
     "verified": "14.367",

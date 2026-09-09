@@ -3,6 +3,7 @@ import { CHARACTERISTICS } from "../config.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
+const { ChatMessage } = foundry.documents;
 
 export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static DEFAULT_OPTIONS = {
