@@ -1,13 +1,15 @@
-<header class="rt-sheet-header">
-  <input class="rt-sheet-header__name" name="name" type="text" value="{{actor.name}}" placeholder="{{localize "RT.Sheet.Name"}}"/>
-  <div class="rt-filepick"><input type="text" name="img" value="{{actor.img}}"/></div>
-</header>
+<div class="rt-sheet-body">
+  <header class="rt-sheet-header">
+    <input class="rt-sheet-header__name" name="name" type="text" value="{{actor.name}}" placeholder="{{localize "RT.Sheet.Name"}}"/>
+    <div class="rt-filepick"><input type="text" name="img" value="{{actor.img}}"/></div>
+  </header>
 
-<section class="rt-stub-note">
-  <p>{{localize "RT.Sheet.StubNote"}}</p>
-</section>
+  <section class="rt-stub-note">
+    <p>{{localize "RT.Sheet.StubNote"}}</p>
+  </section>
 
-<section class="rt-sheet-section">
-  <label class="rt-sheet-section__title">{{localize "RT.Sheet.Description"}}</label>
-  <textarea class="rt-description" name="system.description" rows="8">{{system.description}}</textarea>
-</section>
+  <section class="rt-sheet-section">
+    <label class="rt-sheet-section__title">{{localize "RT.Sheet.Description"}}</label>
+    <textarea class="rt-description" name="system.description" rows="8">{{system.description}}</textarea>
+  </section>
+</div>

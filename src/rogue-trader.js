@@ -6,6 +6,8 @@ import { RTCharacterSheet, RTShipSheet, RTColonySheet } from "./sheets/actor-she
 import { RTItemSheet } from "./sheets/item-sheet.js";
 import { rollTest, showRollDialog } from "./dice.js";
 
+const { Actors, Items } = foundry.documents.collections;
+
 Hooks.once("init", () => {
   console.log("Rogue Trader (Unofficial) | Initializing system");
 

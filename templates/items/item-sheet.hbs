@@ -1,21 +1,23 @@
-<header class="rt-sheet-header">
-  <div class="rt-item-sheet__type">{{typeLabel}}</div>
-  <input class="rt-sheet-header__name" name="name" type="text" value="{{item.name}}" placeholder="{{localize "RT.Items.Name"}}"/>
-  <div class="rt-filepick"><input type="text" name="img" value="{{item.img}}"/></div>
-</header>
+<div class="rt-sheet-body">
+  <header class="rt-sheet-header">
+    <div class="rt-item-sheet__type">{{typeLabel}}</div>
+    <input class="rt-sheet-header__name" name="name" type="text" value="{{item.name}}" placeholder="{{localize "RT.Items.Name"}}"/>
+    <div class="rt-filepick"><input type="text" name="img" value="{{item.img}}"/></div>
+  </header>
 
-<section class="rt-sheet-section">
-  {{#each fields as |field|}}
-  <div class="form-group">
-    <label>{{localize field.label}}</label>
-    <div class="form-fields">
-      <input type="{{field.input}}" name="{{field.name}}" value="{{field.value}}" data-dtype="{{#if (eq field.input "number")}}Number{{else}}String{{/if}}"/>
+  <section class="rt-sheet-section">
+    {{#each fields as |field|}}
+    <div class="form-group">
+      <label>{{localize field.label}}</label>
+      <div class="form-fields">
+        <input type="{{field.input}}" name="{{field.name}}" value="{{field.value}}" data-dtype="{{#if (eq field.input "number")}}Number{{else}}String{{/if}}"/>
+      </div>
     </div>
-  </div>
-  {{/each}}
-</section>
+    {{/each}}
+  </section>
 
-<section class="rt-sheet-section">
-  <label class="rt-sheet-section__title">{{localize "RT.Items.Description"}}</label>
-  <textarea class="rt-description" name="system.description" rows="8">{{system.description}}</textarea>
-</section>
+  <section class="rt-sheet-section">
+    <label class="rt-sheet-section__title">{{localize "RT.Items.Description"}}</label>
+    <textarea class="rt-description" name="system.description" rows="8">{{system.description}}</textarea>
+  </section>
+</div>
