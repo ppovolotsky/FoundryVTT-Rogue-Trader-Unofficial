@@ -12,8 +12,10 @@
     {{#each characteristics as |c|}}
     <button type="button" class="rt-char-chip" data-action="rollCharacteristic" data-key="{{c.key}}" title="{{c.label}}">
       <span class="rt-char-chip__abbr">{{c.abbr}}</span>
-      <span class="rt-char-chip__total">{{c.total}}</span>
-      <span class="rt-char-chip__bonus">{{c.bonus}}</span>
+      <span class="rt-char-chip__values">
+        <span class="rt-char-chip__bonus">{{c.bonus}}</span>
+        <span class="rt-char-chip__total">{{c.total}}</span>
+      </span>
     </button>
     {{/each}}
   </div>
@@ -30,7 +32,13 @@
         </div>
       </div>
       <span class="rt-resource__sep">/</span>
-      <input class="rt-stat__max" type="number" name="system.fate.max" value="{{system.fate.max}}" data-dtype="Number"/>
+      <div class="rt-stepper">
+        <input type="number" name="system.fate.max" value="{{system.fate.max}}" data-dtype="Number"/>
+        <div class="rt-stepper__buttons">
+          <button type="button" class="rt-stepper__btn" data-action="adjustValue" data-path="system.fate.max" data-delta="1" title="+1"><i class="fa-solid fa-chevron-up"></i></button>
+          <button type="button" class="rt-stepper__btn" data-action="adjustValue" data-path="system.fate.max" data-delta="-1" title="-1"><i class="fa-solid fa-chevron-down"></i></button>
+        </div>
+      </div>
     </div>
 
     <div class="rt-header-buttons">

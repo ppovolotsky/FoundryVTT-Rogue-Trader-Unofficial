@@ -22,7 +22,9 @@ export class RTActor extends Actor {
 
       // The bonus modifier is flat (added to the bonus): sources of unnatural
       // characteristics and homebrew grant fixed bonuses rather than multipliers.
-      characteristic.bonus = Math.max(0, Math.floor(characteristic.total / 10)) + (characteristic.bonusMod ?? 0);
+      // The fatigue penalty lowers characteristic values (all tests) but does not
+      // change characteristic bonuses.
+      characteristic.bonus = Math.max(0, Math.floor(characteristic.unpenalized / 10)) + (characteristic.bonusMod ?? 0);
 
       xpSpent += characteristic.xp ?? 0;
     }
@@ -31,7 +33,8 @@ export class RTActor extends Actor {
     system.fatigue.limit = Math.floor((system.characteristics?.t?.unpenalized ?? 0) / 10);
 
     system.xp.spent = xpSpent;
-    system.xp.free = Math.max(0, (system.xp.total ?? 0) - xpSpent);
+    // Free XP is intentionally allowed to go negative so overspending stays visible.
+    system.xp.free = (system.xp.total ?? 0) - xpSpent;
 
     // Movement in meters from the Agility bonus (Ag/10): half / full / charge / run.
     const ab = system.characteristics?.ag?.bonus ?? 0;

@@ -74,8 +74,8 @@
   flex-direction: column;
   align-items: center;
   gap: 1px;
-  background: var(--color-bg-secondary);
-  border: 1px solid var(--color-border-secondary);
+  background: var(--color-bg-option);
+  border: 1px solid var(--color-border-primary);
   border-radius: 4px;
   padding: 3px 2px;
   cursor: pointer;
@@ -92,16 +92,24 @@
   white-space: nowrap;
 }
 
+.rogue-trader.sheet .rt-char-chip__values {
+  display: flex;
+  gap: 4px;
+  align-items: baseline;
+}
+
+.rogue-trader.sheet .rt-char-chip__bonus {
+  font-size: 1.05em;
+  font-weight: bold;
+  color: var(--color-text-emphasis);
+  line-height: 1.15;
+}
+
 .rogue-trader.sheet .rt-char-chip__total {
   font-size: 1.05em;
   font-weight: bold;
   color: var(--color-text-primary);
   line-height: 1.15;
-}
-
-.rogue-trader.sheet .rt-char-chip__bonus {
-  font-size: 0.7em;
-  color: var(--color-text-emphasis);
 }
 
 /* ---------- Stat blocks (fate, fatigue, wounds) ---------- */
@@ -188,22 +196,25 @@
   color: #ffffff;
 }
 
-/* ---------- Stepper (appears on hover) ---------- */
+/* ---------- Stepper (appears inside the field on hover) ---------- */
 
 .rogue-trader.sheet .rt-stepper {
   position: relative;
   display: inline-flex;
 }
 
+.rogue-trader.sheet .rt-stepper input[type="number"] {
+  padding-right: 15px;
+}
+
 .rogue-trader.sheet .rt-stepper__buttons {
   display: none;
   position: absolute;
-  right: 100%;
+  right: 2px;
   top: 50%;
   transform: translateY(-50%);
   flex-direction: column;
-  gap: 1px;
-  z-index: 10;
+  z-index: 5;
 }
 
 .rogue-trader.sheet .rt-stepper:hover .rt-stepper__buttons {
@@ -211,23 +222,21 @@
 }
 
 .rogue-trader.sheet .rt-stepper__btn {
-  width: 18px;
-  height: 15px;
+  width: 14px;
+  height: 11px;
   padding: 0;
-  font-size: 9px;
+  font-size: 7px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-bg-option);
-  border: 1px solid var(--color-border-secondary);
-  color: var(--color-text-emphasis);
-  border-radius: 3px;
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
   cursor: pointer;
 }
 
 .rogue-trader.sheet .rt-stepper__btn:hover {
-  background: var(--color-text-emphasis);
-  color: var(--color-bg-base, #1b1b1f);
+  color: var(--color-text-emphasis);
 }
 
 /* ---------- Header buttons ---------- */
@@ -265,16 +274,11 @@
 .rogue-trader.sheet .rt-tab-button {
   padding: 4px 12px;
   font-size: 0.9em;
-  background: var(--color-bg-secondary);
-  border: 1px solid var(--color-border-secondary);
+  background: var(--color-bg-option);
+  border: 1px solid var(--color-border-primary);
   color: var(--color-text-primary);
   border-radius: 4px;
   cursor: pointer;
-}
-
-.rogue-trader.sheet .rt-sub-tabs .rt-tab-button {
-  font-size: 0.82em;
-  padding: 3px 9px;
 }
 
 .rogue-trader.sheet .rt-tab-button:hover {
@@ -283,10 +287,15 @@
 }
 
 .rogue-trader.sheet .rt-tab-button.active {
-  background: var(--color-text-emphasis);
-  border-color: var(--color-text-emphasis);
-  color: var(--color-bg-base, #1b1b1f);
+  background: var(--color-text-primary);
+  border-color: var(--color-text-primary);
+  color: var(--color-bg-base);
   font-weight: bold;
+}
+
+.rogue-trader.sheet .rt-sub-tabs .rt-tab-button {
+  font-size: 0.82em;
+  padding: 3px 9px;
 }
 
 .rogue-trader.sheet .tab {
@@ -428,6 +437,28 @@
 }
 
 /* ---------- Misc sheet styles ---------- */
+
+.rogue-trader.sheet .window-content {
+  overflow-y: auto;
+}
+
+/* Keep mouse clicks from leaving persistent focus rings on controls. */
+.rogue-trader.sheet .rt-tab-button:focus,
+.rogue-trader.sheet .rt-button:focus,
+.rogue-trader.sheet .rt-char-chip:focus,
+.rogue-trader.sheet .rt-stepper__btn:focus,
+.rogue-trader.sheet .rt-help-btn:focus,
+.rogue-trader.sheet .rt-fatigue-toggle:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.rogue-trader.sheet .rt-tab-button:focus-visible,
+.rogue-trader.sheet .rt-button:focus-visible,
+.rogue-trader.sheet .rt-char-chip:focus-visible {
+  outline: 1px solid var(--color-text-emphasis);
+  outline-offset: 1px;
+}
 
 .rogue-trader.sheet .rt-movement {
   display: flex;

@@ -12,9 +12,10 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     classes: ["rogue-trader", "sheet", "actor", "rt-character-sheet"],
     window: {
       title: "RT.Sheets.Character",
-      contentClasses: ["rogue-trader", "sheet", "actor"]
+      contentClasses: ["rogue-trader", "sheet", "actor"],
+      resizable: true
     },
-    position: { width: 780, height: "auto" },
+    position: { width: 780, height: 560 },
     form: {
       handler: RTCharacterSheet.#onFormSubmit,
       submitOnChange: true,
