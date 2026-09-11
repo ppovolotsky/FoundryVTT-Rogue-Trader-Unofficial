@@ -62,7 +62,7 @@
         <label>+20</label>
         <label>{{localize "RT.Skills.Talent"}}</label>
         <label>{{localize "RT.Skills.Mod"}}</label>
-        <label>{{localize "RT.Skills.Total"}}</label>
+        <label></label>
         <label>{{localize "RT.Sheet.XP.XP"}}</label>
       </div>
       {{#each skillsBasic as |s|}}
@@ -71,7 +71,7 @@
         <input type="checkbox" name="system.skills.{{s.key}}.trained" {{checked s.trained}}/>
         <input type="checkbox" name="system.skills.{{s.key}}.plus10" {{checked s.plus10}}/>
         <input type="checkbox" name="system.skills.{{s.key}}.plus20" {{checked s.plus20}}/>
-        <input type="checkbox" name="system.skills.{{s.key}}.talent" {{checked s.talent}}/>
+        <input type="number" name="system.skills.{{s.key}}.talent" value="{{s.talent}}" data-dtype="Number"/>
         <input type="number" name="system.skills.{{s.key}}.modifier" value="{{s.modifier}}" data-dtype="Number"/>
         <input type="text" disabled value="{{s.total}}"/>
         <input type="number" name="system.skills.{{s.key}}.xp" value="{{s.xp}}" data-dtype="Number"/>
@@ -91,7 +91,7 @@
         <label>+20</label>
         <label>{{localize "RT.Skills.Talent"}}</label>
         <label>{{localize "RT.Skills.Mod"}}</label>
-        <label>{{localize "RT.Skills.Total"}}</label>
+        <label></label>
         <label>{{localize "RT.Sheet.XP.XP"}}</label>
       </div>
       {{#each skillsAdvanced as |s|}}
@@ -101,7 +101,7 @@
         <input type="checkbox" name="system.skills.{{s.key}}.trained" {{checked s.trained}}/>
         <input type="checkbox" name="system.skills.{{s.key}}.plus10" {{checked s.plus10}}/>
         <input type="checkbox" name="system.skills.{{s.key}}.plus20" {{checked s.plus20}}/>
-        <input type="checkbox" name="system.skills.{{s.key}}.talent" {{checked s.talent}}/>
+        <input type="number" name="system.skills.{{s.key}}.talent" value="{{s.talent}}" data-dtype="Number"/>
         <input type="number" name="system.skills.{{s.key}}.modifier" value="{{s.modifier}}" data-dtype="Number"/>
         <input type="text" disabled value="{{s.total}}"/>
         <input type="number" name="system.skills.{{s.key}}.xp" value="{{s.xp}}" data-dtype="Number"/>
@@ -127,7 +127,7 @@
           <label>+20</label>
           <label>{{localize "RT.Skills.Talent"}}</label>
           <label>{{localize "RT.Skills.Mod"}}</label>
-          <label>{{localize "RT.Skills.Total"}}</label>
+          <label></label>
           <label>{{localize "RT.Sheet.XP.XP"}}</label>
           {{#if g.editing}}<label></label>{{/if}}
         </div>
@@ -143,7 +143,7 @@
           <input type="checkbox" name="system.groupSkills.{{r.index}}.trained" {{checked r.trained}}/>
           <input type="checkbox" name="system.groupSkills.{{r.index}}.plus10" {{checked r.plus10}}/>
           <input type="checkbox" name="system.groupSkills.{{r.index}}.plus20" {{checked r.plus20}}/>
-          <input type="checkbox" name="system.groupSkills.{{r.index}}.talent" {{checked r.talent}}/>
+          <input type="number" name="system.groupSkills.{{r.index}}.talent" value="{{r.talent}}" data-dtype="Number"/>
           <input type="number" name="system.groupSkills.{{r.index}}.modifier" value="{{r.modifier}}" data-dtype="Number"/>
           <input type="text" disabled value="{{r.total}}"/>
           <input type="number" name="system.groupSkills.{{r.index}}.xp" value="{{r.xp}}" data-dtype="Number"/>

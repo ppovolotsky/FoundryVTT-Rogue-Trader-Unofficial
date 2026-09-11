@@ -3,7 +3,8 @@
    scoped to Foundry's dark theme marker, which v14 applies to each
    application window root (element class .theme-dark) and to body. */
 
-:root {
+:root,
+.theme-light {
   --rt-accent: #8a6d1d;
   --rt-fill: #1f1d18;
   --rt-fill-text: #f3efe4;

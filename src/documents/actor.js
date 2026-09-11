@@ -54,7 +54,7 @@ export class RTActor extends Actor {
       const charTotal = system.characteristics?.[char]?.total ?? 0;
       let value = state.trained ? charTotal : Math.floor(charTotal / 2);
       if (!basic && !state.trained) value = 0;
-      value += (state.plus10 ? 10 : 0) + (state.plus20 ? 20 : 0) + (state.talent ? 10 : 0) + (state.modifier ?? 0);
+      value += (state.plus10 ? 10 : 0) + (state.plus20 ? 20 : 0) + (Number(state.talent) || 0) + (state.modifier ?? 0);
       return value;
     };
 
