@@ -1,9 +1,9 @@
 /* Rogue Trader (Unofficial) - basic system styles.
    The palette is self-contained: light values by default, dark overrides
-   scoped to Foundry's dark theme marker (body.themed.theme-dark). */
+   scoped to Foundry's dark theme marker, which v14 applies to each
+   application window root (element class .theme-dark) and to body. */
 
-:root,
-body.themed.theme-light {
+:root {
   --rt-accent: #8a6d1d;
   --rt-fill: #1f1d18;
   --rt-fill-text: #f3efe4;
@@ -16,9 +16,8 @@ body.themed.theme-light {
   --rt-failure: #a13333;
 }
 
-body.themed.theme-dark,
 body.theme-dark,
-html.theme-dark {
+.theme-dark {
   --rt-accent: #d4af37;
   --rt-fill: #e3e0d6;
   --rt-fill-text: #171614;
@@ -480,6 +479,10 @@ html.theme-dark {
 .rogue-trader.sheet .rt-fatigue-toggle:focus {
   outline: none;
   box-shadow: none;
+}
+
+.rogue-trader.sheet .rt-tab-button:focus:not(.active) {
+  border-color: var(--rt-border);
 }
 
 .rogue-trader.sheet .rt-tab-button:focus-visible,
