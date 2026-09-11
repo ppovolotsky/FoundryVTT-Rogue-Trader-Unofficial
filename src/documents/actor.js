@@ -1,7 +1,17 @@
-import { SKILLS, SKILL_GROUPS, UNTRAINED_PENALTY_BASIC, UNTRAINED_PENALTY_ADVANCED } from "../config.js";
+import { SKILLS, SKILL_GROUPS, ACQUISITION, acquisitionModifier } from "../config.js";
 
 const SKILLS_BY_KEY = Object.fromEntries(SKILLS.map((skill) => [skill.key, skill]));
 const GROUPS_BY_KEY = Object.fromEntries(SKILL_GROUPS.map((group) => [group.key, group]));
+
+// Form expansion can turn groupSkills into an object (checkbox omissions leave
+// key gaps); every consumer reads it through this normalizer.
+export function normalizeGroupRows(value) {
+  if (Array.isArray(value)) return value.filter((row) => row && typeof row === "object");
+  if (value && typeof value === "object") {
+    return Object.values(value).filter((row) => row && typeof row === "object");
+  }
+  return [];
+}
 
 export class RTActor extends Actor {
   /** @inheritdoc */
@@ -37,18 +47,15 @@ export class RTActor extends Actor {
     // The fatigue limit equals the natural Toughness bonus and is unaffected by the fatigue penalty.
     system.fatigue.limit = Math.floor((system.characteristics?.t?.unpenalized ?? 0) / 10);
 
-    // Skill totals: characteristic value + training (+10), advances (+10/+20),
-    // talent (+10) and free modifier; untrained tests take a penalty.
-    const skillTotal = (char, skillState, basic) => {
+    // Skill value: trained = full characteristic; untrained basic (or advanced
+    // taken as basic) = half the characteristic rounded down; untrained advanced
+    // = 0. Training marks, talent and the free modifier add on top.
+    const skillValue = (char, state, basic) => {
       const charTotal = system.characteristics?.[char]?.total ?? 0;
-      let total = charTotal
-        + (skillState.trained ? 10 : 0)
-        + (skillState.plus10 ? 10 : 0)
-        + (skillState.plus20 ? 20 : 0)
-        + (skillState.talent ? 10 : 0)
-        + (skillState.modifier ?? 0);
-      if (!skillState.trained) total -= basic ? UNTRAINED_PENALTY_BASIC : UNTRAINED_PENALTY_ADVANCED;
-      return total;
+      let value = state.trained ? charTotal : Math.floor(charTotal / 2);
+      if (!basic && !state.trained) value = 0;
+      value += (state.plus10 ? 10 : 0) + (state.plus20 ? 20 : 0) + (state.talent ? 10 : 0) + (state.modifier ?? 0);
+      return value;
     };
 
     for (const def of SKILLS) {
@@ -56,17 +63,19 @@ export class RTActor extends Actor {
       if (!state) continue;
       state.char = def.char;
       state.basic = def.basic;
-      state.total = skillTotal(def.char, state, def.basic);
+      state.total = skillValue(def.char, state, def.basic);
       xpSpent += state.xp ?? 0;
     }
 
-    for (const groupSkill of system.groupSkills ?? []) {
+    const groupRows = normalizeGroupRows(system.groupSkills);
+    system.groupSkills = groupRows;
+
+    for (const groupSkill of groupRows) {
       const group = GROUPS_BY_KEY[groupSkill.group];
       if (!group) continue;
       const char = groupSkill.characteristic ?? group.chars[0];
       groupSkill.char = char;
-      groupSkill.basic = groupSkill.asBasic ?? false;
-      groupSkill.total = skillTotal(char, groupSkill, groupSkill.basic);
+      groupSkill.total = skillValue(char, groupSkill, groupSkill.asBasic ?? false);
       xpSpent += groupSkill.xp ?? 0;
     }
 

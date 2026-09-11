@@ -3,10 +3,10 @@
     <div class="rt-skills-column">
       <h3 class="rt-skills-column__title">{{localize "RT.Skills.Basic"}}</h3>
       {{#each skillsBasic as |s|}}
-      <div class="rt-skill-row" title="{{s.desc}}">
+      <div class="rt-skill-row">
         <span class="rt-skill-row__name">{{s.name}}</span>
         <span class="rt-skill-row__char">{{s.charAbbr}}</span>
-        <button type="button" class="rt-skill-row__total" data-action="rollSkill" data-skill="{{s.key}}">{{s.total}}</button>
+        <button type="button" class="rt-skill-row__total" data-action="rollSkill" data-skill="{{s.key}}" data-tooltip="{{s.desc}}">{{s.total}}</button>
       </div>
       {{/each}}
     </div>
@@ -14,12 +14,44 @@
     <div class="rt-skills-column">
       <h3 class="rt-skills-column__title">{{localize "RT.Skills.Advanced"}}</h3>
       {{#each skillsAdvanced as |s|}}
-      <div class="rt-skill-row" title="{{s.desc}}">
+      <div class="rt-skill-row">
         <span class="rt-skill-row__name">{{s.name}}</span>
         <span class="rt-skill-row__char">{{s.charAbbr}}</span>
-        <button type="button" class="rt-skill-row__total" data-action="rollSkill" data-skill="{{s.key}}">{{s.total}}</button>
+        <button type="button" class="rt-skill-row__total" data-action="rollSkill" data-skill="{{s.key}}" data-tooltip="{{s.desc}}">{{s.total}}</button>
       </div>
       {{/each}}
+
+      <div class="rt-acquisition">
+        <h3 class="rt-skills-column__title">{{localize "RT.Acquisition.Title"}}</h3>
+        <div class="rt-acquisition__row">
+          <button type="button" class="rt-button" data-action="rollAcquisition">{{localize "RT.Acquisition.Roll"}}</button>
+          <input type="number" name="system.profitFactor" value="{{system.profitFactor}}" data-dtype="Number" title="{{localize "RT.Acquisition.ProfitFactor"}}" aria-label="{{localize "RT.Acquisition.ProfitFactor"}}"/>
+        </div>
+        <div class="rt-acquisition__selects">
+          <select name="system.acquisition.availability" data-tooltip="{{localize "RT.Acquisition.AvailabilityHint"}}">
+            {{#each acquisition.availability as |option|}}
+            <option value="{{option.id}}" {{#if option.selected}}selected{{/if}}>{{localize option.label}} ({{option.mod}})</option>
+            {{/each}}
+          </select>
+          <select name="system.acquisition.scale">
+            <optgroup label="{{localize "RT.Acquisition.Quantity"}}">
+              {{#each acquisition.scale as |option|}}
+              <option value="{{option.id}}" {{#if option.selected}}selected{{/if}}>{{localize option.label}} ({{option.mod}})</option>
+              {{/each}}
+            </optgroup>
+            <optgroup label="{{localize "RT.Acquisition.Components"}}">
+              {{#each acquisition.components as |option|}}
+              <option value="{{option.id}}" {{#if option.selected}}selected{{/if}}>{{localize option.label}} ({{option.mod}})</option>
+              {{/each}}
+            </optgroup>
+          </select>
+          <select name="system.acquisition.quality" data-tooltip="{{localize "RT.Acquisition.QualityHint"}}">
+            {{#each acquisition.quality as |option|}}
+            <option value="{{option.id}}" {{#if option.selected}}selected{{/if}}>{{localize option.label}} ({{option.mod}})</option>
+            {{/each}}
+          </select>
+        </div>
+      </div>
     </div>
   </div>
 

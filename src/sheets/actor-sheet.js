@@ -1,5 +1,14 @@
 import { showRollDialog } from "../dice.js";
-import { SYSTEM_ID, CHARACTERISTICS, ADVANCE_STEPS, SKILLS, SKILL_GROUPS } from "../config.js";
+import {
+  SYSTEM_ID,
+  CHARACTERISTICS,
+  ADVANCE_STEPS,
+  SKILLS,
+  SKILL_GROUPS,
+  ACQUISITION,
+  acquisitionModifier
+} from "../config.js";
+import { normalizeGroupRows } from "../documents/actor.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -34,7 +43,8 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       addGroupSkill: RTCharacterSheet.#onAddGroupSkill,
       deleteGroupSkill: RTCharacterSheet.#onDeleteGroupSkill,
       moveGroupSkill: RTCharacterSheet.#onMoveGroupSkill,
-      toggleGroupEdit: RTCharacterSheet.#onToggleGroupEdit
+      toggleGroupEdit: RTCharacterSheet.#onToggleGroupEdit,
+      rollAcquisition: RTCharacterSheet.#onRollAcquisition
     }
   };
 
@@ -57,7 +67,14 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   };
 
   static async #onFormSubmit(event, form, formData) {
-    await this.document.update(formData.object);
+    // Form expansion can turn the groupSkills array into an object when row
+    // indices have gaps; normalize before persisting.
+    const data = foundry.utils.deepClone(formData.object);
+    const submitted = data.system?.groupSkills;
+    if (submitted !== undefined && !Array.isArray(submitted)) {
+      data.system.groupSkills = Object.values(submitted).filter((row) => row && typeof row === "object");
+    }
+    await this.document.update(data);
   }
 
   static async #onRollCharacteristic(event, target) {
@@ -186,6 +203,17 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     this.render();
   }
 
+  static async #onRollAcquisition(event) {
+    const system = this.document.system;
+    await showRollDialog({
+      target: system.profitFactor ?? 0,
+      modifier: acquisitionModifier(system.acquisition),
+      label: game.i18n.localize("RT.Acquisition.Roll"),
+      speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      showTarget: false
+    });
+  }
+
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     context.actor = this.document;
@@ -248,10 +276,29 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       desc: game.i18n.localize(group.desc),
       editing: !!this.groupEdit[group.key],
       chars: group.chars.map((c) => ({ id: c, abbr: charAbbr(c) })),
-      rows: (this.document.system.groupSkills ?? [])
+      rows: normalizeGroupRows(this.document.system.groupSkills)
         .map((row, index) => ({ ...row, index, charAbbr: charAbbr(row.char), total: row.total ?? 0 }))
         .filter((row) => row.group === group.key)
     }));
+
+    context.acquisition = {
+      availability: ACQUISITION.availability.map((option) => ({
+        ...option,
+        selected: this.document.system.acquisition?.availability === option.id
+      })),
+      scale: ACQUISITION.scale.map((option) => ({
+        ...option,
+        selected: this.document.system.acquisition?.scale === option.id
+      })),
+      components: ACQUISITION.components.map((option) => ({
+        ...option,
+        selected: this.document.system.acquisition?.component === option.id
+      })),
+      quality: ACQUISITION.quality.map((option) => ({
+        ...option,
+        selected: this.document.system.acquisition?.quality === option.id
+      }))
+    };
 
     return context;
   }
@@ -262,6 +309,12 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     this.element.querySelector(".rt-edition-select")?.addEventListener("change", async (event) => {
       await game.settings.set(SYSTEM_ID, "edition", event.target.value);
     });
+    // Repair actors whose groupSkills were saved as an object by older versions.
+    if (this.document.system.groupSkills && !Array.isArray(this.document.system.groupSkills)) {
+      this.document
+        .update({ "system.groupSkills": foundry.utils.deepClone(this.document.system.groupSkills) })
+        .catch(() => {});
+    }
   }
 }
 

@@ -51,6 +51,8 @@
   </section>
 
   <section class="tab {{#if (eq activeXpTab "skills")}}active{{/if}}" data-tab="skills" data-group="xp">
+    <div class="rt-table-columns">
+    <div class="rt-table-column">
     <h3 class="rt-table-title">{{localize "RT.Skills.Basic"}}</h3>
     <div class="rt-xp-skills">
       <div class="rt-xp-skills__row rt-xp-skills__row--header">
@@ -64,7 +66,7 @@
       </div>
       {{#each skillsBasic as |s|}}
       <div class="rt-xp-skills__row" title="{{s.desc}}">
-        <label class="rt-xp-skills__name">{{s.name}}</label>
+        <label class="rt-xp-skills__name" data-tooltip="{{s.desc}}">{{s.name}}</label>
         <input type="checkbox" name="system.skills.{{s.key}}.trained" {{checked s.trained}}/>
         <input type="checkbox" name="system.skills.{{s.key}}.plus10" {{checked s.plus10}}/>
         <input type="checkbox" name="system.skills.{{s.key}}.plus20" {{checked s.plus20}}/>
@@ -74,7 +76,9 @@
       </div>
       {{/each}}
     </div>
+    </div>
 
+    <div class="rt-table-column">
     <h3 class="rt-table-title">{{localize "RT.Skills.Advanced"}}</h3>
     <div class="rt-xp-skills rt-xp-skills--advanced">
       <div class="rt-xp-skills__row rt-xp-skills__row--header">
@@ -89,7 +93,7 @@
       </div>
       {{#each skillsAdvanced as |s|}}
       <div class="rt-xp-skills__row" title="{{s.desc}}">
-        <label class="rt-xp-skills__name">{{s.name}}</label>
+        <label class="rt-xp-skills__name" data-tooltip="{{s.desc}}">{{s.name}}</label>
         <input type="checkbox" name="system.skills.{{s.key}}.asBasic" {{checked s.asBasic}}/>
         <input type="checkbox" name="system.skills.{{s.key}}.trained" {{checked s.trained}}/>
         <input type="checkbox" name="system.skills.{{s.key}}.plus10" {{checked s.plus10}}/>
@@ -100,7 +104,10 @@
       </div>
       {{/each}}
     </div>
+    </div>
+    </div>
 
+    <div class="rt-table-columns">
     {{#each skillGroups as |g|}}
     <div class="rt-skill-group-table">
       <div class="rt-skill-group-table__header">
@@ -150,6 +157,7 @@
       </div>
     </div>
     {{/each}}
+    </div>
   </section>
 
   <section class="tab {{#if (eq activeXpTab "talents")}}active{{/if}}" data-tab="talents" data-group="xp">

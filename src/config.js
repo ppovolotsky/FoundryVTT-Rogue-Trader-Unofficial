@@ -86,6 +86,56 @@ export const SKILL_GROUPS = [
   }
 ];
 
+// Acquisition test (Profit Factor): option tables with test modifiers.
+export const ACQUISITION = {
+  availability: [
+    { id: "ubiquitous", mod: 70, label: "RT.Acquisition.Availability.Ubiquitous" },
+    { id: "plentiful", mod: 50, label: "RT.Acquisition.Availability.Plentiful" },
+    { id: "abundant", mod: 30, label: "RT.Acquisition.Availability.Abundant" },
+    { id: "common", mod: 20, label: "RT.Acquisition.Availability.Common" },
+    { id: "average", mod: 10, label: "RT.Acquisition.Availability.Average" },
+    { id: "scarce", mod: 0, label: "RT.Acquisition.Availability.Scarce" },
+    { id: "rare", mod: -10, label: "RT.Acquisition.Availability.Rare" },
+    { id: "veryRare", mod: -20, label: "RT.Acquisition.Availability.VeryRare" },
+    { id: "extremelyRare", mod: -30, label: "RT.Acquisition.Availability.ExtremelyRare" },
+    { id: "almostUnique", mod: -50, label: "RT.Acquisition.Availability.AlmostUnique" },
+    { id: "unique", mod: -70, label: "RT.Acquisition.Availability.Unique" }
+  ],
+  scale: [
+    { id: "insignificant", mod: 30, label: "RT.Acquisition.Scale.Insignificant" },
+    { id: "minor", mod: 20, label: "RT.Acquisition.Scale.Minor" },
+    { id: "small", mod: 10, label: "RT.Acquisition.Scale.Small" },
+    { id: "standard", mod: 0, label: "RT.Acquisition.Scale.Standard" },
+    { id: "large", mod: -10, label: "RT.Acquisition.Scale.Large" },
+    { id: "major", mod: -20, label: "RT.Acquisition.Scale.Major" },
+    { id: "heavy", mod: -30, label: "RT.Acquisition.Scale.Heavy" }
+  ],
+  components: [
+    { id: "military", mod: -30, label: "RT.Acquisition.Components.Military" },
+    { id: "etheric", mod: -20, label: "RT.Acquisition.Components.Etheric" },
+    { id: "power", mod: -10, label: "RT.Acquisition.Components.Power" },
+    { id: "structural", mod: 0, label: "RT.Acquisition.Components.Structural" }
+  ],
+  quality: [
+    { id: "poor", mod: 10, label: "RT.Acquisition.Quality.Poor" },
+    { id: "standard", mod: 0, label: "RT.Acquisition.Quality.Standard" },
+    { id: "good", mod: -10, label: "RT.Acquisition.Quality.Good" },
+    { id: "best", mod: -30, label: "RT.Acquisition.Quality.Best" }
+  ]
+};
+
+// Sum of the currently selected acquisition modifiers.
+export function acquisitionModifier(acquisition) {
+  const find = (options, id) => options.find((option) => option.id === id);
+  const parts = ACQUISITION;
+  let mod = 0;
+  mod += find(parts.availability, acquisition?.availability)?.mod ?? 0;
+  mod += find(parts.scale, acquisition?.scale)?.mod ?? 0;
+  mod += find(parts.components, acquisition?.component)?.mod ?? 0;
+  mod += find(parts.quality, acquisition?.quality)?.mod ?? 0;
+  return mod;
+}
+
 export const ROLL_MODES = {
   "1d100": "RT.Modes.OneD100",
   "2d10": "RT.Modes.TwoD10"

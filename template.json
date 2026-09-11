@@ -84,6 +84,13 @@
           }
         },
         "playerName": "",
+        "profitFactor": 0,
+        "acquisition": {
+          "availability": "average",
+          "scale": "standard",
+          "component": "structural",
+          "quality": "standard"
+        },
         "skills": {
           "awareness": { "trained": false, "plus10": false, "plus20": false, "talent": false, "asBasic": false, "modifier": 0, "xp": 0 },
           "barter": { "trained": false, "plus10": false, "plus20": false, "talent": false, "asBasic": false, "modifier": 0, "xp": 0 },
