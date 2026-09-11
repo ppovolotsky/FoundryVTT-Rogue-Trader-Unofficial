@@ -208,7 +208,7 @@
   "RT.Acquisition.AvailabilityHint": "Item availability: modifier to the acquisition test",
   "RT.Acquisition.QualityHint": "Item quality: modifier to the acquisition test",
   "RT.Acquisition.Quantity": "Quantity",
-  "RT.Acquisition.Components": "Ship Components",
+  "RT.Acquisition.ComponentsTitle": "Ship Components",
   "RT.Acquisition.Availability.Ubiquitous": "Ubiquitous",
   "RT.Acquisition.Availability.Plentiful": "Plentiful",
   "RT.Acquisition.Availability.Abundant": "Abundant",

@@ -39,7 +39,7 @@
               <option value="{{option.id}}" {{#if option.selected}}selected{{/if}}>{{localize option.label}} ({{option.mod}})</option>
               {{/each}}
             </optgroup>
-            <optgroup label="{{localize "RT.Acquisition.Components"}}">
+            <optgroup label="{{localize "RT.Acquisition.ComponentsTitle"}}">
               {{#each acquisition.components as |option|}}
               <option value="{{option.id}}" {{#if option.selected}}selected{{/if}}>{{localize option.label}} ({{option.mod}})</option>
               {{/each}}

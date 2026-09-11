@@ -208,7 +208,7 @@
   "RT.Acquisition.AvailabilityHint": "Доступность предмета: модификатор к проверке приобретения",
   "RT.Acquisition.QualityHint": "Качество предмета: модификатор к проверке приобретения",
   "RT.Acquisition.Quantity": "Количество",
-  "RT.Acquisition.Components": "Компоненты корабля",
+  "RT.Acquisition.ComponentsTitle": "Компоненты корабля",
   "RT.Acquisition.Availability.Ubiquitous": "Повсеместное",
   "RT.Acquisition.Availability.Plentiful": "Распространённое",
   "RT.Acquisition.Availability.Abundant": "Изобильное",
