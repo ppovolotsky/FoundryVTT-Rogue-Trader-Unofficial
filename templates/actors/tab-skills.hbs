@@ -32,7 +32,7 @@
             <label>{{localize "RT.Acquisition.AvailabilityTitle"}}</label>
             <select name="system.acquisition.availability">
               {{#each acquisition.availability as |option|}}
-              <option value="{{option.id}}" {{#if option.selected}}selected{{/if}}>{{localize option.label}} ({{option.mod}})</option>
+              <option value="{{option.id}}" {{#if option.selected}}selected{{/if}}>({{option.mod}}) {{localize option.label}}</option>
               {{/each}}
             </select>
           </div>
@@ -41,12 +41,12 @@
             <select name="system.acquisition.scale">
               <optgroup label="{{localize "RT.Acquisition.Quantity"}}">
                 {{#each acquisition.scale as |option|}}
-                <option value="{{option.id}}" {{#if option.selected}}selected{{/if}}>{{localize option.label}} ({{option.mod}})</option>
+                <option value="{{option.id}}" {{#if option.selected}}selected{{/if}}>({{option.mod}}) {{localize option.label}}</option>
                 {{/each}}
               </optgroup>
               <optgroup label="{{localize "RT.Acquisition.ComponentsTitle"}}">
                 {{#each acquisition.components as |option|}}
-                <option value="{{option.id}}" {{#if option.selected}}selected{{/if}}>{{localize option.label}} ({{option.mod}})</option>
+                <option value="{{option.id}}" {{#if option.selected}}selected{{/if}}>({{option.mod}}) {{localize option.label}}</option>
                 {{/each}}
               </optgroup>
             </select>
@@ -55,7 +55,7 @@
             <label>{{localize "RT.Acquisition.QualityTitle"}}</label>
             <select name="system.acquisition.quality">
               {{#each acquisition.quality as |option|}}
-              <option value="{{option.id}}" {{#if option.selected}}selected{{/if}}>{{localize option.label}} ({{option.mod}})</option>
+              <option value="{{option.id}}" {{#if option.selected}}selected{{/if}}>({{option.mod}}) {{localize option.label}}</option>
               {{/each}}
             </select>
           </div>

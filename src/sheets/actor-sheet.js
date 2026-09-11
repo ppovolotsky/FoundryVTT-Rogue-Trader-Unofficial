@@ -261,7 +261,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         trained: state.trained ?? false,
         plus10: state.plus10 ?? false,
         plus20: state.plus20 ?? false,
-        talent: state.talent ?? false,
+        talent: Number(state.talent) || 0,
         asBasic: state.asBasic ?? false,
         modifier: state.modifier ?? 0,
         xp: state.xp ?? 0,

@@ -670,6 +670,7 @@ body.theme-dark,
 
 .rogue-trader.sheet .rt-table-columns {
   display: flex;
+  flex-wrap: wrap;
   gap: 14px;
   align-items: flex-start;
   margin-bottom: 8px;
@@ -692,12 +693,13 @@ body.theme-dark,
   font-size: 0.68em;
 }
 
-/* ---------- Acquisition (Profit Factor) ---------- */
-
 .rogue-trader.sheet .rt-table-columns > .rt-skill-group-table {
-  flex: 1;
+  flex: 1 1 calc(50% - 7px);
   min-width: 0;
 }
+
+/* ---------- Acquisition (Profit Factor) ---------- */
+
 
 .rogue-trader.sheet .rt-acquisition {
   margin-top: 10px;
@@ -735,15 +737,29 @@ body.theme-dark,
 .rogue-trader.sheet .rt-acquisition__selects label {
   font-size: 0.75em;
   color: var(--rt-muted);
+  white-space: nowrap;
+}
+
+.rogue-trader.sheet .rt-acquisition__selects .rt-field:nth-child(2) label {
+  text-align: center;
+}
+
+.rogue-trader.sheet .rt-acquisition__selects .rt-field:nth-child(3) label {
+  text-align: right;
 }
 
 .rogue-trader.sheet .rt-acquisition__selects select {
   width: 100%;
+  font-size: 0.85em;
   background: var(--rt-field);
   border: 1px solid var(--rt-border);
   color: var(--rt-text);
   border-radius: 3px;
   padding: 2px 4px;
+}
+
+.rogue-trader.sheet .rt-acquisition__selects select option {
+  font-size: 0.85em;
 }
 
 /* ---------- Psykana ---------- */
