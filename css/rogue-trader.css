@@ -19,16 +19,16 @@ body.themed.theme-light {
 body.themed.theme-dark,
 body.theme-dark,
 html.theme-dark {
-  --rt-accent: #c9a227;
-  --rt-fill: #d8d5cc;
-  --rt-fill-text: #1b1b1f;
-  --rt-panel: rgba(255, 255, 255, 0.05);
-  --rt-field: rgba(255, 255, 255, 0.09);
-  --rt-border: rgba(255, 255, 255, 0.28);
-  --rt-text: #d8d5cc;
-  --rt-muted: #9a978f;
-  --rt-success: #4b9f5c;
-  --rt-failure: #a13333;
+  --rt-accent: #d4af37;
+  --rt-fill: #e3e0d6;
+  --rt-fill-text: #171614;
+  --rt-panel: rgba(255, 255, 255, 0.07);
+  --rt-field: rgba(255, 255, 255, 0.13);
+  --rt-border: rgba(255, 255, 255, 0.42);
+  --rt-text: #eceade;
+  --rt-muted: #bab6a9;
+  --rt-success: #55b067;
+  --rt-failure: #c04747;
 }
 
 /* ---------- Sheet header ---------- */

@@ -96,10 +96,13 @@ export async function showRollDialog({
   showTarget = true
 } = {}) {
   const mode = game.settings.get(SYSTEM_ID, "defaultRollMode");
+  // When the target field is hidden the target is passed programmatically,
+  // so keep it out of the form-read values.
+  const baseTarget = Number(target) || 0;
 
   const content = await renderTemplate("systems/rogue-trader/templates/dialog/roll-dialog.hbs", {
     label,
-    target: Number(target),
+    target: baseTarget,
     modifier: Number(modifier),
     showTarget
   });
@@ -116,7 +119,7 @@ export async function showRollDialog({
         callback: async (event, button, dialog) => {
           const data = Object.fromEntries(new FormData(dialog.element.querySelector("form")));
           return rollTest({
-            target: Number(data.target || 0),
+            target: showTarget ? Number(data.target || 0) : baseTarget,
             modifier: Number(data.modifier || 0),
             mode,
             label,
