@@ -86,7 +86,7 @@
         "playerName": "",
         "profitFactor": 0,
         "acquisition": {
-          "availability": "average",
+          "availability": "scarce",
           "scale": "standard",
           "component": "structural",
           "quality": "standard"
@@ -96,7 +96,10 @@
           "barter": { "trained": false, "plus10": false, "plus20": false, "talent": false, "asBasic": false, "modifier": 0, "xp": 0 },
           "carouse": { "trained": false, "plus10": false, "plus20": false, "talent": false, "asBasic": false, "modifier": 0, "xp": 0 },
           "charm": { "trained": false, "plus10": false, "plus20": false, "talent": false, "asBasic": false, "modifier": 0, "xp": 0 },
+          "command": { "trained": false, "plus10": false, "plus20": false, "talent": false, "asBasic": false, "modifier": 0, "xp": 0 },
+          "climb": { "trained": false, "plus10": false, "plus20": false, "talent": false, "asBasic": false, "modifier": 0, "xp": 0 },
           "concealment": { "trained": false, "plus10": false, "plus20": false, "talent": false, "asBasic": false, "modifier": 0, "xp": 0 },
+          "disguise": { "trained": false, "plus10": false, "plus20": false, "talent": false, "asBasic": false, "modifier": 0, "xp": 0 },
           "contortionist": { "trained": false, "plus10": false, "plus20": false, "talent": false, "asBasic": false, "modifier": 0, "xp": 0 },
           "deceive": { "trained": false, "plus10": false, "plus20": false, "talent": false, "asBasic": false, "modifier": 0, "xp": 0 },
           "dodge": { "trained": false, "plus10": false, "plus20": false, "talent": false, "asBasic": false, "modifier": 0, "xp": 0 },
@@ -118,7 +121,6 @@
           "invocation": { "trained": false, "plus10": false, "plus20": false, "talent": false, "asBasic": false, "modifier": 0, "xp": 0 },
           "literacy": { "trained": false, "plus10": false, "plus20": false, "talent": false, "asBasic": false, "modifier": 0, "xp": 0 },
           "medicae": { "trained": false, "plus10": false, "plus20": false, "talent": false, "asBasic": false, "modifier": 0, "xp": 0 },
-          "pilot": { "trained": false, "plus10": false, "plus20": false, "talent": false, "asBasic": false, "modifier": 0, "xp": 0 },
           "psyniscience": { "trained": false, "plus10": false, "plus20": false, "talent": false, "asBasic": false, "modifier": 0, "xp": 0 },
           "security": { "trained": false, "plus10": false, "plus20": false, "talent": false, "asBasic": false, "modifier": 0, "xp": 0 },
           "shadowing": { "trained": false, "plus10": false, "plus20": false, "talent": false, "asBasic": false, "modifier": 0, "xp": 0 },

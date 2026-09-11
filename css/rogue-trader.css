@@ -7,8 +7,8 @@
   --rt-accent: #8a6d1d;
   --rt-fill: #1f1d18;
   --rt-fill-text: #f3efe4;
-  --rt-panel: rgba(60, 48, 24, 0.08);
-  --rt-field: rgba(255, 255, 255, 0.55);
+  --rt-panel: #e9e2d0;
+  --rt-field: #f6f1e3;
   --rt-border: rgba(50, 40, 20, 0.45);
   --rt-text: #1f1d1a;
   --rt-muted: #6b675e;
@@ -21,9 +21,9 @@ body.theme-dark,
   --rt-accent: #d4af37;
   --rt-fill: #e3e0d6;
   --rt-fill-text: #171614;
-  --rt-panel: rgba(255, 255, 255, 0.07);
-  --rt-field: rgba(255, 255, 255, 0.13);
-  --rt-border: rgba(255, 255, 255, 0.42);
+  --rt-panel: #26231e;
+  --rt-field: #3a362e;
+  --rt-border: rgba(255, 255, 255, 0.4);
   --rt-text: #eceade;
   --rt-muted: #bab6a9;
   --rt-success: #55b067;
@@ -476,6 +476,17 @@ body.theme-dark,
   color: var(--rt-accent);
 }
 
+.rogue-trader.sheet .rt-skill-help {
+  color: var(--rt-muted);
+  font-size: 0.78em;
+  cursor: help;
+  margin-left: 4px;
+}
+
+.rogue-trader.sheet .rt-skill-help:hover {
+  color: var(--rt-accent);
+}
+
 .rogue-trader.sheet .rt-skill-row {
   display: flex;
   align-items: center;
@@ -519,7 +530,19 @@ body.theme-dark,
 }
 
 .rogue-trader.sheet .rt-skill-group {
-  margin: 8px 0 4px;
+  margin: 0 0 8px;
+}
+
+.rogue-trader.sheet .rt-skills-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.rogue-trader.sheet .rt-skills-groups .rt-skill-group {
+  flex: 0 0 calc(50% - 4px);
+  min-width: 0;
 }
 
 .rogue-trader.sheet .rt-skill-group__header {
@@ -527,7 +550,6 @@ body.theme-dark,
   color: var(--rt-text);
   font-size: 0.9em;
   margin: 6px 0 2px;
-  cursor: help;
 }
 
 .rogue-trader.sheet .rt-table-title {
@@ -549,19 +571,19 @@ body.theme-dark,
   display: grid;
   gap: 5px;
   align-items: center;
-  grid-template-columns: 1.6fr repeat(4, 38px) 54px 54px;
+  grid-template-columns: 1.3fr repeat(4, 32px) 42px 42px 42px;
 }
 
 .rogue-trader.sheet .rt-xp-skills--advanced .rt-xp-skills__row {
-  grid-template-columns: 1.5fr 38px repeat(4, 38px) 54px 54px;
+  grid-template-columns: 1.3fr 34px repeat(4, 32px) 42px 42px 42px;
 }
 
 .rogue-trader.sheet .rt-xp-skills--group .rt-xp-skills__row {
-  grid-template-columns: 1.4fr 52px repeat(5, 38px) 50px 50px;
+  grid-template-columns: 1.1fr 48px repeat(5, 30px) 40px 40px 40px;
 }
 
 .rogue-trader.sheet .rt-xp-skills--group .rt-xp-skills__row.has-edit {
-  grid-template-columns: 1.4fr 52px repeat(5, 38px) 50px 50px 72px;
+  grid-template-columns: 1.1fr 48px repeat(5, 30px) 40px 40px 40px 70px;
 }
 
 .rogue-trader.sheet .rt-xp-skills__row--header label {
@@ -671,6 +693,11 @@ body.theme-dark,
 
 /* ---------- Acquisition (Profit Factor) ---------- */
 
+.rogue-trader.sheet .rt-table-columns > .rt-skill-group-table {
+  flex: 1;
+  min-width: 0;
+}
+
 .rogue-trader.sheet .rt-acquisition {
   margin-top: 10px;
   padding-top: 6px;
@@ -695,8 +722,18 @@ body.theme-dark,
 
 .rogue-trader.sheet .rt-acquisition__selects {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.rogue-trader.sheet .rt-acquisition__selects .rt-field {
+  flex: 1;
+  min-width: 0;
+}
+
+.rogue-trader.sheet .rt-acquisition__selects label {
+  font-size: 0.75em;
+  color: var(--rt-muted);
 }
 
 .rogue-trader.sheet .rt-acquisition__selects select {
