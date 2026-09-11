@@ -1,5 +1,5 @@
 import { showRollDialog } from "../dice.js";
-import { SYSTEM_ID, CHARACTERISTICS, ADVANCE_STEPS } from "../config.js";
+import { SYSTEM_ID, CHARACTERISTICS, ADVANCE_STEPS, SKILLS, SKILL_GROUPS } from "../config.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -28,12 +28,21 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       rollD5: RTCharacterSheet.#onRollD5,
       openRollDialog: RTCharacterSheet.#onOpenRollDialog,
       switchTab: RTCharacterSheet.#onSwitchTab,
-      togglePsyType: RTCharacterSheet.#onTogglePsyType
+      togglePsyType: RTCharacterSheet.#onTogglePsyType,
+      rollSkill: RTCharacterSheet.#onRollSkill,
+      rollGroupSkill: RTCharacterSheet.#onRollGroupSkill,
+      addGroupSkill: RTCharacterSheet.#onAddGroupSkill,
+      deleteGroupSkill: RTCharacterSheet.#onDeleteGroupSkill,
+      moveGroupSkill: RTCharacterSheet.#onMoveGroupSkill,
+      toggleGroupEdit: RTCharacterSheet.#onToggleGroupEdit
     }
   };
 
   // Currently displayed tabs per group; switched directly via DOM classes (see #onSwitchTab).
   activeTabs = { main: "skills", xp: "characteristics" };
+
+  // Group tables currently in row-editing mode (keyed by group key).
+  groupEdit = {};
 
   static PARTS = {
     header: { template: "systems/rogue-trader/templates/actors/character-header.hbs" },
@@ -109,12 +118,83 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     await this.document.update({ "system.psykana.type": current === "psyker" ? "navigator" : "psyker" });
   }
 
+  static async #onRollSkill(event, target) {
+    const def = SKILLS.find((skill) => skill.key === target.dataset.skill);
+    if (!def) return;
+    const state = this.document.system.skills?.[def.key] ?? {};
+    await showRollDialog({
+      target: state.total ?? 0,
+      label: game.i18n.localize(def.name),
+      speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      showTarget: false
+    });
+  }
+
+  static async #onRollGroupSkill(event, target) {
+    const index = Number(target.dataset.index);
+    const row = (this.document.system.groupSkills ?? [])[index];
+    if (!row) return;
+    const group = SKILL_GROUPS.find((g) => g.key === row.group);
+    await showRollDialog({
+      target: row.total ?? 0,
+      label: `${row.name} (${game.i18n.localize(group?.name ?? "")})`,
+      speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      showTarget: false
+    });
+  }
+
+  static async #onAddGroupSkill(event, target) {
+    const group = SKILL_GROUPS.find((g) => g.key === target.dataset.group);
+    if (!group) return;
+    const rows = foundry.utils.deepClone(this.document.system.groupSkills ?? []);
+    rows.push({
+      group: group.key,
+      name: "",
+      characteristic: group.chars[0],
+      asBasic: false,
+      trained: false,
+      plus10: false,
+      plus20: false,
+      talent: false,
+      modifier: 0,
+      xp: 0
+    });
+    await this.document.update({ "system.groupSkills": rows });
+  }
+
+  static async #onDeleteGroupSkill(event, target) {
+    const index = Number(target.dataset.index);
+    const rows = foundry.utils.deepClone(this.document.system.groupSkills ?? []);
+    if (index < 0 || index >= rows.length) return;
+    rows.splice(index, 1);
+    await this.document.update({ "system.groupSkills": rows });
+  }
+
+  static async #onMoveGroupSkill(event, target) {
+    const index = Number(target.dataset.index);
+    const delta = Number(target.dataset.delta || 0);
+    const rows = foundry.utils.deepClone(this.document.system.groupSkills ?? []);
+    const next = index + delta;
+    if (index < 0 || index >= rows.length || next < 0 || next >= rows.length) return;
+    [rows[index], rows[next]] = [rows[next], rows[index]];
+    await this.document.update({ "system.groupSkills": rows });
+  }
+
+  static #onToggleGroupEdit(event, target) {
+    const group = target.dataset.group;
+    this.groupEdit[group] = !this.groupEdit[group];
+    this.render();
+  }
+
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     context.actor = this.document;
     context.system = this.document.system;
     context.activeTab = this.activeTabs.main;
     context.activeXpTab = this.activeTabs.xp;
+
+    const charAbbr = (key) => game.i18n.localize(CHARACTERISTICS[key]?.abbrKey ?? key);
+
     context.characteristics = Object.entries(CHARACTERISTICS).map(([key, cfg]) => {
       const c = this.document.system.characteristics?.[key] ?? {};
       return {
@@ -140,6 +220,39 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       ...edition,
       selected: context.edition === edition.id
     }));
+
+    context.skillsBasic = [];
+    context.skillsAdvanced = [];
+    for (const def of SKILLS) {
+      const state = this.document.system.skills?.[def.key] ?? {};
+      const entry = {
+        key: def.key,
+        name: game.i18n.localize(def.name),
+        desc: game.i18n.localize(def.desc),
+        charAbbr: charAbbr(def.char),
+        trained: state.trained ?? false,
+        plus10: state.plus10 ?? false,
+        plus20: state.plus20 ?? false,
+        talent: state.talent ?? false,
+        asBasic: state.asBasic ?? false,
+        modifier: state.modifier ?? 0,
+        xp: state.xp ?? 0,
+        total: state.total ?? 0
+      };
+      (def.basic ? context.skillsBasic : context.skillsAdvanced).push(entry);
+    }
+
+    context.skillGroups = SKILL_GROUPS.map((group) => ({
+      key: group.key,
+      name: game.i18n.localize(group.name),
+      desc: game.i18n.localize(group.desc),
+      editing: !!this.groupEdit[group.key],
+      chars: group.chars.map((c) => ({ id: c, abbr: charAbbr(c) })),
+      rows: (this.document.system.groupSkills ?? [])
+        .map((row, index) => ({ ...row, index, charAbbr: charAbbr(row.char), total: row.total ?? 0 }))
+        .filter((row) => row.group === group.key)
+    }));
+
     return context;
   }
 

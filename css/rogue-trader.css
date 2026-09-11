@@ -458,6 +458,191 @@ body.theme-dark,
   color: var(--rt-muted);
 }
 
+/* ---------- Skills tab ---------- */
+
+.rogue-trader.sheet .rt-skills-columns {
+  display: flex;
+  gap: 16px;
+}
+
+.rogue-trader.sheet .rt-skills-column {
+  flex: 1;
+  min-width: 0;
+}
+
+.rogue-trader.sheet .rt-skills-column__title {
+  margin: 4px 0 6px;
+  font-size: 0.95em;
+  color: var(--rt-accent);
+}
+
+.rogue-trader.sheet .rt-skill-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 4px;
+  border-bottom: 1px solid var(--rt-border);
+}
+
+.rogue-trader.sheet .rt-skill-row__name {
+  flex: 1;
+  min-width: 0;
+  color: var(--rt-text);
+  font-size: 0.88em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rogue-trader.sheet .rt-skill-row__char {
+  width: 34px;
+  text-align: center;
+  color: var(--rt-muted);
+  font-size: 0.8em;
+}
+
+.rogue-trader.sheet .rt-skill-row__total {
+  width: 44px;
+  text-align: center;
+  font-weight: bold;
+  background: var(--rt-field);
+  border: 1px solid var(--rt-border);
+  color: var(--rt-text);
+  border-radius: 3px;
+  padding: 1px;
+  cursor: pointer;
+}
+
+.rogue-trader.sheet .rt-skill-row__total:hover {
+  border-color: var(--rt-accent);
+  color: var(--rt-accent);
+}
+
+.rogue-trader.sheet .rt-skill-group {
+  margin: 8px 0 4px;
+}
+
+.rogue-trader.sheet .rt-skill-group__header {
+  font-weight: bold;
+  color: var(--rt-text);
+  font-size: 0.9em;
+  margin: 6px 0 2px;
+  cursor: help;
+}
+
+.rogue-trader.sheet .rt-table-title {
+  margin: 10px 0 4px;
+  font-size: 0.95em;
+  color: var(--rt-accent);
+}
+
+/* ---------- XP tab: skills tables ---------- */
+
+.rogue-trader.sheet .rt-xp-skills {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 8px;
+}
+
+.rogue-trader.sheet .rt-xp-skills__row {
+  display: grid;
+  gap: 5px;
+  align-items: center;
+  grid-template-columns: 1.6fr repeat(4, 38px) 54px 54px;
+}
+
+.rogue-trader.sheet .rt-xp-skills--advanced .rt-xp-skills__row {
+  grid-template-columns: 1.5fr 38px repeat(4, 38px) 54px 54px;
+}
+
+.rogue-trader.sheet .rt-xp-skills--group .rt-xp-skills__row {
+  grid-template-columns: 1.4fr 52px repeat(5, 38px) 50px 50px;
+}
+
+.rogue-trader.sheet .rt-xp-skills--group .rt-xp-skills__row.has-edit {
+  grid-template-columns: 1.4fr 52px repeat(5, 38px) 50px 50px 72px;
+}
+
+.rogue-trader.sheet .rt-xp-skills__row--header label {
+  font-weight: bold;
+  font-size: 0.75em;
+  color: var(--rt-text);
+}
+
+.rogue-trader.sheet .rt-xp-skills__name {
+  font-size: 0.85em;
+  color: var(--rt-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rogue-trader.sheet .rt-xp-skills__row input[type="checkbox"] {
+  width: auto;
+  justify-self: center;
+  margin: 0;
+}
+
+.rogue-trader.sheet .rt-xp-skills__row input,
+.rogue-trader.sheet .rt-xp-skills__row select {
+  width: 100%;
+  background: var(--rt-field);
+  border: 1px solid var(--rt-border);
+  color: var(--rt-text);
+  border-radius: 3px;
+  padding: 2px 4px;
+}
+
+.rogue-trader.sheet .rt-xp-skills__row input:disabled {
+  color: var(--rt-muted);
+}
+
+.rogue-trader.sheet .rt-row-edit {
+  display: flex;
+  gap: 3px;
+}
+
+.rogue-trader.sheet .rt-row-edit__btn {
+  padding: 1px 4px;
+  font-size: 0.7em;
+  background: var(--rt-panel);
+  border: 1px solid var(--rt-border);
+  color: var(--rt-text);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.rogue-trader.sheet .rt-row-edit__btn:hover {
+  border-color: var(--rt-accent);
+  color: var(--rt-accent);
+}
+
+.rogue-trader.sheet .rt-skill-group-table {
+  margin: 10px 0;
+}
+
+.rogue-trader.sheet .rt-skill-group-table__header {
+  margin-bottom: 4px;
+}
+
+.rogue-trader.sheet .rt-skill-group-table__name {
+  font-weight: bold;
+  color: var(--rt-accent);
+  cursor: help;
+}
+
+.rogue-trader.sheet .rt-skill-group-table__footer {
+  display: flex;
+  justify-content: space-between;
+  margin: -4px 0 6px;
+}
+
+.rogue-trader.sheet .rt-button--small {
+  padding: 1px 8px;
+  font-size: 0.85em;
+}
+
 /* ---------- Psykana ---------- */
 
 .rogue-trader.sheet .rt-psykana-toggle {

@@ -51,9 +51,105 @@
   </section>
 
   <section class="tab {{#if (eq activeXpTab "skills")}}active{{/if}}" data-tab="skills" data-group="xp">
-    <section class="rt-stub-note">
-      <p>{{localize "RT.Sheet.StubNote"}}</p>
-    </section>
+    <h3 class="rt-table-title">{{localize "RT.Skills.Basic"}}</h3>
+    <div class="rt-xp-skills">
+      <div class="rt-xp-skills__row rt-xp-skills__row--header">
+        <label>{{localize "RT.Skill.Name"}}</label>
+        <label>{{localize "RT.Skills.Trained"}}</label>
+        <label>+10</label>
+        <label>+20</label>
+        <label>{{localize "RT.Skills.Talent"}}</label>
+        <label>{{localize "RT.Skills.Mod"}}</label>
+        <label>{{localize "RT.Sheet.XP.XP"}}</label>
+      </div>
+      {{#each skillsBasic as |s|}}
+      <div class="rt-xp-skills__row" title="{{s.desc}}">
+        <label class="rt-xp-skills__name">{{s.name}}</label>
+        <input type="checkbox" name="system.skills.{{s.key}}.trained" {{checked s.trained}}/>
+        <input type="checkbox" name="system.skills.{{s.key}}.plus10" {{checked s.plus10}}/>
+        <input type="checkbox" name="system.skills.{{s.key}}.plus20" {{checked s.plus20}}/>
+        <input type="checkbox" name="system.skills.{{s.key}}.talent" {{checked s.talent}}/>
+        <input type="number" name="system.skills.{{s.key}}.modifier" value="{{s.modifier}}" data-dtype="Number"/>
+        <input type="number" name="system.skills.{{s.key}}.xp" value="{{s.xp}}" data-dtype="Number"/>
+      </div>
+      {{/each}}
+    </div>
+
+    <h3 class="rt-table-title">{{localize "RT.Skills.Advanced"}}</h3>
+    <div class="rt-xp-skills rt-xp-skills--advanced">
+      <div class="rt-xp-skills__row rt-xp-skills__row--header">
+        <label>{{localize "RT.Skill.Name"}}</label>
+        <label>{{localize "RT.Skills.AsBasic"}}</label>
+        <label>{{localize "RT.Skills.Trained"}}</label>
+        <label>+10</label>
+        <label>+20</label>
+        <label>{{localize "RT.Skills.Talent"}}</label>
+        <label>{{localize "RT.Skills.Mod"}}</label>
+        <label>{{localize "RT.Sheet.XP.XP"}}</label>
+      </div>
+      {{#each skillsAdvanced as |s|}}
+      <div class="rt-xp-skills__row" title="{{s.desc}}">
+        <label class="rt-xp-skills__name">{{s.name}}</label>
+        <input type="checkbox" name="system.skills.{{s.key}}.asBasic" {{checked s.asBasic}}/>
+        <input type="checkbox" name="system.skills.{{s.key}}.trained" {{checked s.trained}}/>
+        <input type="checkbox" name="system.skills.{{s.key}}.plus10" {{checked s.plus10}}/>
+        <input type="checkbox" name="system.skills.{{s.key}}.plus20" {{checked s.plus20}}/>
+        <input type="checkbox" name="system.skills.{{s.key}}.talent" {{checked s.talent}}/>
+        <input type="number" name="system.skills.{{s.key}}.modifier" value="{{s.modifier}}" data-dtype="Number"/>
+        <input type="number" name="system.skills.{{s.key}}.xp" value="{{s.xp}}" data-dtype="Number"/>
+      </div>
+      {{/each}}
+    </div>
+
+    {{#each skillGroups as |g|}}
+    <div class="rt-skill-group-table">
+      <div class="rt-skill-group-table__header">
+        <label class="rt-skill-group-table__name" data-tooltip="{{g.desc}}">{{g.name}}</label>
+      </div>
+      <div class="rt-xp-skills rt-xp-skills--group">
+        <div class="rt-xp-skills__row rt-xp-skills__row--header {{#if g.editing}}has-edit{{/if}}">
+          <label>{{localize "RT.Skill.Name"}}</label>
+          <label>{{localize "RT.Sheet.XP.Characteristic"}}</label>
+          <label>{{localize "RT.Skills.AsBasic"}}</label>
+          <label>{{localize "RT.Skills.Trained"}}</label>
+          <label>+10</label>
+          <label>+20</label>
+          <label>{{localize "RT.Skills.Talent"}}</label>
+          <label>{{localize "RT.Skills.Mod"}}</label>
+          <label>{{localize "RT.Sheet.XP.XP"}}</label>
+          {{#if g.editing}}<label></label>{{/if}}
+        </div>
+        {{#each g.rows as |r|}}
+        <div class="rt-xp-skills__row {{#if g.editing}}has-edit{{/if}}">
+          <input type="text" name="system.groupSkills.{{r.index}}.name" value="{{r.name}}"/>
+          <select name="system.groupSkills.{{r.index}}.characteristic">
+            {{#each g.chars as |c|}}
+            <option value="{{c.id}}" {{#if (eq r.char c.id)}}selected{{/if}}>{{c.abbr}}</option>
+            {{/each}}
+          </select>
+          <input type="checkbox" name="system.groupSkills.{{r.index}}.asBasic" {{checked r.asBasic}}/>
+          <input type="checkbox" name="system.groupSkills.{{r.index}}.trained" {{checked r.trained}}/>
+          <input type="checkbox" name="system.groupSkills.{{r.index}}.plus10" {{checked r.plus10}}/>
+          <input type="checkbox" name="system.groupSkills.{{r.index}}.plus20" {{checked r.plus20}}/>
+          <input type="checkbox" name="system.groupSkills.{{r.index}}.talent" {{checked r.talent}}/>
+          <input type="number" name="system.groupSkills.{{r.index}}.modifier" value="{{r.modifier}}" data-dtype="Number"/>
+          <input type="number" name="system.groupSkills.{{r.index}}.xp" value="{{r.xp}}" data-dtype="Number"/>
+          {{#if g.editing}}
+          <div class="rt-row-edit">
+            <button type="button" class="rt-row-edit__btn" data-action="moveGroupSkill" data-index="{{r.index}}" data-delta="-1" title="{{localize "RT.Skills.MoveUp"}}"><i class="fa-solid fa-arrow-up"></i></button>
+            <button type="button" class="rt-row-edit__btn" data-action="moveGroupSkill" data-index="{{r.index}}" data-delta="1" title="{{localize "RT.Skills.MoveDown"}}"><i class="fa-solid fa-arrow-down"></i></button>
+            <button type="button" class="rt-row-edit__btn" data-action="deleteGroupSkill" data-index="{{r.index}}" title="{{localize "RT.Skills.Delete"}}"><i class="fa-solid fa-trash"></i></button>
+          </div>
+          {{/if}}
+        </div>
+        {{/each}}
+      </div>
+      <div class="rt-skill-group-table__footer">
+        <button type="button" class="rt-button rt-button--small" data-action="addGroupSkill" data-group="{{g.key}}" title="{{localize "RT.Skills.Add"}}">+</button>
+        <button type="button" class="rt-button rt-button--small {{#if g.editing}}active{{/if}}" data-action="toggleGroupEdit" data-group="{{g.key}}" title="{{localize "RT.Skills.EditRows"}}"><i class="fa-solid fa-gear"></i></button>
+      </div>
+    </div>
+    {{/each}}
   </section>
 
   <section class="tab {{#if (eq activeXpTab "talents")}}active{{/if}}" data-tab="talents" data-group="xp">

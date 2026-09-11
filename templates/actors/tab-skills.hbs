@@ -1,5 +1,38 @@
 <section class="tab {{#if (eq activeTab "skills")}}active{{/if}}" data-tab="skills" data-group="main">
-  <section class="rt-stub-note">
-    <p>{{localize "RT.Sheet.StubNote"}}</p>
-  </section>
+  <div class="rt-skills-columns">
+    <div class="rt-skills-column">
+      <h3 class="rt-skills-column__title">{{localize "RT.Skills.Basic"}}</h3>
+      {{#each skillsBasic as |s|}}
+      <div class="rt-skill-row" title="{{s.desc}}">
+        <span class="rt-skill-row__name">{{s.name}}</span>
+        <span class="rt-skill-row__char">{{s.charAbbr}}</span>
+        <button type="button" class="rt-skill-row__total" data-action="rollSkill" data-skill="{{s.key}}">{{s.total}}</button>
+      </div>
+      {{/each}}
+    </div>
+
+    <div class="rt-skills-column">
+      <h3 class="rt-skills-column__title">{{localize "RT.Skills.Advanced"}}</h3>
+      {{#each skillsAdvanced as |s|}}
+      <div class="rt-skill-row" title="{{s.desc}}">
+        <span class="rt-skill-row__name">{{s.name}}</span>
+        <span class="rt-skill-row__char">{{s.charAbbr}}</span>
+        <button type="button" class="rt-skill-row__total" data-action="rollSkill" data-skill="{{s.key}}">{{s.total}}</button>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+
+  {{#each skillGroups as |g|}}
+  <div class="rt-skill-group">
+    <div class="rt-skill-group__header" title="{{g.desc}}">{{g.name}}</div>
+    {{#each g.rows as |r|}}
+    <div class="rt-skill-row">
+      <span class="rt-skill-row__name">{{r.name}}</span>
+      <span class="rt-skill-row__char">{{r.charAbbr}}</span>
+      <button type="button" class="rt-skill-row__total" data-action="rollGroupSkill" data-index="{{r.index}}">{{r.total}}</button>
+    </div>
+    {{/each}}
+  </div>
+  {{/each}}
 </section>

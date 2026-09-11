@@ -15,6 +15,77 @@ export const CHARACTERISTICS = {
 // Characteristic advance steps: +0, +5, +10, +15, +20.
 export const ADVANCE_STEPS = [0, 5, 10, 15, 20];
 
+// Fixed skill catalog. Grouped skills (ciphers, lore, languages, trade...)
+// are not listed here: they live in per-group tables where the player adds rows.
+export const SKILLS = [
+  // Basic
+  { key: "awareness", name: "RT.Skills.Awareness", desc: "RT.SkillDesc.Awareness", char: "per", basic: true },
+  { key: "barter", name: "RT.Skills.Barter", desc: "RT.SkillDesc.Barter", char: "fel", basic: true },
+  { key: "carouse", name: "RT.Skills.Carouse", desc: "RT.SkillDesc.Carouse", char: "t", basic: true },
+  { key: "charm", name: "RT.Skills.Charm", desc: "RT.SkillDesc.Charm", char: "fel", basic: true },
+  { key: "concealment", name: "RT.Skills.Concealment", desc: "RT.SkillDesc.Concealment", char: "ag", basic: true },
+  { key: "contortionist", name: "RT.Skills.Contortionist", desc: "RT.SkillDesc.Contortionist", char: "ag", basic: true },
+  { key: "deceive", name: "RT.Skills.Deceive", desc: "RT.SkillDesc.Deceive", char: "fel", basic: true },
+  { key: "dodge", name: "RT.Skills.Dodge", desc: "RT.SkillDesc.Dodge", char: "ag", basic: true },
+  { key: "evaluate", name: "RT.Skills.Evaluate", desc: "RT.SkillDesc.Evaluate", char: "int", basic: true },
+  { key: "gamble", name: "RT.Skills.Gamble", desc: "RT.SkillDesc.Gamble", char: "int", basic: true },
+  { key: "inquiry", name: "RT.Skills.Inquiry", desc: "RT.SkillDesc.Inquiry", char: "fel", basic: true },
+  { key: "intimidate", name: "RT.Skills.Intimidate", desc: "RT.SkillDesc.Intimidate", char: "fel", basic: true },
+  { key: "logic", name: "RT.Skills.Logic", desc: "RT.SkillDesc.Logic", char: "int", basic: true },
+  { key: "scrutiny", name: "RT.Skills.Scrutiny", desc: "RT.SkillDesc.Scrutiny", char: "per", basic: true },
+  { key: "search", name: "RT.Skills.Search", desc: "RT.SkillDesc.Search", char: "per", basic: true },
+  { key: "silentMove", name: "RT.Skills.SilentMove", desc: "RT.SkillDesc.SilentMove", char: "ag", basic: true },
+  { key: "swim", name: "RT.Skills.Swim", desc: "RT.SkillDesc.Swim", char: "s", basic: true },
+  // Advanced
+  { key: "acrobatics", name: "RT.Skills.Acrobatics", desc: "RT.SkillDesc.Acrobatics", char: "ag", basic: false },
+  { key: "gossip", name: "RT.Skills.Gossip", desc: "RT.SkillDesc.Gossip", char: "fel", basic: false },
+  { key: "chemUse", name: "RT.Skills.ChemUse", desc: "RT.SkillDesc.ChemUse", char: "int", basic: false },
+  { key: "commerce", name: "RT.Skills.Commerce", desc: "RT.SkillDesc.Commerce", char: "fel", basic: false },
+  { key: "demolition", name: "RT.Skills.Demolition", desc: "RT.SkillDesc.Demolition", char: "int", basic: false },
+  { key: "interrogation", name: "RT.Skills.Interrogation", desc: "RT.SkillDesc.Interrogation", char: "fel", basic: false },
+  { key: "invocation", name: "RT.Skills.Invocation", desc: "RT.SkillDesc.Invocation", char: "wp", basic: false },
+  { key: "literacy", name: "RT.Skills.Literacy", desc: "RT.SkillDesc.Literacy", char: "int", basic: false },
+  { key: "medicae", name: "RT.Skills.Medicae", desc: "RT.SkillDesc.Medicae", char: "int", basic: false },
+  { key: "pilot", name: "RT.Skills.Pilot", desc: "RT.SkillDesc.Pilot", char: "ag", basic: false },
+  { key: "psyniscience", name: "RT.Skills.Psyniscience", desc: "RT.SkillDesc.Psyniscience", char: "wp", basic: false },
+  { key: "security", name: "RT.Skills.Security", desc: "RT.SkillDesc.Security", char: "ag", basic: false },
+  { key: "shadowing", name: "RT.Skills.Shadowing", desc: "RT.SkillDesc.Shadowing", char: "fel", basic: false },
+  { key: "sleightOfHand", name: "RT.Skills.SleightOfHand", desc: "RT.SkillDesc.SleightOfHand", char: "ag", basic: false },
+  { key: "survival", name: "RT.Skills.Survival", desc: "RT.SkillDesc.Survival", char: "int", basic: false },
+  { key: "techUse", name: "RT.Skills.TechUse", desc: "RT.SkillDesc.TechUse", char: "int", basic: false },
+  { key: "tracking", name: "RT.Skills.Tracking", desc: "RT.SkillDesc.Tracking", char: "per", basic: false },
+  { key: "animalTraining", name: "RT.Skills.AnimalTraining", desc: "RT.SkillDesc.AnimalTraining", char: "int", basic: false }
+];
+
+// Untrained penalties per the core rules.
+export const UNTRAINED_PENALTY_BASIC = 10;
+export const UNTRAINED_PENALTY_ADVANCED = 20;
+
+// Grouped skills. chars = characteristics the group can be tested with;
+// trade and special accept every characteristic (per-sub-skill choice).
+export const SKILL_GROUPS = [
+  { key: "ciphers", name: "RT.SkillGroups.Ciphers", desc: "RT.SkillGroupDesc.Ciphers", chars: ["int"] },
+  { key: "commonLore", name: "RT.SkillGroups.CommonLore", desc: "RT.SkillGroupDesc.CommonLore", chars: ["int"] },
+  { key: "drive", name: "RT.SkillGroups.Drive", desc: "RT.SkillGroupDesc.Drive", chars: ["ag"] },
+  { key: "forbiddenLore", name: "RT.SkillGroups.ForbiddenLore", desc: "RT.SkillGroupDesc.ForbiddenLore", chars: ["int"] },
+  { key: "navigation", name: "RT.SkillGroups.Navigation", desc: "RT.SkillGroupDesc.Navigation", chars: ["int"] },
+  { key: "scholasticLore", name: "RT.SkillGroups.ScholasticLore", desc: "RT.SkillGroupDesc.ScholasticLore", chars: ["int"] },
+  { key: "secretTongue", name: "RT.SkillGroups.SecretTongue", desc: "RT.SkillGroupDesc.SecretTongue", chars: ["int"] },
+  { key: "speakLanguage", name: "RT.SkillGroups.SpeakLanguage", desc: "RT.SkillGroupDesc.SpeakLanguage", chars: ["int"] },
+  {
+    key: "trade",
+    name: "RT.SkillGroups.Trade",
+    desc: "RT.SkillGroupDesc.Trade",
+    chars: ["ws", "bs", "s", "t", "ag", "int", "per", "wp", "fel"]
+  },
+  {
+    key: "special",
+    name: "RT.SkillGroups.Special",
+    desc: "RT.SkillGroupDesc.Special",
+    chars: ["ws", "bs", "s", "t", "ag", "int", "per", "wp", "fel"]
+  }
+];
+
 export const ROLL_MODES = {
   "1d100": "RT.Modes.OneD100",
   "2d10": "RT.Modes.TwoD10"
