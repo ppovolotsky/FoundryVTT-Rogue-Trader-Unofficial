@@ -582,11 +582,11 @@ body.theme-dark,
   display: grid;
   gap: 5px;
   align-items: center;
-  grid-template-columns: minmax(100px, 1.3fr) repeat(4, 32px) 42px 36px 42px;
+  grid-template-columns: minmax(78px, 1fr) 30px 30px 30px 36px 36px 34px 44px;
 }
 
 .rogue-trader.sheet .rt-xp-skills--advanced .rt-xp-skills__row {
-  grid-template-columns: minmax(100px, 1.3fr) 34px repeat(4, 32px) 42px 36px 42px;
+  grid-template-columns: minmax(70px, 1fr) 30px 30px 30px 30px 36px 36px 34px 44px;
 }
 
 .rogue-trader.sheet .rt-xp-skills__row--header label {
@@ -596,11 +596,23 @@ body.theme-dark,
 }
 
 .rogue-trader.sheet .rt-xp-skills__name {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  min-width: 0;
   font-size: 0.85em;
   color: var(--rt-text);
+}
+
+.rogue-trader.sheet .rt-xp-skills__name-text {
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.rogue-trader.sheet .rt-xp-skills__name .rt-skill-help {
+  flex: none;
 }
 
 .rogue-trader.sheet .rt-xp-skills__row input[type="checkbox"] {
@@ -632,26 +644,18 @@ body.theme-dark,
   margin-bottom: 8px;
 }
 
-.rogue-trader.sheet .rt-table-columns > * {
-  flex: 0 0 50%;
-  width: 50%;
-  max-width: 50%;
+.rogue-trader.sheet .rt-table-column {
+  flex: 1;
   min-width: 0;
-  box-sizing: border-box;
-  overflow: hidden;
   padding: 0 4px;
 }
 
-.rogue-trader.sheet .rt-table-column {
-  min-width: 0;
+.rogue-trader.sheet .rt-table-columns > :nth-child(odd) {
+  border-right: 1px solid var(--rt-border);
 }
 
-.rogue-trader.sheet .rt-table-column .rt-xp-skills__row {
-  grid-template-columns: minmax(78px, 1fr) 26px repeat(4, 26px) 32px 32px 40px;
-}
-
-.rogue-trader.sheet .rt-table-column .rt-xp-skills--advanced .rt-xp-skills__row {
-  grid-template-columns: minmax(72px, 1fr) 26px 26px repeat(4, 26px) 32px 32px 40px;
+.rogue-trader.sheet .rt-table-columns > :last-child {
+  border-right: none;
 }
 
 .rogue-trader.sheet .rt-table-column .rt-xp-skills__row {
@@ -670,7 +674,6 @@ body.theme-dark,
   flex: 1 1 50%;
   min-width: 0;
   padding: 0 4px;
-  overflow: hidden;
 }
 
 /* ---------- Grouped skill rows (XP > Skills) ---------- */
@@ -697,18 +700,17 @@ body.theme-dark,
 
 .rogue-trader.sheet .rt-group-row__fields {
   display: grid;
-  grid-template-columns: 48px 26px repeat(4, 26px) 30px 30px 34px 40px;
+  grid-template-columns: 48px 26px repeat(4, 26px) 34px 34px 34px 42px;
   gap: 2px;
   align-items: center;
 }
 
 .rogue-trader.sheet .rt-group-row.has-edit .rt-group-row__fields {
-  grid-template-columns: 48px 26px repeat(4, 26px) 30px 30px 34px 40px 64px;
+  grid-template-columns: 48px 26px repeat(4, 26px) 34px 34px 34px 42px 64px;
 }
 
 .rogue-trader.sheet .rt-group-row__fields input[type="checkbox"] {
-  width: 14px;
-  height: 14px;
+  width: auto;
   justify-self: center;
   margin: 0;
 }
@@ -721,12 +723,6 @@ body.theme-dark,
   color: var(--rt-text);
   border-radius: 3px;
   padding: 2px 4px;
-}
-
-.rogue-trader.sheet .rt-group-row__fields select {
-  appearance: none;
-  text-align: center;
-  padding: 2px;
 }
 
 .rogue-trader.sheet .rt-group-row__fields input:disabled {
@@ -1050,4 +1046,15 @@ body.theme-dark,
 .rt-roll-card--critical.rt-roll-card--failure .rt-roll-card__result {
   box-shadow: inset 0 0 0 2px var(--rt-accent);
   filter: brightness(0.75);
+}
+
+/* Group characteristic select: compact arrow zone */
+.rogue-trader.sheet .rt-group-row__fields select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%239a978f' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 3px center;
+  background-size: 8px 5px;
+  padding: 2px 12px 2px 3px;
+  text-align: left;
 }

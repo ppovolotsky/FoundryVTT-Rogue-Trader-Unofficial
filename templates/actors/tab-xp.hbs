@@ -67,7 +67,7 @@
       </div>
       {{#each skillsBasic as |s|}}
       <div class="rt-xp-skills__row">
-        <label class="rt-xp-skills__name">{{s.name}}<i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{s.desc}}"></i></label>
+        <label class="rt-xp-skills__name"><span class="rt-xp-skills__name-text">{{s.name}}</span><i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{s.desc}}"></i></label>
         <input type="checkbox" name="system.skills.{{s.key}}.trained" {{checked s.trained}}/>
         <input type="checkbox" name="system.skills.{{s.key}}.plus10" {{checked s.plus10}}/>
         <input type="checkbox" name="system.skills.{{s.key}}.plus20" {{checked s.plus20}}/>
@@ -96,7 +96,7 @@
       </div>
       {{#each skillsAdvanced as |s|}}
       <div class="rt-xp-skills__row">
-        <label class="rt-xp-skills__name">{{s.name}}<i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{s.desc}}"></i></label>
+        <label class="rt-xp-skills__name"><span class="rt-xp-skills__name-text">{{s.name}}</span><i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{s.desc}}"></i></label>
         <input type="checkbox" name="system.skills.{{s.key}}.asBasic" {{checked s.asBasic}}/>
         <input type="checkbox" name="system.skills.{{s.key}}.trained" {{checked s.trained}}/>
         <input type="checkbox" name="system.skills.{{s.key}}.plus10" {{checked s.plus10}}/>
