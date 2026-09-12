@@ -79,6 +79,14 @@ export class RTActor extends Actor {
       xpSpent += groupSkill.xp ?? 0;
     }
 
+    const talents = normalizeGroupRows(system.talents);
+    system.talents = talents;
+    for (const talent of talents) xpSpent += talent.xp ?? 0;
+
+    const progression = normalizeGroupRows(system.progression);
+    system.progression = progression;
+    for (const entry of progression) xpSpent += entry.xp ?? 0;
+
     system.xp.spent = xpSpent;
     // Free XP is intentionally allowed to go negative so overspending stays visible.
     system.xp.free = (system.xp.total ?? 0) - xpSpent;

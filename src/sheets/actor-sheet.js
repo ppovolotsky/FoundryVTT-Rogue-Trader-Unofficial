@@ -44,7 +44,11 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       deleteGroupSkill: RTCharacterSheet.#onDeleteGroupSkill,
       moveGroupSkill: RTCharacterSheet.#onMoveGroupSkill,
       toggleGroupEdit: RTCharacterSheet.#onToggleGroupEdit,
-      rollAcquisition: RTCharacterSheet.#onRollAcquisition
+      rollAcquisition: RTCharacterSheet.#onRollAcquisition,
+      addListRow: RTCharacterSheet.#onAddListRow,
+      deleteListRow: RTCharacterSheet.#onDeleteListRow,
+      moveListRow: RTCharacterSheet.#onMoveListRow,
+      toggleListEdit: RTCharacterSheet.#onToggleListEdit
     }
   };
 
@@ -53,6 +57,9 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   // Group tables currently in row-editing mode (keyed by group key).
   groupEdit = {};
+
+  // Auxiliary XP lists (talents, progression) in row-editing mode.
+  listEdit = { talents: false, progression: false };
 
   static PARTS = {
     header: { template: "systems/rogue-trader/templates/actors/character-header.hbs" },
@@ -203,6 +210,42 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     this.render();
   }
 
+  static async #onAddListRow(event, target) {
+    const list = target.dataset.list;
+    if (!["talents", "progression"].includes(list)) return;
+    const rows = normalizeGroupRows(this.document.system[list]);
+    rows.push({ name: "", xp: 0 });
+    await this.document.update({ [`system.${list}`]: rows }).catch(() => {});
+  }
+
+  static async #onDeleteListRow(event, target) {
+    const list = target.dataset.list;
+    if (!["talents", "progression"].includes(list)) return;
+    const rows = normalizeGroupRows(this.document.system[list]);
+    const index = Number(target.dataset.index);
+    if (index < 0 || index >= rows.length) return;
+    rows.splice(index, 1);
+    await this.document.update({ [`system.${list}`]: rows }).catch(() => {});
+  }
+
+  static async #onMoveListRow(event, target) {
+    const list = target.dataset.list;
+    if (!["talents", "progression"].includes(list)) return;
+    const rows = normalizeGroupRows(this.document.system[list]);
+    const index = Number(target.dataset.index);
+    const next = index + Number(target.dataset.delta || 0);
+    if (index < 0 || index >= rows.length || next < 0 || next >= rows.length) return;
+    [rows[index], rows[next]] = [rows[next], rows[index]];
+    await this.document.update({ [`system.${list}`]: rows }).catch(() => {});
+  }
+
+  static #onToggleListEdit(event, target) {
+    const list = target.dataset.list;
+    if (!["talents", "progression"].includes(list)) return;
+    this.listEdit[list] = !this.listEdit[list];
+    this.render();
+  }
+
   static async #onRollAcquisition(event) {
     const system = this.document.system;
     // The dropdown modifiers are baked into the base target; the dialog's
@@ -283,6 +326,12 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         .filter((row) => row.group === group.key)
     }));
 
+    context.talents = normalizeGroupRows(this.document.system.talents)
+      .map((row, index) => ({ ...row, index }));
+    context.progression = normalizeGroupRows(this.document.system.progression)
+      .map((row, index) => ({ ...row, index }));
+    context.listEdit = this.listEdit;
+
     context.acquisition = {
       availability: ACQUISITION.availability.map((option) => ({
         ...option,
@@ -328,6 +377,20 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       if (!row) return;
       row[field] = el.type === "checkbox" ? el.checked : el.type === "number" ? Number(el.value || 0) : el.value;
       await this.document.update({ "system.groupSkills": rows }).catch(() => {});
+    });
+    // Auxiliary lists (talents, progression) update their rows the same way.
+    this.element.addEventListener("change", async (event) => {
+      const el = event.target;
+      const list = el.dataset.jlist;
+      const index = el.dataset.jindex;
+      const field = el.dataset.jfield;
+      if (!list || index === undefined || field === undefined) return;
+      if (!["talents", "progression"].includes(list)) return;
+      const rows = normalizeGroupRows(this.document.system[list]);
+      const row = rows[Number(index)];
+      if (!row) return;
+      row[field] = el.type === "checkbox" ? el.checked : el.type === "number" ? Number(el.value || 0) : el.value;
+      await this.document.update({ [`system.${list}`]: rows }).catch(() => {});
     });
     // Acquisition controls are not form-bound either (avoids save races).
     this.element.addEventListener("change", async (event) => {

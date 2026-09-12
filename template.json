@@ -84,6 +84,12 @@
           }
         },
         "playerName": "",
+        "appearance": "",
+        "allies": "",
+        "goals": "",
+        "notes": "",
+        "talents": [],
+        "progression": [],
         "profitFactor": 0,
         "acquisition": {
           "availability": "scarce",

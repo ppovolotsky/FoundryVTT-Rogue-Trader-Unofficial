@@ -103,6 +103,13 @@
   "RT.Skills.MoveDown": "Вниз",
   "RT.Skills.Delete": "Удалить",
   "RT.Skills.TotalTitle": "Итог",
+  "RT.Journal.Appearance": "Внешность",
+  "RT.Journal.Background": "Происхождение и биография",
+  "RT.Journal.Allies": "Союзники и контакты",
+  "RT.Journal.Goals": "Цели",
+  "RT.Journal.Notes": "Заметки",
+  "RT.Talents.Name": "Талант",
+  "RT.Progression.Name": "Запись",
 
   "RT.Skill.Name": "Умение",
 

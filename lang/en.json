@@ -103,6 +103,13 @@
   "RT.Skills.MoveDown": "Down",
   "RT.Skills.Delete": "Delete",
   "RT.Skills.TotalTitle": "Total",
+  "RT.Journal.Appearance": "Appearance",
+  "RT.Journal.Background": "Background",
+  "RT.Journal.Allies": "Allies & Contacts",
+  "RT.Journal.Goals": "Goals",
+  "RT.Journal.Notes": "Notes",
+  "RT.Talents.Name": "Talent",
+  "RT.Progression.Name": "Entry",
 
   "RT.Skill.Name": "Skill",
 

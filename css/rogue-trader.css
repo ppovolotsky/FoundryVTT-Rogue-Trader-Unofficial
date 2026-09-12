@@ -1072,3 +1072,39 @@ body.theme-dark,
   padding: 2px 12px 2px 3px;
   text-align: left;
 }
+
+/* ---------- XP tab: talents and progression lists ---------- */
+
+.rogue-trader.sheet .rt-xp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 8px;
+}
+
+.rogue-trader.sheet .rt-xp-list__row {
+  display: grid;
+  gap: 5px;
+  align-items: center;
+  grid-template-columns: 1fr 56px;
+}
+
+.rogue-trader.sheet .rt-xp-list__row.has-edit {
+  grid-template-columns: 1fr 56px 70px;
+}
+
+.rogue-trader.sheet .rt-xp-list__row--header label {
+  font-weight: bold;
+  font-size: 0.75em;
+  color: var(--rt-text);
+}
+
+.rogue-trader.sheet .rt-xp-list__row input[type="text"],
+.rogue-trader.sheet .rt-xp-list__row input[type="number"] {
+  width: 100%;
+  background: var(--rt-field);
+  border: 1px solid var(--rt-border);
+  color: var(--rt-text);
+  border-radius: 3px;
+  padding: 2px 4px;
+}
