@@ -159,7 +159,7 @@
   <section class="tab {{#if (eq activeXpTab "talents")}}active{{/if}}" data-tab="talents" data-group="xp">
     <div class="rt-talents-list" data-list-shell="talents">
       {{#each talents as |t|}}
-      <div class="rt-talent-block">
+      <div class="rt-talent-block" data-block-index="{{t.index}}">
         <div class="rt-talent-block__header">
           <input type="text" data-jlist="talents" data-jindex="{{t.index}}" data-jfield="name" value="{{t.name}}" placeholder="{{localize "RT.Talents.Name"}}"/>
           <input type="number" class="rt-talent-block__xp" data-jlist="talents" data-jindex="{{t.index}}" data-jfield="xp" value="{{t.xp}}" data-dtype="Number" title="{{localize "RT.Sheet.XP.XP"}}"/>
@@ -206,9 +206,8 @@
     </div>
 
     <div class="rt-talents-list" data-list-shell="progression">
-    <div class="rt-talents-list" data-list-shell="progression">
       {{#each progression as |p|}}
-      <div class="rt-talent-block">
+      <div class="rt-talent-block" data-block-index="{{p.index}}">
         <div class="rt-talent-block__header">
           <input type="text" data-jlist="progression" data-jindex="{{p.index}}" data-jfield="name" value="{{p.name}}" placeholder="{{localize "RT.Progression.Name"}}"/>
           <input type="number" class="rt-talent-block__xp" data-jlist="progression" data-jindex="{{p.index}}" data-jfield="xp" value="{{p.xp}}" data-dtype="Number" title="{{localize "RT.Sheet.XP.XP"}}"/>
@@ -231,11 +230,6 @@
     <div class="rt-skill-group-table__footer">
       <button type="button" class="rt-button rt-button--small" data-action="addListRow" data-list="progression" title="{{localize "RT.Skills.Add"}}">+</button>
       <button type="button" class="rt-button rt-button--small" data-action="toggleListEdit" data-list-shell="progression" title="{{localize "RT.Skills.EditRows"}}"><i class="fa-solid fa-gear"></i></button>
-    </div>
-    </div>
-    <div class="rt-skill-group-table__footer">
-      <button type="button" class="rt-button rt-button--small" data-action="addListRow" data-list="progression" title="{{localize "RT.Skills.Add"}}">+</button>
-      <button type="button" class="rt-button rt-button--small {{#if listEdit.progression}}active{{/if}}" data-action="toggleListEdit" data-list="progression" title="{{localize "RT.Skills.EditRows"}}"><i class="fa-solid fa-gear"></i></button>
     </div>
   </section>
 </section>

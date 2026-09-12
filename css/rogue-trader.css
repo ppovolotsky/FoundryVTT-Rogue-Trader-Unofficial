@@ -1202,3 +1202,45 @@ body.theme-dark,
 .rogue-trader.sheet .rt-talent-block__body.rt-hidden {
   display: none;
 }
+
+/* ---------- List shells: editing mode and hidden bodies ---------- */
+
+.rogue-trader.sheet [data-list-shell] .rt-row-edit {
+  display: none;
+}
+
+.rogue-trader.sheet [data-list-shell].editing .rt-row-edit {
+  display: flex;
+}
+
+.rogue-trader.sheet [data-list-shell] .rt-view-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.rogue-trader.sheet [data-list-shell].editing .rt-view-buttons {
+  display: none;
+}
+
+.rogue-trader.sheet .rt-talent-block__body.rt-hidden {
+  display: none;
+}
+
+/* ---------- Chat card for list rows ---------- */
+
+.rt-row-chat {
+  background: var(--rt-panel);
+  border: 1px solid var(--rt-accent);
+  border-radius: 5px;
+  padding: 8px 10px;
+  color: var(--rt-text);
+}
+
+.rt-row-chat__name {
+  margin: 0 0 4px;
+  color: var(--rt-accent);
+}
+
+.rt-row-chat__description {
+  white-space: pre-line;
+}

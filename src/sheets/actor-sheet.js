@@ -63,8 +63,8 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   // Auxiliary XP lists (talents, progression) in row-editing mode.
   listEdit = { talents: false, progression: false };
 
-  // Talents with an expanded description window (keyed by row index).
-  talentsExpanded = {};
+  // Expanded description windows, keyed "list:index" — re-applied after renders.
+  expandedRows = {};
 
   static PARTS = {
     header: { template: "systems/rogue-trader/templates/actors/character-header.hbs" },
@@ -245,35 +245,35 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
 
   static #onToggleListEdit(event, target) {
-    // Pure DOM toggle: no state, no re-render — nothing to get stuck.
-    const shell = target.closest("[data-list-shell]");
-    if (!shell) return;
-    shell.classList.toggle("editing");
+    // State + re-render: the editing mode survives field saves.
+    const list = target.dataset.list;
+    if (!["talents", "progression"].includes(list)) return;
+    this.listEdit[list] = !this.listEdit[list];
+    this.render();
   }
 
   static #onToggleRowExpand(event, target) {
-    // Pure DOM toggle of the description body within this block.
-    const block = target.closest(".rt-talent-block");
-    const body = block?.querySelector(".rt-talent-block__body");
-    if (!body) return;
-    body.classList.toggle("rt-hidden");
-    const icon = target.querySelector("i");
-    if (icon) {
-      icon.classList.toggle("fa-chevron-down");
-      icon.classList.toggle("fa-chevron-up");
-    }
+    // State + re-render: the description window stays open across saves.
+    const shell = target.closest("[data-list-shell]");
+    const list = shell?.dataset.listShell;
+    const index = target.dataset.index;
+    if (!list || index === undefined) return;
+    const key = `${list}:${index}`;
+    this.expandedRows[key] = !this.expandedRows[key];
+    this.render();
   }
 
   static async #onSendRowToChat(event, target) {
-    // Read the row from the list this button belongs to (talents OR progression).
     const shell = target.closest("[data-list-shell]");
     const list = shell?.dataset.listShell;
     if (!["talents", "progression"].includes(list)) return;
     const index = Number(target.dataset.index);
     const row = normalizeGroupRows(this.document.system[list])[index];
     if (!row || !row.name) return;
-    const description = await TextEditor.enrichHTML(row.description ?? "", { async: true });
-    const content = `<div class="rt-talent-chat"><h3>${row.name}</h3>${description}</div>`;
+    const content = await renderTemplate("systems/rogue-trader/templates/chat/row-card.hbs", {
+      name: row.name,
+      description: row.description ?? ""
+    });
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.document }),
       content
@@ -390,6 +390,19 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   _onRender(context, options) {
     super._onRender?.(context, options);
+
+    // Re-apply transient UI state after every (re)render.
+    for (const [list, on] of Object.entries(this.listEdit)) {
+      this.element.querySelector(`[data-list-shell="${list}"]`)?.classList.toggle("editing", on);
+    }
+    for (const [key, on] of Object.entries(this.expandedRows)) {
+      const sep = key.indexOf(":");
+      const body = this.element.querySelector(
+        `[data-list-shell="${key.slice(0, sep)}"] .rt-talent-block[data-block-index="${key.slice(sep + 1)}"] .rt-talent-block__body`
+      );
+      body?.classList.toggle("rt-hidden", !on);
+    }
+
     // The root element is reused between renders: bind the delegated
     // listeners exactly once, or they pile up and freeze the window.
     if (this._rtListenersBound) return;
