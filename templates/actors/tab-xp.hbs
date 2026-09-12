@@ -121,7 +121,7 @@
       {{#each g.rows as |r|}}
       <div class="rt-group-row {{#if g.editing}}has-edit{{/if}}">
         <div class="rt-group-row__name">
-          <input type="text" name="system.groupSkills.{{r.index}}.name" value="{{r.name}}" placeholder="{{localize "RT.Skill.Name"}}"/>
+          <input type="text" data-gindex="{{r.index}}" data-gfield="name" value="{{r.name}}" placeholder="{{localize "RT.Skill.Name"}}"/>
           {{#if g.editing}}
           <div class="rt-row-edit">
             <button type="button" class="rt-row-edit__btn" data-action="moveGroupSkill" data-index="{{r.index}}" data-delta="-1" title="{{localize "RT.Skills.MoveUp"}}"><i class="fa-solid fa-arrow-up"></i></button>
@@ -131,19 +131,19 @@
           {{/if}}
         </div>
         <div class="rt-group-row__fields">
-          <select name="system.groupSkills.{{r.index}}.characteristic">
+          <select data-gindex="{{r.index}}" data-gfield="characteristic">
             {{#each g.chars as |c|}}
             <option value="{{c.id}}" {{#if (eq r.char c.id)}}selected{{/if}}>{{c.abbr}}</option>
             {{/each}}
           </select>
-          <input type="checkbox" name="system.groupSkills.{{r.index}}.asBasic" {{checked r.asBasic}} title="{{localize "RT.Skills.AsBasic"}}"/>
-          <input type="checkbox" name="system.groupSkills.{{r.index}}.trained" {{checked r.trained}} title="{{localize "RT.Skills.Trained"}}"/>
-          <input type="checkbox" name="system.groupSkills.{{r.index}}.plus10" {{checked r.plus10}} title="+10"/>
-          <input type="checkbox" name="system.groupSkills.{{r.index}}.plus20" {{checked r.plus20}} title="+20"/>
-          <input type="number" name="system.groupSkills.{{r.index}}.talent" value="{{r.talent}}" data-dtype="Number" title="{{localize "RT.Skills.Talent"}}"/>
-          <input type="number" name="system.groupSkills.{{r.index}}.modifier" value="{{r.modifier}}" data-dtype="Number" title="{{localize "RT.Skills.Mod"}}"/>
+          <input type="checkbox" data-gindex="{{r.index}}" data-gfield="asBasic" {{checked r.asBasic}} title="{{localize "RT.Skills.AsBasic"}}"/>
+          <input type="checkbox" data-gindex="{{r.index}}" data-gfield="trained" {{checked r.trained}} title="{{localize "RT.Skills.Trained"}}"/>
+          <input type="checkbox" data-gindex="{{r.index}}" data-gfield="plus10" {{checked r.plus10}} title="+10"/>
+          <input type="checkbox" data-gindex="{{r.index}}" data-gfield="plus20" {{checked r.plus20}} title="+20"/>
+          <input type="number" data-gindex="{{r.index}}" data-gfield="talent" value="{{r.talent}}" data-dtype="Number" title="{{localize "RT.Skills.Talent"}}"/>
+          <input type="number" data-gindex="{{r.index}}" data-gfield="modifier" value="{{r.modifier}}" data-dtype="Number" title="{{localize "RT.Skills.Mod"}}"/>
           <input type="text" disabled value="{{r.total}}" title="{{localize "RT.Skills.TotalTitle"}}"/>
-          <input type="number" name="system.groupSkills.{{r.index}}.xp" value="{{r.xp}}" data-dtype="Number" title="{{localize "RT.Sheet.XP.XP"}}"/>
+          <input type="number" data-gindex="{{r.index}}" data-gfield="xp" value="{{r.xp}}" data-dtype="Number" title="{{localize "RT.Sheet.XP.XP"}}"/>
         </div>
       </div>
       {{/each}}

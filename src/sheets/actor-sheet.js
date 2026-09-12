@@ -205,9 +205,11 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   static async #onRollAcquisition(event) {
     const system = this.document.system;
+    // The dropdown modifiers are baked into the base target; the dialog's
+    // modifier field stays free for a manual adjustment only.
+    const base = (system.profitFactor ?? 0) + acquisitionModifier(system.acquisition);
     await showRollDialog({
-      target: system.profitFactor ?? 0,
-      modifier: acquisitionModifier(system.acquisition),
+      target: base,
       label: game.i18n.localize("RT.Acquisition.Roll"),
       speaker: ChatMessage.getSpeaker({ actor: this.document }),
       showTarget: false
@@ -308,6 +310,19 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     // The edition list lives in world settings, not in actor data - handle it manually.
     this.element.querySelector(".rt-edition-select")?.addEventListener("change", async (event) => {
       await game.settings.set(SYSTEM_ID, "edition", event.target.value);
+    });
+    // Group skill rows are not form-bound: each field updates its row directly,
+    // keeping them safe from form expansion quirks.
+    this.element.addEventListener("change", async (event) => {
+      const el = event.target;
+      const index = el.dataset.gindex;
+      const field = el.dataset.gfield;
+      if (index === undefined || field === undefined) return;
+      const rows = normalizeGroupRows(this.document.system.groupSkills);
+      const row = rows[Number(index)];
+      if (!row) return;
+      row[field] = el.type === "checkbox" ? el.checked : el.type === "number" ? Number(el.value || 0) : el.value;
+      await this.document.update({ "system.groupSkills": rows }).catch(() => {});
     });
     // Repair actors whose groupSkills were saved as an object by older versions.
     if (this.document.system.groupSkills && !Array.isArray(this.document.system.groupSkills)) {

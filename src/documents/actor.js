@@ -63,7 +63,7 @@ export class RTActor extends Actor {
       if (!state) continue;
       state.char = def.char;
       state.basic = def.basic;
-      state.total = skillValue(def.char, state, def.basic);
+      state.total = skillValue(def.char, state, def.basic || (state.asBasic ?? false));
       xpSpent += state.xp ?? 0;
     }
 

@@ -572,11 +572,11 @@ body.theme-dark,
   display: grid;
   gap: 5px;
   align-items: center;
-  grid-template-columns: 1.3fr repeat(4, 32px) 42px 42px 42px;
+  grid-template-columns: 1.3fr repeat(4, 32px) 42px 36px 42px;
 }
 
 .rogue-trader.sheet .rt-xp-skills--advanced .rt-xp-skills__row {
-  grid-template-columns: 1.3fr 34px repeat(4, 32px) 42px 42px 42px;
+  grid-template-columns: 1.3fr 34px repeat(4, 32px) 42px 36px 42px;
 }
 
 /* ---------- Grouped skills rows (XP > Skills) ---------- */
@@ -603,13 +603,13 @@ body.theme-dark,
 
 .rogue-trader.sheet .rt-group-row__fields {
   display: grid;
-  grid-template-columns: 52px repeat(5, 34px) 42px 42px 42px;
+  grid-template-columns: 52px repeat(5, 34px) 42px 36px 42px;
   gap: 4px;
   align-items: center;
 }
 
 .rogue-trader.sheet .rt-group-row.has-edit .rt-group-row__fields {
-  grid-template-columns: 52px repeat(5, 34px) 42px 42px 42px 66px;
+  grid-template-columns: 52px repeat(5, 34px) 42px 36px 42px 66px;
 }
 
 .rogue-trader.sheet .rt-group-row__fields input[type="checkbox"] {
@@ -727,11 +727,11 @@ body.theme-dark,
 }
 
 .rogue-trader.sheet .rt-table-column .rt-xp-skills__row {
-  grid-template-columns: 1fr 32px repeat(4, 30px) 44px 44px;
+  grid-template-columns: 1fr 32px repeat(4, 30px) 42px 34px 42px;
 }
 
 .rogue-trader.sheet .rt-table-column .rt-xp-skills--advanced .rt-xp-skills__row {
-  grid-template-columns: 1fr 34px 32px repeat(4, 30px) 44px 44px;
+  grid-template-columns: 1fr 34px 32px repeat(4, 30px) 42px 34px 42px;
 }
 
 .rogue-trader.sheet .rt-table-column .rt-xp-skills__row--header label {
