@@ -245,22 +245,21 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
 
   static #onToggleListEdit(event, target) {
-    // State + re-render: the editing mode survives field saves.
-    const list = target.dataset.list;
-    if (!["talents", "progression"].includes(list)) return;
-    this.listEdit[list] = !this.listEdit[list];
-    this.render();
+    console.debug("[RT] toggleListEdit fired");
+    // Pure DOM toggle: no state, no re-render — nothing to get stuck.
+    const shell = target.closest("[data-list-shell]");
+    console.debug("[RT] shell found:", Boolean(shell), "list:", shell?.dataset.listShell ?? "(none)");
+    if (!shell) return;
+    shell.classList.toggle("editing");
   }
 
   static #onToggleRowExpand(event, target) {
-    // State + re-render: the description window stays open across saves.
-    const shell = target.closest("[data-list-shell]");
-    const list = shell?.dataset.listShell;
-    const index = target.dataset.index;
-    if (!list || index === undefined) return;
-    const key = `${list}:${index}`;
-    this.expandedRows[key] = !this.expandedRows[key];
-    this.render();
+    console.debug("[RT] toggleRowExpand fired");
+    // Pure DOM toggle of the description body within this block.
+    const block = target.closest(".rt-talent-block");
+    const body = block?.querySelector(".rt-talent-block__body");
+    if (!body) return;
+    body.classList.toggle("rt-hidden");
   }
 
   static async #onSendRowToChat(event, target) {
@@ -392,6 +391,13 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     super._onRender?.(context, options);
 
     // Re-apply transient UI state after every (re)render.
+    for (const [key, on] of Object.entries(this.expandedRows)) {
+      const sep = key.indexOf(":")
+      const body = this.element.querySelector(
+        `[data-list-shell="${key.slice(0, sep)}"] .rt-talent-block[data-block-index="${key.slice(sep + 1)}"] .rt-talent-block__body`
+      );
+      body?.classList.toggle("rt-hidden", !on);
+    }
     for (const [list, on] of Object.entries(this.listEdit)) {
       this.element.querySelector(`[data-list-shell="${list}"]`)?.classList.toggle("editing", on);
     }
@@ -403,6 +409,9 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       body?.classList.toggle("rt-hidden", !on);
     }
 
+    for (const [list, on] of Object.entries(this.listEdit)) {
+      this.element.querySelector(`[data-list-shell="${list}"]`)?.classList.toggle("editing", on);
+    }
     // The root element is reused between renders: bind the delegated
     // listeners exactly once, or they pile up and freeze the window.
     if (this._rtListenersBound) return;
