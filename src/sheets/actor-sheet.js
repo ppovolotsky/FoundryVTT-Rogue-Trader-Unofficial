@@ -63,6 +63,9 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   // Auxiliary XP lists (talents, progression) in row-editing mode.
   listEdit = { talents: false, progression: false };
 
+  // Talents with an expanded description window (keyed by row index).
+  talentsExpanded = {};
+
   static PARTS = {
     header: { template: "systems/rogue-trader/templates/actors/character-header.hbs" },
     tabs: { template: "systems/rogue-trader/templates/actors/character-tabs.hbs" },
