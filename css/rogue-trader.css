@@ -1179,3 +1179,26 @@ body.theme-dark,
   width: 100%;
   font-size: 0.9em;
 }
+
+/* ---------- List shells (talents, progression): edit-mode toggle ---------- */
+
+.rogue-trader.sheet [data-list-shell] .rt-row-edit {
+  display: none;
+}
+
+.rogue-trader.sheet [data-list-shell].editing .rt-row-edit {
+  display: flex;
+}
+
+.rogue-trader.sheet [data-list-shell] .rt-view-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.rogue-trader.sheet [data-list-shell].editing .rt-view-buttons {
+  display: none;
+}
+
+.rogue-trader.sheet .rt-talent-block__body.rt-hidden {
+  display: none;
+}

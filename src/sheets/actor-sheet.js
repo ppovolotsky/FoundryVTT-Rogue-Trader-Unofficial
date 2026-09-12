@@ -49,8 +49,8 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       deleteListRow: RTCharacterSheet.#onDeleteListRow,
       moveListRow: RTCharacterSheet.#onMoveListRow,
       toggleListEdit: RTCharacterSheet.#onToggleListEdit,
-      toggleTalentExpand: RTCharacterSheet.#onToggleTalentExpand,
-      sendTalentToChat: RTCharacterSheet.#onSendTalentToChat
+      toggleRowExpand: RTCharacterSheet.#onToggleRowExpand,
+      sendRowToChat: RTCharacterSheet.#onSendRowToChat
     }
   };
 
@@ -245,24 +245,35 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
 
   static #onToggleListEdit(event, target) {
-    const list = target.dataset.list;
+    // Pure DOM toggle: no state, no re-render — nothing to get stuck.
+    const shell = target.closest("[data-list-shell]");
+    if (!shell) return;
+    shell.classList.toggle("editing");
+  }
+
+  static #onToggleRowExpand(event, target) {
+    // Pure DOM toggle of the description body within this block.
+    const block = target.closest(".rt-talent-block");
+    const body = block?.querySelector(".rt-talent-block__body");
+    if (!body) return;
+    body.classList.toggle("rt-hidden");
+    const icon = target.querySelector("i");
+    if (icon) {
+      icon.classList.toggle("fa-chevron-down");
+      icon.classList.toggle("fa-chevron-up");
+    }
+  }
+
+  static async #onSendRowToChat(event, target) {
+    // Read the row from the list this button belongs to (talents OR progression).
+    const shell = target.closest("[data-list-shell]");
+    const list = shell?.dataset.listShell;
     if (!["talents", "progression"].includes(list)) return;
-    this.listEdit[list] = !this.listEdit[list];
-    this.render();
-  }
-
-  static #onToggleTalentExpand(event, target) {
-    const index = target.dataset.index;
-    this.talentsExpanded[index] = !this.talentsExpanded[index];
-    this.render();
-  }
-
-  static async #onSendTalentToChat(event, target) {
     const index = Number(target.dataset.index);
-    const talent = normalizeGroupRows(this.document.system.talents)[index];
-    if (!talent || !talent.name) return;
-    const description = await TextEditor.enrichHTML(talent.description ?? "", { async: true });
-    const content = `<div class="rt-talent-chat"><h3>${talent.name}</h3>${description}</div>`;
+    const row = normalizeGroupRows(this.document.system[list])[index];
+    if (!row || !row.name) return;
+    const description = await TextEditor.enrichHTML(row.description ?? "", { async: true });
+    const content = `<div class="rt-talent-chat"><h3>${row.name}</h3>${description}</div>`;
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.document }),
       content
