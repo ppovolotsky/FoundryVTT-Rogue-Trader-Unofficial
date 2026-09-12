@@ -220,8 +220,16 @@
             <button type="button" class="rt-row-edit__btn" data-action="moveListRow" data-list="progression" data-index="{{p.index}}" data-delta="1" title="{{localize "RT.Skills.MoveDown"}}"><i class="fa-solid fa-arrow-down"></i></button>
             <button type="button" class="rt-row-edit__btn" data-action="deleteListRow" data-list="progression" data-index="{{p.index}}" title="{{localize "RT.Skills.Delete"}}"><i class="fa-solid fa-trash"></i></button>
           </div>
+          {{else}}
+          <button type="button" class="rt-button rt-button--small" data-action="toggleTalentExpand" data-index="{{p.index}}" title="{{localize "RT.Talents.ShowDesc"}}"><i class="fa-solid fa-chevron-down"></i></button>
+          <button type="button" class="rt-button rt-button--small" data-action="sendTalentToChat" data-index="{{p.index}}" title="{{localize "RT.Talents.SendToChat"}}"><i class="fa-solid fa-comment-dots"></i></button>
           {{/if}}
         </div>
+        {{#if p.expanded}}
+        <div class="rt-talent-block__body">
+          <textarea class="rt-description" data-jlist="progression" data-jindex="{{p.index}}" data-jfield="description" rows="4">{{p.description}}</textarea>
+        </div>
+        {{/if}}
       </div>
       {{/each}}
     </div>
