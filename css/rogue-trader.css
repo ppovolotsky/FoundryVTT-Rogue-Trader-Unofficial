@@ -582,11 +582,11 @@ body.theme-dark,
   display: grid;
   gap: 5px;
   align-items: center;
-  grid-template-columns: 1.3fr repeat(4, 32px) 42px 36px 42px;
+  grid-template-columns: minmax(100px, 1.3fr) repeat(4, 32px) 42px 36px 42px;
 }
 
 .rogue-trader.sheet .rt-xp-skills--advanced .rt-xp-skills__row {
-  grid-template-columns: 1.3fr 34px repeat(4, 32px) 42px 36px 42px;
+  grid-template-columns: minmax(100px, 1.3fr) 34px repeat(4, 32px) 42px 36px 42px;
 }
 
 .rogue-trader.sheet .rt-xp-skills__row--header label {
@@ -647,15 +647,15 @@ body.theme-dark,
 }
 
 .rogue-trader.sheet .rt-table-column .rt-xp-skills__row {
-  grid-template-columns: 1fr 32px repeat(4, 30px) 42px 34px 42px;
+  grid-template-columns: minmax(84px, 1fr) 24px repeat(4, 24px) 30px 30px 34px;
 }
 
 .rogue-trader.sheet .rt-table-column .rt-xp-skills--advanced .rt-xp-skills__row {
-  grid-template-columns: 1fr 34px 32px repeat(4, 30px) 42px 34px 42px;
+  grid-template-columns: minmax(84px, 1fr) 24px 24px repeat(4, 24px) 30px 30px 34px;
 }
 
 .rogue-trader.sheet .rt-table-column .rt-xp-skills__row--header label {
-  font-size: 0.68em;
+  font-size: 0.62em;
 }
 
 .rogue-trader.sheet .rt-table-columns > .rt-skill-group-table {
