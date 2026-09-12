@@ -23,6 +23,10 @@ export class RTActor extends Actor {
     const system = this.system;
     const penalty = system.fatigue?.penalty ? 10 : 0;
     let xpSpent = 0;
+    let xpChars = 0;
+    let xpSkills = 0;
+    let xpTalents = 0;
+    let xpMisc = 0;
 
     for (const key of Object.keys(system.characteristics ?? {})) {
       const characteristic = system.characteristics[key];
@@ -42,6 +46,7 @@ export class RTActor extends Actor {
       characteristic.bonus = Math.max(0, Math.floor(characteristic.unpenalized / 10)) + (characteristic.bonusMod ?? 0);
 
       xpSpent += characteristic.xp ?? 0;
+      xpChars += characteristic.xp ?? 0;
     }
 
     // The fatigue limit equals the natural Toughness bonus and is unaffected by the fatigue penalty.
@@ -65,6 +70,7 @@ export class RTActor extends Actor {
       state.basic = def.basic;
       state.total = skillValue(def.char, state, def.basic || (state.asBasic ?? false));
       xpSpent += state.xp ?? 0;
+      xpSkills += state.xp ?? 0;
     }
 
     const groupRows = normalizeGroupRows(system.groupSkills);
@@ -77,19 +83,31 @@ export class RTActor extends Actor {
       groupSkill.char = char;
       groupSkill.total = skillValue(char, groupSkill, groupSkill.asBasic ?? false);
       xpSpent += groupSkill.xp ?? 0;
+      xpSkills += groupSkill.xp ?? 0;
     }
 
     const talents = normalizeGroupRows(system.talents);
     system.talents = talents;
-    for (const talent of talents) xpSpent += talent.xp ?? 0;
+    for (const talent of talents) {
+      xpSpent += talent.xp ?? 0;
+      xpTalents += talent.xp ?? 0;
+    }
 
     const progression = normalizeGroupRows(system.progression);
     system.progression = progression;
-    for (const entry of progression) xpSpent += entry.xp ?? 0;
+    for (const entry of progression) {
+      xpSpent += entry.xp ?? 0;
+      xpMisc += entry.xp ?? 0;
+    }
 
     system.xp.spent = xpSpent;
     // Free XP is intentionally allowed to go negative so overspending stays visible.
     system.xp.free = (system.xp.total ?? 0) - xpSpent;
+    // Per-source breakdown shown in the Progression tab.
+    system.xp.characteristics = xpChars;
+    system.xp.skills = xpSkills;
+    system.xp.talents = xpTalents;
+    system.xp.misc = xpMisc;
 
     // Movement in meters from the Agility bonus (Ag/10): half / full / charge / run.
     const ab = system.characteristics?.ag?.bonus ?? 0;

@@ -112,6 +112,10 @@
   "RT.Talents.ShowDesc": "Показать описание",
   "RT.Talents.SendToChat": "Отправить в чат",
   "RT.Progression.Name": "Запись",
+  "RT.XP.ByCharacteristic": "Характеристики",
+  "RT.XP.BySkills": "Навыки",
+  "RT.XP.ByTalents": "Таланты",
+  "RT.XP.Misc": "Прочее",
 
   "RT.Skill.Name": "Умение",
 

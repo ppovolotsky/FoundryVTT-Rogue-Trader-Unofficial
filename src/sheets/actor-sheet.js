@@ -350,7 +350,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     }));
 
     context.talents = normalizeGroupRows(this.document.system.talents)
-      .map((row, index) => ({ ...row, index, expanded: !!this.talentsExpanded[index] }));
+      .map((row, index) => ({ ...row, index }));
     context.progression = normalizeGroupRows(this.document.system.progression)
       .map((row, index) => ({ ...row, index }));
     context.listEdit = this.listEdit;

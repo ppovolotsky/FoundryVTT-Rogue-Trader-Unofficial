@@ -189,23 +189,39 @@
   </section>
 
   <section class="tab {{#if (eq activeXpTab "progression")}}active{{/if}}" data-tab="progression" data-group="xp">
-    <div class="rt-xp-list">
-      <div class="rt-xp-list__row rt-xp-list__row--header {{#if listEdit.progression}}has-edit{{/if}}">
-        <label>{{localize "RT.Progression.Name"}}</label>
-        <label>{{localize "RT.Sheet.XP.XP"}}</label>
-        {{#if listEdit.progression}}<label></label>{{/if}}
+    <div class="rt-xp-parts">
+      <div class="rt-field">
+        <label>{{localize "RT.XP.ByCharacteristic"}}</label>
+        <input type="text" disabled value="{{system.xp.characteristics}}"/>
       </div>
+      <div class="rt-field">
+        <label>{{localize "RT.XP.BySkills"}}</label>
+        <input type="text" disabled value="{{system.xp.skills}}"/>
+      </div>
+      <div class="rt-field">
+        <label>{{localize "RT.XP.ByTalents"}}</label>
+        <input type="text" disabled value="{{system.xp.talents}}"/>
+      </div>
+      <div class="rt-field">
+        <label>{{localize "RT.XP.Misc"}}</label>
+        <input type="text" disabled value="{{system.xp.misc}}"/>
+      </div>
+    </div>
+
+    <div class="rt-talents-list">
       {{#each progression as |p|}}
-      <div class="rt-xp-list__row {{#if listEdit.progression}}has-edit{{/if}}">
-        <input type="text" data-jlist="progression" data-jindex="{{p.index}}" data-jfield="name" value="{{p.name}}" placeholder="{{localize "RT.Progression.Name"}}"/>
-        <input type="number" data-jlist="progression" data-jindex="{{p.index}}" data-jfield="xp" value="{{p.xp}}" data-dtype="Number"/>
-        {{#if listEdit.progression}}
-        <div class="rt-row-edit">
-          <button type="button" class="rt-row-edit__btn" data-action="moveListRow" data-list="progression" data-index="{{p.index}}" data-delta="-1" title="{{localize "RT.Skills.MoveUp"}}"><i class="fa-solid fa-arrow-up"></i></button>
-          <button type="button" class="rt-row-edit__btn" data-action="moveListRow" data-list="progression" data-index="{{p.index}}" data-delta="1" title="{{localize "RT.Skills.MoveDown"}}"><i class="fa-solid fa-arrow-down"></i></button>
-          <button type="button" class="rt-row-edit__btn" data-action="deleteListRow" data-list="progression" data-index="{{p.index}}" title="{{localize "RT.Skills.Delete"}}"><i class="fa-solid fa-trash"></i></button>
+      <div class="rt-talent-block">
+        <div class="rt-talent-block__header">
+          <input type="text" data-jlist="progression" data-jindex="{{p.index}}" data-jfield="name" value="{{p.name}}" placeholder="{{localize "RT.Progression.Name"}}"/>
+          <input type="number" class="rt-talent-block__xp" data-jlist="progression" data-jindex="{{p.index}}" data-jfield="xp" value="{{p.xp}}" data-dtype="Number" title="{{localize "RT.Sheet.XP.XP"}}"/>
+          {{#if listEdit.progression}}
+          <div class="rt-row-edit">
+            <button type="button" class="rt-row-edit__btn" data-action="moveListRow" data-list="progression" data-index="{{p.index}}" data-delta="-1" title="{{localize "RT.Skills.MoveUp"}}"><i class="fa-solid fa-arrow-up"></i></button>
+            <button type="button" class="rt-row-edit__btn" data-action="moveListRow" data-list="progression" data-index="{{p.index}}" data-delta="1" title="{{localize "RT.Skills.MoveDown"}}"><i class="fa-solid fa-arrow-down"></i></button>
+            <button type="button" class="rt-row-edit__btn" data-action="deleteListRow" data-list="progression" data-index="{{p.index}}" title="{{localize "RT.Skills.Delete"}}"><i class="fa-solid fa-trash"></i></button>
+          </div>
+          {{/if}}
         </div>
-        {{/if}}
       </div>
       {{/each}}
     </div>

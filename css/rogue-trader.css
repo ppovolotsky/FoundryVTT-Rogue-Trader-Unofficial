@@ -1073,6 +1073,34 @@ body.theme-dark,
   text-align: left;
 }
 
+/* ---------- XP tab: progression summary ---------- */
+
+.rogue-trader.sheet .rt-xp-parts {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.rogue-trader.sheet .rt-xp-parts .rt-field {
+  flex: 1;
+  min-width: 0;
+}
+
+.rogue-trader.sheet .rt-xp-parts label {
+  font-size: 0.75em;
+  color: var(--rt-muted);
+}
+
+.rogue-trader.sheet .rt-xp-parts input[type="text"] {
+  width: 100%;
+  background: var(--rt-field);
+  border: 1px solid var(--rt-border);
+  color: var(--rt-text);
+  border-radius: 3px;
+  padding: 2px 4px;
+  text-align: center;
+}
+
 /* ---------- XP tab: talents and progression lists ---------- */
 
 .rogue-trader.sheet .rt-xp-list {

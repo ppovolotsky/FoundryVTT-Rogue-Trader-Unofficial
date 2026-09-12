@@ -112,6 +112,10 @@
   "RT.Talents.ShowDesc": "Show description",
   "RT.Talents.SendToChat": "Send to chat",
   "RT.Progression.Name": "Entry",
+  "RT.XP.ByCharacteristic": "Characteristics",
+  "RT.XP.BySkills": "Skills",
+  "RT.XP.ByTalents": "Talents",
+  "RT.XP.Misc": "Misc",
 
   "RT.Skill.Name": "Skill",
 
