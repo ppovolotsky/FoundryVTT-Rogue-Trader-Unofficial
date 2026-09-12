@@ -294,7 +294,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       })),
       components: ACQUISITION.components.map((option) => ({
         ...option,
-        selected: this.document.system.acquisition?.component === option.id
+        selected: this.document.system.acquisition?.scale === option.id
       })),
       quality: ACQUISITION.quality.map((option) => ({
         ...option,
@@ -307,7 +307,12 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   _onRender(context, options) {
     super._onRender?.(context, options);
-    // The edition list lives in world settings, not in actor data - handle it manually.
+    // The root element is reused between renders: bind the delegated
+    // listeners exactly once, or they pile up and freeze the window.
+    if (this._rtListenersBound) return;
+    this._rtListenersBound = true;
+
+    // The edition list lives in world settings, not in actor data.
     this.element.querySelector(".rt-edition-select")?.addEventListener("change", async (event) => {
       await game.settings.set(SYSTEM_ID, "edition", event.target.value);
     });
@@ -323,6 +328,15 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       if (!row) return;
       row[field] = el.type === "checkbox" ? el.checked : el.type === "number" ? Number(el.value || 0) : el.value;
       await this.document.update({ "system.groupSkills": rows }).catch(() => {});
+    });
+    // Acquisition controls are not form-bound either (avoids save races).
+    this.element.addEventListener("change", async (event) => {
+      const el = event.target;
+      const field = el.dataset.acq;
+      if (!field) return;
+      const value = el.type === "number" ? Number(el.value || 0) : el.value;
+      const path = field === "profitFactor" ? "system.profitFactor" : `system.acquisition.${field}`;
+      await this.document.update({ [path]: value }).catch(() => {});
     });
     // Repair actors whose groupSkills were saved as an object by older versions.
     if (this.document.system.groupSkills && !Array.isArray(this.document.system.groupSkills)) {

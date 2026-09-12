@@ -25,12 +25,12 @@
         <h3 class="rt-skills-column__title">{{localize "RT.Acquisition.Title"}}</h3>
         <div class="rt-acquisition__row">
           <button type="button" class="rt-button" data-action="rollAcquisition">{{localize "RT.Acquisition.Roll"}}</button>
-          <input type="number" name="system.profitFactor" value="{{system.profitFactor}}" data-dtype="Number" aria-label="{{localize "RT.Acquisition.ProfitFactor"}}"/>
+          <input type="number" data-acq="profitFactor" value="{{system.profitFactor}}" data-dtype="Number" aria-label="{{localize "RT.Acquisition.ProfitFactor"}}"/>
         </div>
         <div class="rt-acquisition__selects">
           <div class="rt-field">
             <label>{{localize "RT.Acquisition.AvailabilityTitle"}}</label>
-            <select name="system.acquisition.availability">
+            <select data-acq="availability">
               {{#each acquisition.availability as |option|}}
               <option value="{{option.id}}" {{#if option.selected}}selected{{/if}}>({{option.mod}}) {{localize option.label}}</option>
               {{/each}}
@@ -38,7 +38,7 @@
           </div>
           <div class="rt-field">
             <label>{{localize "RT.Acquisition.QuantityComponents"}}</label>
-            <select name="system.acquisition.scale">
+            <select data-acq="scale">
               <optgroup label="{{localize "RT.Acquisition.Quantity"}}">
                 {{#each acquisition.scale as |option|}}
                 <option value="{{option.id}}" {{#if option.selected}}selected{{/if}}>({{option.mod}}) {{localize option.label}}</option>
@@ -53,7 +53,7 @@
           </div>
           <div class="rt-field">
             <label>{{localize "RT.Acquisition.QualityTitle"}}</label>
-            <select name="system.acquisition.quality">
+            <select data-acq="quality">
               {{#each acquisition.quality as |option|}}
               <option value="{{option.id}}" {{#if option.selected}}selected{{/if}}>({{option.mod}}) {{localize option.label}}</option>
               {{/each}}
