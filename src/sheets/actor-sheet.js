@@ -245,16 +245,17 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
 
   static #onToggleListEdit(event, target) {
-    console.debug("[RT] toggleListEdit fired");
     // Pure DOM toggle: no state, no re-render — nothing to get stuck.
-    const shell = target.closest("[data-list-shell]");
-    console.debug("[RT] shell found:", Boolean(shell), "list:", shell?.dataset.listShell ?? "(none)");
+    // The button itself carries data-list-shell, so resolve the list shell
+    // by name instead of by ancestors.
+    const list = target.dataset.listShell || target.dataset.list;
+    if (!["talents", "progression"].includes(list)) return;
+    const shell = this.element.querySelector(`[data-list-shell="${list}"]`);
     if (!shell) return;
     shell.classList.toggle("editing");
   }
 
   static #onToggleRowExpand(event, target) {
-    console.debug("[RT] toggleRowExpand fired");
     // Pure DOM toggle of the description body within this block.
     const block = target.closest(".rt-talent-block");
     const body = block?.querySelector(".rt-talent-block__body");
