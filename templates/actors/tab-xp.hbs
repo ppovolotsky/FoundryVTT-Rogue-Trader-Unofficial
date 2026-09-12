@@ -115,38 +115,13 @@
     {{#each skillGroups as |g|}}
     <div class="rt-skill-group-table">
       <div class="rt-skill-group-table__header">
-        <label class="rt-skill-group-table__name" data-tooltip="{{g.desc}}">{{g.name}}</label>
+        <label class="rt-skill-group-table__name">{{g.name}}</label>
+        <i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{g.desc}}"></i>
       </div>
-      <div class="rt-xp-skills rt-xp-skills--group">
-        <div class="rt-xp-skills__row rt-xp-skills__row--header {{#if g.editing}}has-edit{{/if}}">
-          <label>{{localize "RT.Skill.Name"}}</label>
-          <label>{{localize "RT.Sheet.XP.Characteristic"}}</label>
-          <label>{{localize "RT.Skills.AsBasic"}}</label>
-          <label>{{localize "RT.Skills.Trained"}}</label>
-          <label>+10</label>
-          <label>+20</label>
-          <label>{{localize "RT.Skills.Talent"}}</label>
-          <label>{{localize "RT.Skills.Mod"}}</label>
-          <label></label>
-          <label>{{localize "RT.Sheet.XP.XP"}}</label>
-          {{#if g.editing}}<label></label>{{/if}}
-        </div>
-        {{#each g.rows as |r|}}
-        <div class="rt-xp-skills__row {{#if g.editing}}has-edit{{/if}}">
-          <input type="text" name="system.groupSkills.{{r.index}}.name" value="{{r.name}}"/>
-          <select name="system.groupSkills.{{r.index}}.characteristic">
-            {{#each g.chars as |c|}}
-            <option value="{{c.id}}" {{#if (eq r.char c.id)}}selected{{/if}}>{{c.abbr}}</option>
-            {{/each}}
-          </select>
-          <input type="checkbox" name="system.groupSkills.{{r.index}}.asBasic" {{checked r.asBasic}}/>
-          <input type="checkbox" name="system.groupSkills.{{r.index}}.trained" {{checked r.trained}}/>
-          <input type="checkbox" name="system.groupSkills.{{r.index}}.plus10" {{checked r.plus10}}/>
-          <input type="checkbox" name="system.groupSkills.{{r.index}}.plus20" {{checked r.plus20}}/>
-          <input type="number" name="system.groupSkills.{{r.index}}.talent" value="{{r.talent}}" data-dtype="Number"/>
-          <input type="number" name="system.groupSkills.{{r.index}}.modifier" value="{{r.modifier}}" data-dtype="Number"/>
-          <input type="text" disabled value="{{r.total}}"/>
-          <input type="number" name="system.groupSkills.{{r.index}}.xp" value="{{r.xp}}" data-dtype="Number"/>
+      {{#each g.rows as |r|}}
+      <div class="rt-group-row {{#if g.editing}}has-edit{{/if}}">
+        <div class="rt-group-row__name">
+          <input type="text" name="system.groupSkills.{{r.index}}.name" value="{{r.name}}" placeholder="{{localize "RT.Skill.Name"}}"/>
           {{#if g.editing}}
           <div class="rt-row-edit">
             <button type="button" class="rt-row-edit__btn" data-action="moveGroupSkill" data-index="{{r.index}}" data-delta="-1" title="{{localize "RT.Skills.MoveUp"}}"><i class="fa-solid fa-arrow-up"></i></button>
@@ -155,8 +130,23 @@
           </div>
           {{/if}}
         </div>
-        {{/each}}
+        <div class="rt-group-row__fields">
+          <select name="system.groupSkills.{{r.index}}.characteristic">
+            {{#each g.chars as |c|}}
+            <option value="{{c.id}}" {{#if (eq r.char c.id)}}selected{{/if}}>{{c.abbr}}</option>
+            {{/each}}
+          </select>
+          <input type="checkbox" name="system.groupSkills.{{r.index}}.asBasic" {{checked r.asBasic}} title="{{localize "RT.Skills.AsBasic"}}"/>
+          <input type="checkbox" name="system.groupSkills.{{r.index}}.trained" {{checked r.trained}} title="{{localize "RT.Skills.Trained"}}"/>
+          <input type="checkbox" name="system.groupSkills.{{r.index}}.plus10" {{checked r.plus10}} title="+10"/>
+          <input type="checkbox" name="system.groupSkills.{{r.index}}.plus20" {{checked r.plus20}} title="+20"/>
+          <input type="number" name="system.groupSkills.{{r.index}}.talent" value="{{r.talent}}" data-dtype="Number" title="{{localize "RT.Skills.Talent"}}"/>
+          <input type="number" name="system.groupSkills.{{r.index}}.modifier" value="{{r.modifier}}" data-dtype="Number" title="{{localize "RT.Skills.Mod"}}"/>
+          <input type="text" disabled value="{{r.total}}" title="{{localize "RT.Skills.TotalTitle"}}"/>
+          <input type="number" name="system.groupSkills.{{r.index}}.xp" value="{{r.xp}}" data-dtype="Number" title="{{localize "RT.Sheet.XP.XP"}}"/>
+        </div>
       </div>
+      {{/each}}
       <div class="rt-skill-group-table__footer">
         <button type="button" class="rt-button rt-button--small" data-action="addGroupSkill" data-group="{{g.key}}" title="{{localize "RT.Skills.Add"}}">+</button>
         <button type="button" class="rt-button rt-button--small {{#if g.editing}}active{{/if}}" data-action="toggleGroupEdit" data-group="{{g.key}}" title="{{localize "RT.Skills.EditRows"}}"><i class="fa-solid fa-gear"></i></button>

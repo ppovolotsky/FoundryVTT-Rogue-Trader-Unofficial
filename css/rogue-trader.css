@@ -579,12 +579,57 @@ body.theme-dark,
   grid-template-columns: 1.3fr 34px repeat(4, 32px) 42px 42px 42px;
 }
 
-.rogue-trader.sheet .rt-xp-skills--group .rt-xp-skills__row {
-  grid-template-columns: 1.1fr 48px repeat(5, 30px) 40px 40px 40px;
+/* ---------- Grouped skills rows (XP > Skills) ---------- */
+
+.rogue-trader.sheet .rt-group-row {
+  margin-bottom: 5px;
 }
 
-.rogue-trader.sheet .rt-xp-skills--group .rt-xp-skills__row.has-edit {
-  grid-template-columns: 1.1fr 48px repeat(5, 30px) 40px 40px 40px 70px;
+.rogue-trader.sheet .rt-group-row__name {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 3px;
+}
+
+.rogue-trader.sheet .rt-group-row__name input[type="text"] {
+  flex: 1;
+  min-width: 0;
+  background: var(--rt-field);
+  border: 1px solid var(--rt-border);
+  color: var(--rt-text);
+  border-radius: 3px;
+  padding: 2px 5px;
+}
+
+.rogue-trader.sheet .rt-group-row__fields {
+  display: grid;
+  grid-template-columns: 52px repeat(5, 34px) 42px 42px 42px;
+  gap: 4px;
+  align-items: center;
+}
+
+.rogue-trader.sheet .rt-group-row.has-edit .rt-group-row__fields {
+  grid-template-columns: 52px repeat(5, 34px) 42px 42px 42px 66px;
+}
+
+.rogue-trader.sheet .rt-group-row__fields input[type="checkbox"] {
+  width: auto;
+  justify-self: center;
+  margin: 0;
+}
+
+.rogue-trader.sheet .rt-group-row__fields input,
+.rogue-trader.sheet .rt-group-row__fields select {
+  width: 100%;
+  background: var(--rt-field);
+  border: 1px solid var(--rt-border);
+  color: var(--rt-text);
+  border-radius: 3px;
+  padding: 2px 4px;
+}
+
+.rogue-trader.sheet .rt-group-row__fields input:disabled {
+  color: var(--rt-muted);
 }
 
 .rogue-trader.sheet .rt-xp-skills__row--header label {

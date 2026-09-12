@@ -127,14 +127,16 @@ export const ACQUISITION = {
   ]
 };
 
-// Sum of the currently selected acquisition modifiers.
+// Sum of the currently selected acquisition modifiers. The scale dropdown
+// carries both quantity and ship-component options, so check both tables.
 export function acquisitionModifier(acquisition) {
   const find = (options, id) => options.find((option) => option.id === id);
   const parts = ACQUISITION;
   let mod = 0;
   mod += find(parts.availability, acquisition?.availability)?.mod ?? 0;
-  mod += find(parts.scale, acquisition?.scale)?.mod ?? 0;
-  mod += find(parts.components, acquisition?.component)?.mod ?? 0;
+  const scale = find(parts.scale, acquisition?.scale);
+  if (scale) mod += scale.mod;
+  else mod += find(parts.components, acquisition?.scale)?.mod ?? 0;
   mod += find(parts.quality, acquisition?.quality)?.mod ?? 0;
   return mod;
 }

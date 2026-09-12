@@ -163,7 +163,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static async #onAddGroupSkill(event, target) {
     const group = SKILL_GROUPS.find((g) => g.key === target.dataset.group);
     if (!group) return;
-    const rows = foundry.utils.deepClone(this.document.system.groupSkills ?? []);
+    const rows = normalizeGroupRows(this.document.system.groupSkills);
     rows.push({
       group: group.key,
       name: "",
@@ -172,7 +172,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       trained: false,
       plus10: false,
       plus20: false,
-      talent: false,
+      talent: 0,
       modifier: 0,
       xp: 0
     });
@@ -181,7 +181,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   static async #onDeleteGroupSkill(event, target) {
     const index = Number(target.dataset.index);
-    const rows = foundry.utils.deepClone(this.document.system.groupSkills ?? []);
+    const rows = normalizeGroupRows(this.document.system.groupSkills);
     if (index < 0 || index >= rows.length) return;
     rows.splice(index, 1);
     await this.document.update({ "system.groupSkills": rows });
@@ -190,7 +190,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static async #onMoveGroupSkill(event, target) {
     const index = Number(target.dataset.index);
     const delta = Number(target.dataset.delta || 0);
-    const rows = foundry.utils.deepClone(this.document.system.groupSkills ?? []);
+    const rows = normalizeGroupRows(this.document.system.groupSkills);
     const next = index + delta;
     if (index < 0 || index >= rows.length || next < 0 || next >= rows.length) return;
     [rows[index], rows[next]] = [rows[next], rows[index]];
@@ -312,7 +312,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     // Repair actors whose groupSkills were saved as an object by older versions.
     if (this.document.system.groupSkills && !Array.isArray(this.document.system.groupSkills)) {
       this.document
-        .update({ "system.groupSkills": foundry.utils.deepClone(this.document.system.groupSkills) })
+        .update({ "system.groupSkills": normalizeGroupRows(this.document.system.groupSkills) })
         .catch(() => {});
     }
   }
