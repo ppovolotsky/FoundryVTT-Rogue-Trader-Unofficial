@@ -632,18 +632,26 @@ body.theme-dark,
   margin-bottom: 8px;
 }
 
-.rogue-trader.sheet .rt-table-column {
-  flex: 1;
+.rogue-trader.sheet .rt-table-columns > * {
+  flex: 0 0 50%;
+  width: 50%;
+  max-width: 50%;
   min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
   padding: 0 4px;
 }
 
-.rogue-trader.sheet .rt-table-columns > :nth-child(odd) {
-  border-right: 1px solid var(--rt-border);
+.rogue-trader.sheet .rt-table-column {
+  min-width: 0;
 }
 
-.rogue-trader.sheet .rt-table-columns > :last-child {
-  border-right: none;
+.rogue-trader.sheet .rt-table-column .rt-xp-skills__row {
+  grid-template-columns: minmax(78px, 1fr) 26px repeat(4, 26px) 32px 32px 40px;
+}
+
+.rogue-trader.sheet .rt-table-column .rt-xp-skills--advanced .rt-xp-skills__row {
+  grid-template-columns: minmax(72px, 1fr) 26px 26px repeat(4, 26px) 32px 32px 40px;
 }
 
 .rogue-trader.sheet .rt-table-column .rt-xp-skills__row {
@@ -662,6 +670,7 @@ body.theme-dark,
   flex: 1 1 50%;
   min-width: 0;
   padding: 0 4px;
+  overflow: hidden;
 }
 
 /* ---------- Grouped skill rows (XP > Skills) ---------- */
@@ -688,17 +697,18 @@ body.theme-dark,
 
 .rogue-trader.sheet .rt-group-row__fields {
   display: grid;
-  grid-template-columns: 52px repeat(5, 34px) 42px 36px 42px;
-  gap: 4px;
+  grid-template-columns: 48px 26px repeat(4, 26px) 30px 30px 34px 40px;
+  gap: 2px;
   align-items: center;
 }
 
 .rogue-trader.sheet .rt-group-row.has-edit .rt-group-row__fields {
-  grid-template-columns: 52px repeat(5, 34px) 42px 36px 42px 66px;
+  grid-template-columns: 48px 26px repeat(4, 26px) 30px 30px 34px 40px 64px;
 }
 
 .rogue-trader.sheet .rt-group-row__fields input[type="checkbox"] {
-  width: auto;
+  width: 14px;
+  height: 14px;
   justify-self: center;
   margin: 0;
 }
@@ -711,6 +721,12 @@ body.theme-dark,
   color: var(--rt-text);
   border-radius: 3px;
   padding: 2px 4px;
+}
+
+.rogue-trader.sheet .rt-group-row__fields select {
+  appearance: none;
+  text-align: center;
+  padding: 2px;
 }
 
 .rogue-trader.sheet .rt-group-row__fields input:disabled {
