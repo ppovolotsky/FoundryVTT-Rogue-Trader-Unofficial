@@ -449,7 +449,7 @@ body.theme-dark,
 .rogue-trader.sheet .rt-skills-column {
   flex: 1;
   min-width: 0;
-  padding: 0 10px;
+  padding: 0 4px;
 }
 
 .rogue-trader.sheet .rt-skills-column:first-child {
@@ -529,7 +529,7 @@ body.theme-dark,
 .rogue-trader.sheet .rt-skills-groups .rt-skill-group {
   flex: 0 0 50%;
   min-width: 0;
-  padding: 0 10px;
+  padding: 0 4px;
   margin-bottom: 8px;
 }
 
@@ -635,7 +635,7 @@ body.theme-dark,
 .rogue-trader.sheet .rt-table-column {
   flex: 1;
   min-width: 0;
-  padding: 0 10px;
+  padding: 0 4px;
 }
 
 .rogue-trader.sheet .rt-table-columns > :nth-child(odd) {
@@ -661,7 +661,7 @@ body.theme-dark,
 .rogue-trader.sheet .rt-table-columns > .rt-skill-group-table {
   flex: 1 1 50%;
   min-width: 0;
-  padding: 0 10px;
+  padding: 0 4px;
 }
 
 /* ---------- Grouped skill rows (XP > Skills) ---------- */
@@ -758,6 +758,69 @@ body.theme-dark,
 
 .rogue-trader.sheet .rt-button--small {
   padding: 1px 8px;
+  font-size: 0.85em;
+}
+
+/* ---------- Acquisition (Profit Factor) ---------- */
+
+.rogue-trader.sheet .rt-acquisition {
+  margin-top: 10px;
+  padding-top: 6px;
+  border-top: 1px solid var(--rt-border);
+}
+
+.rogue-trader.sheet .rt-acquisition__row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.rogue-trader.sheet .rt-acquisition__row input[type="number"] {
+  width: 70px;
+  background: var(--rt-field);
+  border: 1px solid var(--rt-border);
+  color: var(--rt-text);
+  border-radius: 3px;
+  padding: 2px 5px;
+}
+
+.rogue-trader.sheet .rt-acquisition__selects {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.rogue-trader.sheet .rt-acquisition__selects .rt-field {
+  flex: 1;
+  min-width: 0;
+}
+
+.rogue-trader.sheet .rt-acquisition__selects label {
+  font-size: 0.75em;
+  color: var(--rt-muted);
+  white-space: nowrap;
+}
+
+.rogue-trader.sheet .rt-acquisition__selects .rt-field:nth-child(2) label {
+  text-align: center;
+}
+
+.rogue-trader.sheet .rt-acquisition__selects .rt-field:nth-child(3) label {
+  text-align: right;
+}
+
+.rogue-trader.sheet .rt-acquisition__selects select {
+  width: 100%;
+  font-size: 0.85em;
+  background: var(--rt-field);
+  border: 1px solid var(--rt-border);
+  color: var(--rt-text);
+  border-radius: 3px;
+  padding: 2px 4px;
+}
+
+.rogue-trader.sheet .rt-acquisition__selects select option {
   font-size: 0.85em;
 }
 
