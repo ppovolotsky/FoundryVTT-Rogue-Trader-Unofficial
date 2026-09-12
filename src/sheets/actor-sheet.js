@@ -48,7 +48,9 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       addListRow: RTCharacterSheet.#onAddListRow,
       deleteListRow: RTCharacterSheet.#onDeleteListRow,
       moveListRow: RTCharacterSheet.#onMoveListRow,
-      toggleListEdit: RTCharacterSheet.#onToggleListEdit
+      toggleListEdit: RTCharacterSheet.#onToggleListEdit,
+      toggleTalentExpand: RTCharacterSheet.#onToggleTalentExpand,
+      sendTalentToChat: RTCharacterSheet.#onSendTalentToChat
     }
   };
 
@@ -214,7 +216,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const list = target.dataset.list;
     if (!["talents", "progression"].includes(list)) return;
     const rows = normalizeGroupRows(this.document.system[list]);
-    rows.push({ name: "", xp: 0 });
+    rows.push({ name: "", description: "", xp: 0 });
     await this.document.update({ [`system.${list}`]: rows }).catch(() => {});
   }
 
@@ -244,6 +246,24 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     if (!["talents", "progression"].includes(list)) return;
     this.listEdit[list] = !this.listEdit[list];
     this.render();
+  }
+
+  static #onToggleTalentExpand(event, target) {
+    const index = target.dataset.index;
+    this.talentsExpanded[index] = !this.talentsExpanded[index];
+    this.render();
+  }
+
+  static async #onSendTalentToChat(event, target) {
+    const index = Number(target.dataset.index);
+    const talent = normalizeGroupRows(this.document.system.talents)[index];
+    if (!talent || !talent.name) return;
+    const description = await TextEditor.enrichHTML(talent.description ?? "", { async: true });
+    const content = `<div class="rt-talent-chat"><h3>${talent.name}</h3>${description}</div>`;
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      content
+    });
   }
 
   static async #onRollAcquisition(event) {
@@ -327,7 +347,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     }));
 
     context.talents = normalizeGroupRows(this.document.system.talents)
-      .map((row, index) => ({ ...row, index }));
+      .map((row, index) => ({ ...row, index, expanded: !!this.talentsExpanded[index] }));
     context.progression = normalizeGroupRows(this.document.system.progression)
       .map((row, index) => ({ ...row, index }));
     context.listEdit = this.listEdit;

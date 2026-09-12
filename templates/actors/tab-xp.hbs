@@ -157,21 +157,26 @@
   </section>
 
   <section class="tab {{#if (eq activeXpTab "talents")}}active{{/if}}" data-tab="talents" data-group="xp">
-    <div class="rt-xp-list">
-      <div class="rt-xp-list__row rt-xp-list__row--header {{#if listEdit.talents}}has-edit{{/if}}">
-        <label>{{localize "RT.Talents.Name"}}</label>
-        <label>{{localize "RT.Sheet.XP.XP"}}</label>
-        {{#if listEdit.talents}}<label></label>{{/if}}
-      </div>
+    <div class="rt-talents-list">
       {{#each talents as |t|}}
-      <div class="rt-xp-list__row {{#if listEdit.talents}}has-edit{{/if}}">
-        <input type="text" data-jlist="talents" data-jindex="{{t.index}}" data-jfield="name" value="{{t.name}}" placeholder="{{localize "RT.Talents.Name"}}"/>
-        <input type="number" data-jlist="talents" data-jindex="{{t.index}}" data-jfield="xp" value="{{t.xp}}" data-dtype="Number"/>
-        {{#if listEdit.talents}}
-        <div class="rt-row-edit">
-          <button type="button" class="rt-row-edit__btn" data-action="moveListRow" data-list="talents" data-index="{{t.index}}" data-delta="-1" title="{{localize "RT.Skills.MoveUp"}}"><i class="fa-solid fa-arrow-up"></i></button>
-          <button type="button" class="rt-row-edit__btn" data-action="moveListRow" data-list="talents" data-index="{{t.index}}" data-delta="1" title="{{localize "RT.Skills.MoveDown"}}"><i class="fa-solid fa-arrow-down"></i></button>
-          <button type="button" class="rt-row-edit__btn" data-action="deleteListRow" data-list="talents" data-index="{{t.index}}" title="{{localize "RT.Skills.Delete"}}"><i class="fa-solid fa-trash"></i></button>
+      <div class="rt-talent-block">
+        <div class="rt-talent-block__header">
+          <input type="text" data-jlist="talents" data-jindex="{{t.index}}" data-jfield="name" value="{{t.name}}" placeholder="{{localize "RT.Talents.Name"}}"/>
+          <input type="number" class="rt-talent-block__xp" data-jlist="talents" data-jindex="{{t.index}}" data-jfield="xp" value="{{t.xp}}" data-dtype="Number" title="{{localize "RT.Sheet.XP.XP"}}"/>
+          {{#if listEdit.talents}}
+          <div class="rt-row-edit">
+            <button type="button" class="rt-row-edit__btn" data-action="moveListRow" data-list="talents" data-index="{{t.index}}" data-delta="-1" title="{{localize "RT.Skills.MoveUp"}}"><i class="fa-solid fa-arrow-up"></i></button>
+            <button type="button" class="rt-row-edit__btn" data-action="moveListRow" data-list="talents" data-index="{{t.index}}" data-delta="1" title="{{localize "RT.Skills.MoveDown"}}"><i class="fa-solid fa-arrow-down"></i></button>
+            <button type="button" class="rt-row-edit__btn" data-action="deleteListRow" data-list="talents" data-index="{{t.index}}" title="{{localize "RT.Skills.Delete"}}"><i class="fa-solid fa-trash"></i></button>
+          </div>
+          {{else}}
+          <button type="button" class="rt-button rt-button--small" data-action="toggleTalentExpand" data-index="{{t.index}}" title="{{localize "RT.Talents.ShowDesc"}}"><i class="fa-solid fa-chevron-down"></i></button>
+          <button type="button" class="rt-button rt-button--small" data-action="sendTalentToChat" data-index="{{t.index}}" title="{{localize "RT.Talents.SendToChat"}}"><i class="fa-solid fa-comment-dots"></i></button>
+          {{/if}}
+        </div>
+        {{#if t.expanded}}
+        <div class="rt-talent-block__body">
+          <textarea class="rt-description" data-jlist="talents" data-jindex="{{t.index}}" data-jfield="description" rows="4">{{t.description}}</textarea>
         </div>
         {{/if}}
       </div>

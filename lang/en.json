@@ -109,6 +109,8 @@
   "RT.Journal.Goals": "Goals",
   "RT.Journal.Notes": "Notes",
   "RT.Talents.Name": "Talent",
+  "RT.Talents.ShowDesc": "Show description",
+  "RT.Talents.SendToChat": "Send to chat",
   "RT.Progression.Name": "Entry",
 
   "RT.Skill.Name": "Skill",

@@ -109,6 +109,8 @@
   "RT.Journal.Goals": "Цели",
   "RT.Journal.Notes": "Заметки",
   "RT.Talents.Name": "Талант",
+  "RT.Talents.ShowDesc": "Показать описание",
+  "RT.Talents.SendToChat": "Отправить в чат",
   "RT.Progression.Name": "Запись",
 
   "RT.Skill.Name": "Умение",

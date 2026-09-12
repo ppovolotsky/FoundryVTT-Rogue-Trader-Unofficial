@@ -1108,3 +1108,46 @@ body.theme-dark,
   border-radius: 3px;
   padding: 2px 4px;
 }
+
+/* ---------- XP tab: talent blocks ---------- */
+
+.rogue-trader.sheet .rt-talents-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.rogue-trader.sheet .rt-talent-block {
+  background: var(--rt-panel);
+  border: 1px solid var(--rt-border);
+  border-radius: 4px;
+  padding: 4px 6px;
+}
+
+.rogue-trader.sheet .rt-talent-block__header {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.rogue-trader.sheet .rt-talent-block__header input[type="text"] {
+  flex: 1;
+  min-width: 0;
+  font-weight: bold;
+}
+
+.rogue-trader.sheet .rt-talent-block__xp {
+  flex: none;
+  width: 48px;
+  text-align: center;
+}
+
+.rogue-trader.sheet .rt-talent-block__body {
+  margin-top: 4px;
+}
+
+.rogue-trader.sheet .rt-talent-block__body textarea {
+  width: 100%;
+  font-size: 0.9em;
+}
