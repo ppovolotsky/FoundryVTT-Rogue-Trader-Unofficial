@@ -268,7 +268,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const index = Number(target.dataset.index);
     const row = normalizeGroupRows(this.document.system[list])[index];
     if (!row || !row.name) return;
-    const content = await renderTemplate("systems/rogue-trader/templates/chat/row-card.hbs", {
+    const content = await foundry.applications.handlebars.renderTemplate("systems/rogue-trader/templates/chat/row-card.hbs", {
       name: row.name,
       description: row.description ?? ""
     });

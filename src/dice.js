@@ -1,7 +1,7 @@
 import { SYSTEM_ID, ROLL_MODES } from "./config.js";
 
-const { DialogV2 } = foundry.applications.api;
 const { renderTemplate } = foundry.applications.handlebars;
+const { DialogV2 } = foundry.applications.api;
 const { Roll } = foundry.dice;
 const { ChatMessage } = foundry.documents;
 
@@ -72,7 +72,7 @@ export async function rollTest({
   };
 
   if (createMessage) {
-    const content = await renderTemplate("systems/rogue-trader/templates/dice/roll-card.hbs", test);
+    const content = await foundry.applications.handlebars.renderTemplate("systems/rogue-trader/templates/dice/roll-card.hbs", test);
     await ChatMessage.create({
       speaker: speaker ?? ChatMessage.getSpeaker(),
       content,
@@ -100,7 +100,7 @@ export async function showRollDialog({
   // so keep it out of the form-read values.
   const baseTarget = Number(target) || 0;
 
-  const content = await renderTemplate("systems/rogue-trader/templates/dialog/roll-dialog.hbs", {
+  const content = await foundry.applications.handlebars.renderTemplate("systems/rogue-trader/templates/dialog/roll-dialog.hbs", {
     label,
     target: baseTarget,
     modifier: Number(modifier),
