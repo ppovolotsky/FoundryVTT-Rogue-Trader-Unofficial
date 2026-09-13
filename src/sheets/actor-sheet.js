@@ -245,11 +245,9 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
 
   static #onToggleListEdit(event, target) {
-    // Pure DOM toggle: no state, no re-render — nothing to get stuck.
-    // The button itself carries data-list-shell, so resolve the list shell
-    // by name instead of by ancestors.
     const list = target.dataset.listShell || target.dataset.list;
-    if (!["talents", "progression"].includes(list)) return;
+    if (!list) return;
+    this.listEdit[list] = !this.listEdit[list];
     const shell = this.element.querySelector(`[data-list-shell="${list}"]`);
     if (!shell) return;
     shell.classList.toggle("editing");
