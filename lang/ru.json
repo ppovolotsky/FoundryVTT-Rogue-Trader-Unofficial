@@ -84,13 +84,6 @@
   "RT.Settings.Sheet.RollModeHint": "Переопределяет глобальный режим бросков для этого персонажа.",
   "RT.Settings.Sheet.FreeSkillChars": "Свободные броски навыков",
   "RT.Settings.Sheet.FreeSkillCharsHint": "Позволяет выбирать любую характеристику для умения в таблице опыта.",
-  "RT.Settings.Sheet.Language": "Язык листа",
-  "RT.Settings.Sheet.LanguageHint": "Переключает язык интерфейса этого клиента.",
-  "RT.Settings.Sheet.Theme": "Тема листа",
-  "RT.Settings.Sheet.ThemeHint": "Переключает тему приложений этого клиента.",
-  "RT.Theme.Light": "Светлая",
-  "RT.Theme.Dark": "Тёмная",
-  "RT.Settings.LanguageReloaded": "Язык интерфейса изменён. Если подписи не обновились — обновите страницу (F5).",
   "RT.Sheet.Edition": "Редакция правил",
 
   "RT.Sheet.XP.Advance": "Улучшение",

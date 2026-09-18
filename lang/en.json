@@ -84,13 +84,6 @@
   "RT.Settings.Sheet.RollModeHint": "Overrides the global roll mode for this character.",
   "RT.Settings.Sheet.FreeSkillChars": "Free skill tests",
   "RT.Settings.Sheet.FreeSkillCharsHint": "Allows choosing any characteristic for a skill in the XP table.",
-  "RT.Settings.Sheet.Language": "Sheet language",
-  "RT.Settings.Sheet.LanguageHint": "Switches the language of this client.",
-  "RT.Settings.Sheet.Theme": "Sheet theme",
-  "RT.Settings.Sheet.ThemeHint": "Switches the application theme of this client.",
-  "RT.Theme.Light": "Light",
-  "RT.Theme.Dark": "Dark",
-  "RT.Settings.LanguageReloaded": "Interface language changed. If labels did not update — refresh the page (F5).",
   "RT.Sheet.Edition": "Rules Edition",
 
   "RT.Sheet.XP.Advance": "Advance",

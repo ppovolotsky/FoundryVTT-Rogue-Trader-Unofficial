@@ -86,6 +86,13 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     if (submitted !== undefined && !Array.isArray(submitted)) {
       data.system.groupSkills = Object.values(submitted).filter((row) => row && typeof row === "object");
     }
+    // Disabling free skill tests resets every skill characteristic to the
+    // catalog default.
+    if (data.system?.settings?.freeSkillChars === false) {
+      for (const def of SKILLS) {
+        if (data.system?.skills?.[def.key]) data.system.skills[def.key].characteristic = def.char;
+      }
+    }
     await this.document.update(data);
   }
 
@@ -333,16 +340,16 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     }));
 
     context.freeSkillChars = this.document.system.settings?.freeSkillChars ?? false;
-    context.clientLang = game.settings.get("core", "language");
     // The color scheme is not a registered setting in v14: read the applied
     // theme from the body class instead.
-    context.clientTheme = document.body.classList.contains("theme-dark") ? "dark" : "light";
     context.skillsBasic = [];
     context.skillsAdvanced = [];
     for (const def of SKILLS) {
       const state = this.document.system.skills?.[def.key] ?? {};
       const currentChar = state.characteristic ?? def.char;
-      const allowedChars = context.freeSkillChars ? Object.keys(CHARACTERISTICS) : [def.char];
+      const allowedChars = context.freeSkillChars
+        ? Object.keys(CHARACTERISTICS)
+        : [...new Set([currentChar, def.char])];
       const entry = {
         key: def.key,
         name: game.i18n.localize(def.name),
@@ -428,29 +435,6 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     this.element.querySelector(".rt-edition-select")?.addEventListener("change", async (event) => {
       await game.settings.set(SYSTEM_ID, "edition", event.target.value);
     });
-    // Client-level controls (sheet language, application theme) are not
-    // actor data: they write to the core settings registry.
-    this.element.addEventListener("change", async (event) => {
-      const el = event.target;
-      const setting = el.dataset.clientSetting;
-      if (!setting) return;
-      if (setting === "language") {
-        await game.settings.set("core", "language", el.value).catch(() => {});
-        ui.notifications.info(game.i18n.localize("RT.Settings.LanguageReloaded"));
-        return;
-      }
-      if (setting === "theme") {
-        // No registered setting for the color scheme in v14: apply the theme
-        // classes to the body directly for this session.
-        document.body.classList.toggle("theme-dark", el.value === "dark");
-        document.body.classList.toggle("theme-light", el.value !== "dark");
-        const keys = [...game.settings.settings.keys()].filter((k) => k.toLowerCase().includes("colorscheme"));
-        for (const key of keys) {
-          await game.settings.set("core", key, el.value).catch(() => {});
-        }
-      }
-    });
-
     // The edition list lives in world settings, not in actor data.
     this.element.querySelector(".rt-edition-select")?.addEventListener("change", async (event) => {
       await game.settings.set(SYSTEM_ID, "edition", event.target.value);
