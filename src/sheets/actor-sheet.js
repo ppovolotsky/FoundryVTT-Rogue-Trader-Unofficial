@@ -12,8 +12,17 @@ import { normalizeGroupRows } from "../documents/actor.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
-const { ChatMessage } = foundry.documents;
+const { ChatMessage, Item } = foundry.documents;
 const { Roll } = foundry.dice;
+
+const INVENTORY_SECTIONS = [
+  { key: "weapons", label: "RT.Inventory.Weapons", type: "weapon", category: "", newName: "RT.Inventory.NewWeapon" },
+  { key: "armour", label: "RT.Inventory.Armour", type: "armour", category: "", newName: "RT.Inventory.NewArmour" },
+  { key: "gear", label: "RT.Inventory.Gear", type: "gear", category: "gear", newName: "RT.Inventory.NewGear" },
+  { key: "cybernetics", label: "RT.Inventory.Cybernetics", type: "gear", category: "cybernetic", newName: "RT.Inventory.NewCybernetic" },
+  { key: "ammo", label: "RT.Inventory.Ammo", type: "ammo", category: "", newName: "RT.Inventory.NewAmmo" },
+  { key: "weaponMods", label: "RT.Inventory.WeaponMods", type: "gear", category: "weaponMod", newName: "RT.Inventory.NewWeaponMod" }
+];
 
 export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static DEFAULT_OPTIONS = {
@@ -30,6 +39,8 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       submitOnChange: true,
       closeOnSubmit: false
     },
+    // Allow dropping Items from the sidebar / compendiums onto the sheet.
+    dragDrop: [{ dragSelector: ".rt-inventory-row", dropSelector: null }],
     actions: {
       rollCharacteristic: RTCharacterSheet.#onRollCharacteristic,
       adjustValue: RTCharacterSheet.#onAdjustValue,
@@ -50,7 +61,12 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       moveListRow: RTCharacterSheet.#onMoveListRow,
       toggleListEdit: RTCharacterSheet.#onToggleListEdit,
       toggleRowExpand: RTCharacterSheet.#onToggleRowExpand,
-      sendRowToChat: RTCharacterSheet.#onSendRowToChat
+      sendRowToChat: RTCharacterSheet.#onSendRowToChat,
+      createInventoryItem: RTCharacterSheet.#onCreateInventoryItem,
+      editInventoryItem: RTCharacterSheet.#onEditInventoryItem,
+      deleteInventoryItem: RTCharacterSheet.#onDeleteInventoryItem,
+      toggleItemEquipped: RTCharacterSheet.#onToggleItemEquipped,
+      adjustItemQuantity: RTCharacterSheet.#onAdjustItemQuantity
     }
   };
 
@@ -71,6 +87,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     tabs: { template: "systems/rogue-trader/templates/actors/character-tabs.hbs" },
     skills: { template: "systems/rogue-trader/templates/actors/tab-skills.hbs" },
     combat: { template: "systems/rogue-trader/templates/actors/tab-combat.hbs" },
+    inventory: { template: "systems/rogue-trader/templates/actors/tab-inventory.hbs" },
     psykana: { template: "systems/rogue-trader/templates/actors/tab-psykana.hbs" },
     ship: { template: "systems/rogue-trader/templates/actors/tab-ship.hbs" },
     journal: { template: "systems/rogue-trader/templates/actors/tab-journal.hbs" },
@@ -297,12 +314,104 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     });
   }
 
+  static async #onCreateInventoryItem(event, target) {
+    const type = target.dataset.type || "gear";
+    const category = target.dataset.category || "";
+    const section = INVENTORY_SECTIONS.find(
+      (s) => s.type === type && (s.category || "") === category
+    );
+    const name = game.i18n.localize(section?.newName ?? "RT.Inventory.NewGear");
+    const data = { name, type, img: "icons/svg/item-bag.svg" };
+    if (type === "gear" && category) data.system = { category };
+    await this.document.createEmbeddedDocuments("Item", [data]);
+  }
+
+  static async #onEditInventoryItem(event, target) {
+    const item = this.document.items.get(target.dataset.itemId);
+    item?.sheet?.render(true);
+  }
+
+  static async #onDeleteInventoryItem(event, target) {
+    const item = this.document.items.get(target.dataset.itemId);
+    if (!item) return;
+    await item.delete();
+  }
+
+  static async #onToggleItemEquipped(event, target) {
+    const item = this.document.items.get(target.dataset.itemId);
+    if (!item || !["weapon", "armour"].includes(item.type)) return;
+    await item.update({ "system.equipped": !item.system.equipped });
+  }
+
+  static async #onAdjustItemQuantity(event, target) {
+    const item = this.document.items.get(target.dataset.itemId);
+    if (!item || !["gear", "ammo"].includes(item.type)) return;
+    const delta = Number(target.dataset.delta || 0);
+    const current = Number(item.system.quantity ?? 0);
+    await item.update({ "system.quantity": Math.max(0, current + delta) });
+  }
+
+  #prepareInventorySections() {
+    const items = this.document.items.contents.slice().sort((a, b) => a.name.localeCompare(b.name));
+    return INVENTORY_SECTIONS.map((section) => {
+      const filtered = items.filter((item) => {
+        if (item.type !== section.type) return false;
+        if (section.type !== "gear") return true;
+        const cat = item.system.category || "gear";
+        if (section.category === "gear") {
+          return !["cybernetic", "weaponMod"].includes(cat);
+        }
+        return cat === section.category;
+      });
+      return {
+        ...section,
+        items: filtered.map((item) => {
+          const showEquipped = item.type === "weapon" || item.type === "armour";
+          const showQuantity = item.type === "gear" || item.type === "ammo";
+          let summary = "";
+          if (item.type === "weapon") {
+            const bits = [item.system.damage, item.system.specialText].filter(Boolean);
+            summary = bits.join(" · ");
+          } else if (item.type === "armour") {
+            const loc = item.system.locations ?? {};
+            summary = `AP ${loc.body ?? 0}`;
+          }
+          return {
+            id: item.id,
+            name: item.name,
+            img: item.img,
+            equipped: !!item.system.equipped,
+            quantity: item.system.quantity ?? 0,
+            showEquipped,
+            showQuantity,
+            summary
+          };
+        })
+      };
+    });
+  }
+
+  /**
+   * Accept Item drops from the sidebar / compendiums onto the sheet.
+   */
+  async _onDrop(event) {
+    const data = foundry.applications.ux.TextEditor.implementation.getDragEventData(event);
+    if (!data || data.type !== "Item") {
+      return super._onDrop?.(event);
+    }
+    const item = await Item.implementation.fromDropData(data);
+    if (!item) return;
+    const keepId = data.uuid?.startsWith("Compendium.") ? false : undefined;
+    return this.document.createEmbeddedDocuments("Item", [item.toObject()], { keepId });
+  }
+
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     context.actor = this.document;
     context.system = this.document.system;
     context.activeTab = this.activeTabs.main;
     context.activeXpTab = this.activeTabs.xp;
+    context.inventorySections = this.#prepareInventorySections();
 
     const charAbbr = (key) => game.i18n.localize(CHARACTERISTICS[key]?.abbrKey ?? key);
 
@@ -490,6 +599,14 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       const value = el.type === "number" ? Number(el.value || 0) : el.value;
       const path = field === "profitFactor" ? "system.profitFactor" : `system.acquisition.${field}`;
       await this.document.update({ [path]: value }).catch(() => {});
+    });
+    // Inventory equipped toggles (checkbox is not form-bound to avoid item/actor form races).
+    this.element.addEventListener("change", async (event) => {
+      const el = event.target;
+      if (!el.dataset.equipToggle) return;
+      const item = this.document.items.get(el.dataset.itemId);
+      if (!item || !["weapon", "armour"].includes(item.type)) return;
+      await item.update({ "system.equipped": !!el.checked }).catch(() => {});
     });
     // Repair actors whose groupSkills were saved as an object by older versions.
     if (this.document.system.groupSkills && !Array.isArray(this.document.system.groupSkills)) {

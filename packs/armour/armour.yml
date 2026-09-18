@@ -1,16 +1,441 @@
+---
 data:
-    armourPoints:
-        body: 2
-        head: 0
-        leftArm: 2
-        leftLeg: 2
-        rightArm: 2
-        rightLeg: 2
-    availability: Common
-    craftsmanship: Common
     description: ''
-    type: Basic
+    availability: Common
     weight: 7
-img: systems/rogue-trader/...
+    cost: ''
+    source: RT
+    armourType: ''
+    locations:
+      head: 0
+      body: 2
+      leftArm: 2
+      rightArm: 2
+      leftLeg: 2
+      rightLeg: 2
+    maxAgilityPenalty: 0
+    equipped: false
+img: icons/svg/shield.svg
 name: Heavy Leathers/Furs
 type: armour
+---
+---
+data:
+    description: ''
+    availability: Common
+    weight: 15
+    cost: ''
+    source: RT
+    armourType: ''
+    locations:
+      head: 0
+      body: 3
+      leftArm: 3
+      rightArm: 3
+      leftLeg: 3
+      rightLeg: 3
+    maxAgilityPenalty: 0
+    equipped: false
+img: icons/svg/shield.svg
+name: Grox Hide/Chainmail
+type: armour
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 30
+    cost: ''
+    source: RT
+    armourType: ''
+    locations:
+      head: 5
+      body: 5
+      leftArm: 5
+      rightArm: 5
+      leftLeg: 5
+      rightLeg: 5
+    maxAgilityPenalty: 0
+    equipped: false
+img: icons/svg/shield.svg
+name: Feudal World Plate
+type: armour
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 20
+    cost: ''
+    source: RT
+    armourType: ''
+    locations:
+      head: 0
+      body: 6
+      leftArm: 0
+      rightArm: 0
+      leftLeg: 0
+      rightLeg: 0
+    maxAgilityPenalty: 0
+    equipped: false
+img: icons/svg/shield.svg
+name: Burnscour Beast Hide
+type: armour
+---
+---
+data:
+    description: ''
+    availability: Average
+    weight: 2
+    cost: ''
+    source: RT
+    armourType: ''
+    locations:
+      head: 2
+      body: 0
+      leftArm: 0
+      rightArm: 0
+      leftLeg: 0
+      rightLeg: 0
+    maxAgilityPenalty: 0
+    equipped: false
+img: icons/svg/shield.svg
+name: Flak Helmet
+type: armour
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 8
+    cost: ''
+    source: RT
+    armourType: ''
+    locations:
+      head: 0
+      body: 3
+      leftArm: 3
+      rightArm: 3
+      leftLeg: 3
+      rightLeg: 3
+    maxAgilityPenalty: 0
+    equipped: false
+img: icons/svg/shield.svg
+name: Flak Cloak
+type: armour
+---
+---
+data:
+    description: ''
+    availability: Average
+    weight: 5
+    cost: ''
+    source: RT
+    armourType: ''
+    locations:
+      head: 0
+      body: 3
+      leftArm: 3
+      rightArm: 3
+      leftLeg: 3
+      rightLeg: 3
+    maxAgilityPenalty: 0
+    equipped: false
+img: icons/svg/shield.svg
+name: Flak Coat
+type: armour
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 11
+    cost: ''
+    source: RT
+    armourType: ''
+    locations:
+      head: 4
+      body: 4
+      leftArm: 4
+      rightArm: 4
+      leftLeg: 4
+      rightLeg: 4
+    maxAgilityPenalty: 0
+    equipped: false
+img: icons/svg/shield.svg
+name: Guard Flak Armor
+type: armour
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0.5
+    cost: ''
+    source: RT
+    armourType: ''
+    locations:
+      head: 3
+      body: 0
+      leftArm: 0
+      rightArm: 0
+      leftLeg: 0
+      rightLeg: 0
+    maxAgilityPenalty: 0
+    equipped: false
+img: icons/svg/shield.svg
+name: Mesh Cowl
+type: armour
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 2
+    cost: ''
+    source: RT
+    armourType: ''
+    locations:
+      head: 0
+      body: 3
+      leftArm: 3
+      rightArm: 3
+      leftLeg: 3
+      rightLeg: 3
+    maxAgilityPenalty: 0
+    equipped: false
+img: icons/svg/shield.svg
+name: Xeno Mesh
+type: armour
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 1.5
+    cost: ''
+    source: RT
+    armourType: ''
+    locations:
+      head: 0
+      body: 4
+      leftArm: 4
+      rightArm: 4
+      leftLeg: 4
+      rightLeg: 4
+    maxAgilityPenalty: 0
+    equipped: false
+img: icons/svg/shield.svg
+name: Mesh Combat Cloak
+type: armour
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 2
+    cost: ''
+    source: RT
+    armourType: ''
+    locations:
+      head: 0
+      body: 4
+      leftArm: 0
+      rightArm: 0
+      leftLeg: 0
+      rightLeg: 0
+    maxAgilityPenalty: 0
+    equipped: false
+img: icons/svg/shield.svg
+name: Mesh Vest
+type: armour
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 2
+    cost: ''
+    source: RT
+    armourType: ''
+    locations:
+      head: 4
+      body: 0
+      leftArm: 0
+      rightArm: 0
+      leftLeg: 0
+      rightLeg: 0
+    maxAgilityPenalty: 0
+    equipped: false
+img: icons/svg/shield.svg
+name: Carapace Helm
+type: armour
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 15
+    cost: ''
+    source: RT
+    armourType: ''
+    locations:
+      head: 5
+      body: 5
+      leftArm: 5
+      rightArm: 5
+      leftLeg: 5
+      rightLeg: 5
+    maxAgilityPenalty: 0
+    equipped: false
+img: icons/svg/shield.svg
+name: Enforcer Light Carapace
+type: armour
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 7
+    cost: ''
+    source: RT
+    armourType: ''
+    locations:
+      head: 0
+      body: 6
+      leftArm: 0
+      rightArm: 0
+      leftLeg: 0
+      rightLeg: 0
+    maxAgilityPenalty: 0
+    equipped: false
+img: icons/svg/shield.svg
+name: Carapace Chest Plate
+type: armour
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 15
+    cost: ''
+    source: RT
+    armourType: ''
+    locations:
+      head: 6
+      body: 6
+      leftArm: 6
+      rightArm: 6
+      leftLeg: 6
+      rightLeg: 6
+    maxAgilityPenalty: 0
+    equipped: false
+img: icons/svg/shield.svg
+name: Storm Trooper Carapace
+type: armour
+---
+---
+data:
+    description: ''
+    availability: Extremely Rare
+    weight: 40
+    cost: ''
+    source: RT
+    armourType: ''
+    locations:
+      head: 7
+      body: 7
+      leftArm: 7
+      rightArm: 7
+      leftLeg: 7
+      rightLeg: 7
+    maxAgilityPenalty: 0
+    equipped: false
+img: icons/svg/shield.svg
+name: Light Power Armor
+type: armour
+---
+---
+data:
+    description: ''
+    availability: Extremely Rare
+    weight: 65
+    cost: ''
+    source: RT
+    armourType: ''
+    locations:
+      head: 8
+      body: 8
+      leftArm: 8
+      rightArm: 8
+      leftLeg: 8
+      rightLeg: 8
+    maxAgilityPenalty: 0
+    equipped: false
+img: icons/svg/shield.svg
+name: Power Armor
+type: armour
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 5
+    cost: ''
+    source: RT
+    armourType: ''
+    locations:
+      head: 0
+      body: 3
+      leftArm: 3
+      rightArm: 3
+      leftLeg: 3
+      rightLeg: 3
+    maxAgilityPenalty: 0
+    equipped: false
+img: icons/svg/shield.svg
+name: Armored Bodyglove
+type: armour
+---
+---
+data:
+    description: ''
+    availability: Extremely Rare
+    weight: 2
+    cost: ''
+    source: RT
+    armourType: ''
+    locations:
+      head: 2
+      body: 2
+      leftArm: 2
+      rightArm: 2
+      leftLeg: 2
+      rightLeg: 2
+    maxAgilityPenalty: 0
+    equipped: false
+img: icons/svg/shield.svg
+name: Synskin
+type: armour
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 0
+    cost: ''
+    source: RT
+    armourType: ''
+    locations:
+      head: 0
+      body: 0
+      leftArm: 0
+      rightArm: 0
+      leftLeg: 0
+      rightLeg: 0
+    maxAgilityPenalty: 0
+    equipped: false
+img: icons/svg/shield.svg
+name: Advanced Helmet Systems
+type: armour
+---

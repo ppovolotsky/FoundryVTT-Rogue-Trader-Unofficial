@@ -1,4 +1,4 @@
-import { ITEM_FIELDS, ITEM_TYPES } from "../config.js";
+import { ITEM_FIELDS, ITEM_TYPES, parseWeaponSpecials, resolveWeaponSpecialDisplay } from "../config.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ItemSheetV2 } = foundry.applications.sheets;
@@ -24,7 +24,14 @@ export class RTItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
   };
 
   static async #onFormSubmit(event, form, formData) {
-    await this.document.update(formData.object);
+    const data = foundry.utils.expandObject(formData.object);
+    if (this.document.type === "weapon" && data.system?.specialText !== undefined) {
+      const parsed = parseWeaponSpecials(data.system.specialText);
+      foundry.utils.setProperty(data, "system.special", parsed.flags);
+      foundry.utils.setProperty(data, "system.specialQualities", parsed.qualities);
+      foundry.utils.setProperty(data, "system.specialText", parsed.specialText);
+    }
+    await this.document.update(data);
   }
 
   async _prepareContext(options) {
@@ -33,12 +40,18 @@ export class RTItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     context.item = item;
     context.system = item.system;
     context.typeLabel = game.i18n.localize(ITEM_TYPES[item.type] ?? item.type);
-    context.fields = (ITEM_FIELDS[item.type] ?? []).map((field) => ({
-      name: `system.${field.path}`,
-      label: field.label,
-      input: field.input,
-      value: foundry.utils.getProperty(item, `system.${field.path}`) ?? ""
-    }));
+    context.fields = (ITEM_FIELDS[item.type] ?? []).map((field) => {
+      const raw = foundry.utils.getProperty(item, `system.${field.path}`);
+      return {
+        name: `system.${field.path}`,
+        label: field.label,
+        input: field.input,
+        value: field.input === "checkbox" ? !!raw : (raw ?? "")
+      };
+    });
+    context.specialRows = item.type === "weapon"
+      ? resolveWeaponSpecialDisplay(item.system.specialQualities, item.system.specialText)
+      : [];
     return context;
   }
 }

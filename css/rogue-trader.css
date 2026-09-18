@@ -919,6 +919,127 @@ body.theme-dark,
   margin: 0;
 }
 
+/* ---------- Inventory tab ---------- */
+
+.rogue-trader.sheet .rt-inventory__hint {
+  margin: 0 0 8px;
+  color: var(--rt-muted);
+  font-size: 0.85em;
+}
+
+.rogue-trader.sheet .rt-inventory-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.rogue-trader.sheet .rt-inventory-section__header .rt-sheet-section__title {
+  margin-bottom: 0;
+}
+
+.rogue-trader.sheet .rt-inventory-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rogue-trader.sheet .rt-inventory-row {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto auto minmax(0, 1.2fr) auto;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 4px;
+  background: var(--rt-panel);
+  border: 1px solid var(--rt-border);
+  border-radius: 3px;
+}
+
+.rogue-trader.sheet .rt-inventory-row__img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  border: none;
+}
+
+.rogue-trader.sheet .rt-inventory-row__name {
+  justify-self: start;
+  background: transparent;
+  border: none;
+  color: var(--rt-text);
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.rogue-trader.sheet .rt-inventory-row__name:hover {
+  color: var(--rt-accent);
+}
+
+.rogue-trader.sheet .rt-inventory-row__equip {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+}
+
+.rogue-trader.sheet .rt-inventory-row__qty {
+  width: auto;
+}
+
+.rogue-trader.sheet .rt-inventory-row__qty input {
+  width: 2.5em;
+  text-align: center;
+}
+
+.rogue-trader.sheet .rt-inventory-row__summary {
+  color: var(--rt-muted);
+  font-size: 0.85em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rogue-trader.sheet .rt-inventory-empty {
+  margin: 0 0 8px;
+  color: var(--rt-muted);
+  font-style: italic;
+  font-size: 0.9em;
+}
+
+.rogue-trader.sheet .rt-special-qualities__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rogue-trader.sheet .rt-special-qualities__item {
+  padding: 4px 6px;
+  background: var(--rt-panel);
+  border: 1px solid var(--rt-border);
+  border-radius: 3px;
+}
+
+.rogue-trader.sheet .rt-special-qualities__name {
+  display: block;
+  color: var(--rt-text);
+}
+
+.rogue-trader.sheet .rt-special-qualities__summary {
+  display: block;
+  margin-top: 2px;
+  color: var(--rt-muted);
+  font-size: 0.9em;
+}
+
 /* ---------- Core tooltip tweaks (line breaks + smaller font) ---------- */
 
 #tooltip {

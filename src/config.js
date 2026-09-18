@@ -160,7 +160,7 @@ export const ITEM_TYPES = {
   ammo: "RT.ItemTypes.Ammo"
 };
 
-// Flat fields shown on the item sheet stub; nested ones (rateOfFire, clip, locations, special) come later.
+// Fields shown on the item sheet (nested paths use dotted system.* keys).
 export const ITEM_FIELDS = {
   weapon: [
     { path: "class", label: "RT.Items.Weapon.Class", input: "text" },
@@ -169,32 +169,200 @@ export const ITEM_FIELDS = {
     { path: "damage", label: "RT.Items.Weapon.Damage", input: "text" },
     { path: "damageType", label: "RT.Items.Weapon.DamageType", input: "text" },
     { path: "penetration", label: "RT.Items.Weapon.Penetration", input: "number" },
+    { path: "rateOfFire.single", label: "RT.Items.Weapon.RoFSingle", input: "number" },
+    { path: "rateOfFire.burst", label: "RT.Items.Weapon.RoFBurst", input: "number" },
+    { path: "rateOfFire.full", label: "RT.Items.Weapon.RoFFull", input: "number" },
+    { path: "clip.value", label: "RT.Items.Weapon.ClipValue", input: "number" },
+    { path: "clip.max", label: "RT.Items.Weapon.ClipMax", input: "number" },
     { path: "reload", label: "RT.Items.Weapon.Reload", input: "text" },
+    { path: "special.tearing", label: "RT.Items.Weapon.Special.Tearing", input: "checkbox" },
+    { path: "special.accurate", label: "RT.Items.Weapon.Special.Accurate", input: "checkbox" },
+    { path: "special.reliable", label: "RT.Items.Weapon.Special.Reliable", input: "checkbox" },
+    { path: "special.unreliable", label: "RT.Items.Weapon.Special.Unreliable", input: "checkbox" },
+    { path: "specialText", label: "RT.Items.Weapon.SpecialText", input: "text" },
     { path: "craftsmanship", label: "RT.Items.Craftsmanship", input: "text" },
+    { path: "equipped", label: "RT.Items.Equipped", input: "checkbox" },
     { path: "availability", label: "RT.Items.Availability", input: "text" },
     { path: "weight", label: "RT.Items.Weight", input: "number" },
+    { path: "cost", label: "RT.Items.Cost", input: "text" },
     { path: "source", label: "RT.Items.Source", input: "text" }
   ],
   armour: [
     { path: "armourType", label: "RT.Items.Armour.ArmourType", input: "text" },
+    { path: "locations.head", label: "RT.Items.Armour.Head", input: "number" },
+    { path: "locations.body", label: "RT.Items.Armour.Body", input: "number" },
+    { path: "locations.leftArm", label: "RT.Items.Armour.LeftArm", input: "number" },
+    { path: "locations.rightArm", label: "RT.Items.Armour.RightArm", input: "number" },
+    { path: "locations.leftLeg", label: "RT.Items.Armour.LeftLeg", input: "number" },
+    { path: "locations.rightLeg", label: "RT.Items.Armour.RightLeg", input: "number" },
     { path: "maxAgilityPenalty", label: "RT.Items.Armour.MaxAgilityPenalty", input: "number" },
+    { path: "equipped", label: "RT.Items.Equipped", input: "checkbox" },
     { path: "availability", label: "RT.Items.Availability", input: "text" },
     { path: "weight", label: "RT.Items.Weight", input: "number" },
+    { path: "cost", label: "RT.Items.Cost", input: "text" },
     { path: "source", label: "RT.Items.Source", input: "text" }
   ],
   gear: [
+    { path: "category", label: "RT.Items.Category", input: "text" },
+    { path: "usedFor", label: "RT.Items.UsedFor", input: "text" },
     { path: "quantity", label: "RT.Items.Quantity", input: "number" },
     { path: "availability", label: "RT.Items.Availability", input: "text" },
     { path: "weight", label: "RT.Items.Weight", input: "number" },
+    { path: "cost", label: "RT.Items.Cost", input: "text" },
     { path: "source", label: "RT.Items.Source", input: "text" }
   ],
   ammo: [
     { path: "weaponType", label: "RT.Items.Weapon.WeaponType", input: "text" },
+    { path: "usedFor", label: "RT.Items.UsedFor", input: "text" },
     { path: "quantity", label: "RT.Items.Quantity", input: "number" },
     { path: "availability", label: "RT.Items.Availability", input: "text" },
+    { path: "weight", label: "RT.Items.Weight", input: "number" },
+    { path: "cost", label: "RT.Items.Cost", input: "text" },
     { path: "source", label: "RT.Items.Source", input: "text" }
   ]
 };
+
+/** Gear category values used by inventory grouping and pack drafts. */
+export const GEAR_CATEGORIES = {
+  gear: "RT.Inventory.Categories.Gear",
+  cybernetic: "RT.Inventory.Categories.Cybernetic",
+  weaponMod: "RT.Inventory.Categories.WeaponMod",
+  consumable: "RT.Inventory.Categories.Consumable",
+  tool: "RT.Inventory.Categories.Tool"
+};
+
+/**
+ * Weapon special quality catalog (labels + summary i18n keys — no rulebook prose).
+ * `param` qualities accept a numeric X (Blast (2), Felling (1), …).
+ * Boolean flags in system.special sync for tearing/accurate/reliable/unreliable.
+ */
+export const WEAPON_SPECIALS = [
+  { id: "accurate", label: "Accurate", param: false, flag: "accurate", summaryKey: "RT.WeaponSpecials.Accurate.Summary" },
+  { id: "balanced", label: "Balanced", param: false, summaryKey: "RT.WeaponSpecials.Balanced.Summary" },
+  { id: "blast", label: "Blast", param: true, summaryKey: "RT.WeaponSpecials.Blast.Summary" },
+  { id: "cleansingFire", label: "Cleansing Fire", param: false, summaryKey: "RT.WeaponSpecials.CleansingFire.Summary" },
+  { id: "concussive", label: "Concussive", param: false, summaryKey: "RT.WeaponSpecials.Concussive.Summary" },
+  { id: "corrosive", label: "Corrosive", param: false, summaryKey: "RT.WeaponSpecials.Corrosive.Summary" },
+  { id: "customized", label: "Customized", param: false, summaryKey: "RT.WeaponSpecials.Customized.Summary" },
+  { id: "crippling", label: "Crippling", param: true, summaryKey: "RT.WeaponSpecials.Crippling.Summary" },
+  { id: "daemonbane", label: "Daemonbane", param: false, summaryKey: "RT.WeaponSpecials.Daemonbane.Summary" },
+  { id: "deadlySnare", label: "Deadly Snare", param: false, summaryKey: "RT.WeaponSpecials.DeadlySnare.Summary" },
+  { id: "decay", label: "Decay", param: true, summaryKey: "RT.WeaponSpecials.Decay.Summary" },
+  { id: "defensive", label: "Defensive", param: false, summaryKey: "RT.WeaponSpecials.Defensive.Summary" },
+  { id: "devastating", label: "Devastating", param: true, summaryKey: "RT.WeaponSpecials.Devastating.Summary" },
+  { id: "disintegrate", label: "Disintegrate", param: false, summaryKey: "RT.WeaponSpecials.Disintegrate.Summary" },
+  { id: "excruciating", label: "Excruciating", param: false, summaryKey: "RT.WeaponSpecials.Excruciating.Summary" },
+  { id: "fast", label: "Fast", param: false, summaryKey: "RT.WeaponSpecials.Fast.Summary" },
+  { id: "felling", label: "Felling", param: true, summaryKey: "RT.WeaponSpecials.Felling.Summary" },
+  { id: "flame", label: "Flame", param: false, summaryKey: "RT.WeaponSpecials.Flame.Summary" },
+  { id: "flexible", label: "Flexible", param: false, summaryKey: "RT.WeaponSpecials.Flexible.Summary" },
+  { id: "force", label: "Force", param: false, summaryKey: "RT.WeaponSpecials.Force.Summary" },
+  { id: "gauss", label: "Gauss", param: false, summaryKey: "RT.WeaponSpecials.Gauss.Summary" },
+  { id: "graviton", label: "Graviton", param: false, summaryKey: "RT.WeaponSpecials.Graviton.Summary" },
+  { id: "gyroStabilised", label: "Gyro-Stabilised", param: false, summaryKey: "RT.WeaponSpecials.GyroStabilised.Summary" },
+  { id: "hallucinogenic", label: "Hallucinogenic", param: true, summaryKey: "RT.WeaponSpecials.Hallucinogenic.Summary" },
+  { id: "haywire", label: "Haywire", param: true, summaryKey: "RT.WeaponSpecials.Haywire.Summary" },
+  { id: "inaccurate", label: "Inaccurate", param: false, summaryKey: "RT.WeaponSpecials.Inaccurate.Summary" },
+  { id: "indirect", label: "Indirect", param: true, summaryKey: "RT.WeaponSpecials.Indirect.Summary" },
+  { id: "integrated", label: "Integrated", param: false, summaryKey: "RT.WeaponSpecials.Integrated.Summary" },
+  { id: "irradiated", label: "Irradiated", param: true, summaryKey: "RT.WeaponSpecials.Irradiated.Summary" },
+  { id: "lance", label: "Lance", param: false, summaryKey: "RT.WeaponSpecials.Lance.Summary" },
+  { id: "livingWeapon", label: "Living Weapon", param: false, summaryKey: "RT.WeaponSpecials.LivingWeapon.Summary" },
+  { id: "maximal", label: "Maximal", param: false, summaryKey: "RT.WeaponSpecials.Maximal.Summary" },
+  { id: "melta", label: "Melta", param: false, summaryKey: "RT.WeaponSpecials.Melta.Summary" },
+  { id: "ogrynProof", label: "Ogryn-Proof", param: false, summaryKey: "RT.WeaponSpecials.OgrynProof.Summary" },
+  { id: "overcharge", label: "Overcharge", param: true, summaryKey: "RT.WeaponSpecials.Overcharge.Summary" },
+  { id: "overheats", label: "Overheats", param: false, summaryKey: "RT.WeaponSpecials.Overheats.Summary" },
+  { id: "powerField", label: "Power Field", param: false, summaryKey: "RT.WeaponSpecials.PowerField.Summary" },
+  { id: "primitive", label: "Primitive", param: true, summaryKey: "RT.WeaponSpecials.Primitive.Summary" },
+  { id: "proven", label: "Proven", param: true, summaryKey: "RT.WeaponSpecials.Proven.Summary" },
+  { id: "razorSharp", label: "Razor Sharp", param: false, summaryKey: "RT.WeaponSpecials.RazorSharp.Summary" },
+  { id: "reactive", label: "Reactive", param: false, summaryKey: "RT.WeaponSpecials.Reactive.Summary" },
+  { id: "recharge", label: "Recharge", param: false, summaryKey: "RT.WeaponSpecials.Recharge.Summary" },
+  { id: "reliable", label: "Reliable", param: false, flag: "reliable", summaryKey: "RT.WeaponSpecials.Reliable.Summary" },
+  { id: "sanctified", label: "Sanctified", param: false, summaryKey: "RT.WeaponSpecials.Sanctified.Summary" },
+  { id: "scatter", label: "Scatter", param: false, summaryKey: "RT.WeaponSpecials.Scatter.Summary" },
+  { id: "shocking", label: "Shocking", param: false, summaryKey: "RT.WeaponSpecials.Shocking.Summary" },
+  { id: "smoke", label: "Smoke", param: true, summaryKey: "RT.WeaponSpecials.Smoke.Summary" },
+  { id: "snare", label: "Snare", param: true, summaryKey: "RT.WeaponSpecials.Snare.Summary" },
+  { id: "spray", label: "Spray", param: false, summaryKey: "RT.WeaponSpecials.Spray.Summary" },
+  { id: "storm", label: "Storm", param: false, summaryKey: "RT.WeaponSpecials.Storm.Summary" },
+  { id: "tainted", label: "Tainted", param: false, summaryKey: "RT.WeaponSpecials.Tainted.Summary" },
+  { id: "tearing", label: "Tearing", param: false, flag: "tearing", summaryKey: "RT.WeaponSpecials.Tearing.Summary" },
+  { id: "temporalLeech", label: "Temporal Leech", param: false, summaryKey: "RT.WeaponSpecials.TemporalLeech.Summary" },
+  { id: "toxic", label: "Toxic", param: true, summaryKey: "RT.WeaponSpecials.Toxic.Summary" },
+  { id: "twinLinked", label: "Twin-Linked", param: false, summaryKey: "RT.WeaponSpecials.TwinLinked.Summary" },
+  { id: "tyranidWeapon", label: "Tyranid Weapon", param: false, summaryKey: "RT.WeaponSpecials.TyranidWeapon.Summary" },
+  { id: "unbalanced", label: "Unbalanced", param: false, summaryKey: "RT.WeaponSpecials.Unbalanced.Summary" },
+  { id: "unreliable", label: "Unreliable", param: false, flag: "unreliable", summaryKey: "RT.WeaponSpecials.Unreliable.Summary" },
+  { id: "unstable", label: "Unstable", param: false, summaryKey: "RT.WeaponSpecials.Unstable.Summary" },
+  { id: "unwieldy", label: "Unwieldy", param: false, summaryKey: "RT.WeaponSpecials.Unwieldy.Summary" },
+  { id: "vengeful", label: "Vengeful", param: true, summaryKey: "RT.WeaponSpecials.Vengeful.Summary" },
+  { id: "volatile", label: "Volatile", param: false, summaryKey: "RT.WeaponSpecials.Volatile.Summary" },
+  { id: "warpWeapon", label: "Warp Weapon", param: false, summaryKey: "RT.WeaponSpecials.WarpWeapon.Summary" },
+  { id: "witchEdge", label: "Witch-Edge", param: false, summaryKey: "RT.WeaponSpecials.WitchEdge.Summary" }
+];
+
+/**
+ * Resolve display rows for a weapon's special qualities (label + optional param + summary).
+ */
+export function resolveWeaponSpecialDisplay(specialQualities, specialText) {
+  let qualities = Array.isArray(specialQualities) ? specialQualities : [];
+  if (!qualities.length && specialText) {
+    qualities = parseWeaponSpecials(specialText).qualities;
+  }
+  return qualities.map((q) => {
+    const id = q.id || "";
+    const def = id ? WEAPON_SPECIALS.find((s) => s.id === id) : WEAPON_SPECIALS.find(
+      (s) => s.label.toLowerCase() === String(q.label || "").toLowerCase()
+    );
+    const label = def?.label || q.label || "";
+    const param = q.param ?? null;
+    const title = param !== null && param !== undefined && param !== "" ? `${label} (${param})` : label;
+    const summary = def?.summaryKey ? game.i18n.localize(def.summaryKey) : "";
+    return { id: def?.id || "", title, summary };
+  });
+}
+
+/**
+ * Parse a Special cell ("Reliable, Accurate, Blast (2)") into structured qualities.
+ * Returns { qualities: [{id, label, param}], flags, specialText }.
+ */
+export function parseWeaponSpecials(raw) {
+  const flags = { tearing: false, accurate: false, reliable: false, unreliable: false };
+  const qualities = [];
+  const text = String(raw ?? "").trim();
+  if (!text || text === "-" || text === "—") {
+    return { qualities, flags, specialText: "" };
+  }
+
+  const parts = text.split(",").map((p) => p.trim()).filter(Boolean);
+  for (const part of parts) {
+    const cleaned = part.replace(/\*$/, "").replace(/\s*\[[^\]]+\]\s*$/, "").trim();
+    const withParam = cleaned.match(/^(.+?)\s*\(([^)]+)\)\s*$/);
+    const baseLabel = withParam ? withParam[1].trim() : cleaned;
+    const paramRaw = withParam ? withParam[2].trim() : null;
+    const def = WEAPON_SPECIALS.find((s) => s.label.toLowerCase() === baseLabel.toLowerCase());
+    if (def) {
+      let param = null;
+      if (paramRaw !== null && paramRaw !== "X" && paramRaw !== "x") {
+        const n = Number(paramRaw);
+        param = Number.isFinite(n) ? n : paramRaw;
+      } else if (def.param && paramRaw && (paramRaw === "X" || paramRaw === "x")) {
+        param = null;
+      }
+      qualities.push({ id: def.id, label: def.label, param });
+      if (def.flag) flags[def.flag] = true;
+    } else {
+      qualities.push({ id: "", label: cleaned, param: null });
+    }
+  }
+
+  const specialText = qualities
+    .map((q) => (q.param !== null && q.param !== undefined ? `${q.label} (${q.param})` : q.label))
+    .join(", ");
+  return { qualities, flags, specialText };
+}
 
 export function registerConfig() {
   CONFIG.ROGUE_TRADER = {
@@ -203,7 +371,9 @@ export function registerConfig() {
     rollModes: ROLL_MODES,
     actorTypes: ACTOR_TYPES,
     itemTypes: ITEM_TYPES,
-    itemFields: ITEM_FIELDS
+    itemFields: ITEM_FIELDS,
+    gearCategories: GEAR_CATEGORIES,
+    weaponSpecials: WEAPON_SPECIALS
   };
 
   CONFIG.Actor.typeLabels = {
