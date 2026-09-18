@@ -407,30 +407,43 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     // Re-apply transient UI state after every (re)render.
     for (const [key, on] of Object.entries(this.expandedRows)) {
-      const sep = key.indexOf(":")
-      const body = this.element.querySelector(
-        `[data-list-shell="${key.slice(0, sep)}"] .rt-talent-block[data-block-index="${key.slice(sep + 1)}"] .rt-talent-block__body`
-      );
-      body?.classList.toggle("rt-hidden", !on);
-    }
-    for (const [list, on] of Object.entries(this.listEdit)) {
-      this.element.querySelector(`[data-list-shell="${list}"]`)?.classList.toggle("editing", on);
-    }
-    for (const [key, on] of Object.entries(this.expandedRows)) {
       const sep = key.indexOf(":");
       const body = this.element.querySelector(
         `[data-list-shell="${key.slice(0, sep)}"] .rt-talent-block[data-block-index="${key.slice(sep + 1)}"] .rt-talent-block__body`
       );
       body?.classList.toggle("rt-hidden", !on);
     }
-
     for (const [list, on] of Object.entries(this.listEdit)) {
       this.element.querySelector(`[data-list-shell="${list}"]`)?.classList.toggle("editing", on);
     }
+
     // The root element is reused between renders: bind the delegated
     // listeners exactly once, or they pile up and freeze the window.
     if (this._rtListenersBound) return;
     this._rtListenersBound = true;
+
+    // The edition list lives in world settings, not in actor data.
+    this.element.querySelector(".rt-edition-select")?.addEventListener("change", async (event) => {
+      await game.settings.set(SYSTEM_ID, "edition", event.target.value);
+    });
+    // Client-level controls (sheet language, application theme) are not
+    // actor data: they write to the core settings registry.
+    this.element.addEventListener("change", async (event) => {
+      const el = event.target;
+      const setting = el.dataset.clientSetting;
+      if (!setting) return;
+      if (setting === "language") {
+        await game.settings.set("core", "language", el.value).catch(() => {});
+        ui.notifications.info(game.i18n.localize("RT.Settings.LanguageReloaded"));
+        return;
+      }
+      if (setting === "theme") {
+        const keys = [...game.settings.settings.keys()].filter((k) => k.toLowerCase().includes("colorscheme"));
+        for (const key of keys) {
+          await game.settings.set("core", key, el.value).catch(() => {});
+        }
+      }
+    });
 
     // The edition list lives in world settings, not in actor data.
     this.element.querySelector(".rt-edition-select")?.addEventListener("change", async (event) => {
