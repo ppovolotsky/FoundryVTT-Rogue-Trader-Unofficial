@@ -334,7 +334,9 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     context.freeSkillChars = this.document.system.settings?.freeSkillChars ?? false;
     context.clientLang = game.settings.get("core", "language");
-    context.clientTheme = game.settings.get("core", "colorSchemeApplication");
+    // The color scheme is not a registered setting in v14: read the applied
+    // theme from the body class instead.
+    context.clientTheme = document.body.classList.contains("theme-dark") ? "dark" : "light";
     context.skillsBasic = [];
     context.skillsAdvanced = [];
     for (const def of SKILLS) {
@@ -438,6 +440,10 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         return;
       }
       if (setting === "theme") {
+        // No registered setting for the color scheme in v14: apply the theme
+        // classes to the body directly for this session.
+        document.body.classList.toggle("theme-dark", el.value === "dark");
+        document.body.classList.toggle("theme-light", el.value !== "dark");
         const keys = [...game.settings.settings.keys()].filter((k) => k.toLowerCase().includes("colorscheme"));
         for (const key of keys) {
           await game.settings.set("core", key, el.value).catch(() => {});
