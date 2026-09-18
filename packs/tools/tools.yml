@@ -1,0 +1,871 @@
+---
+data:
+    description: ''
+    availability: Plentiful
+    weight: 1
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Backpack
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0.5
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Cameleoline Cloak
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Average
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Charm
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Abundant
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Chrono
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Common
+    weight: 2
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Clip/Drop Harness
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Abundant
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Clothing and Adornment (Common)
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Average
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Clothing and Adornment (Merchant)
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Clothing and Adornment (Noble)
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Common
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Filtration Plugs
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Average
+    weight: 2
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Night Cloak
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0.5
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Preysense Goggles
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 0.5
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Photo-Visors/Contacts
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0.5
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Rebreather
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0.5
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Recoil Glove
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Average
+    weight: 0.5
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Respirator/Gas-Mask
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Shifting Fabric
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Plentiful
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Survival Suit
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Extremely Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Synskin
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Plentiful
+    weight: 8
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Void Suit
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 25
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: 'Heavy Duty Void Suit, Selenite Pattern'
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Amasec
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: De-Tox
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Frenzon
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Plentiful
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Injector
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Common
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Lho-Sticks
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Common
+    weight: 2
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Medikit
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 5
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Medikit (Advanced)
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: High Provender
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Obscura
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Ubiquitous
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Ration Packs
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Abundant
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Recaf
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Sacred Unguents
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Slaught
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Average
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Stimm
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: 'Thosophit''s Philtre'
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Abundant
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Tranq
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Extremely Rare
+    weight: 4
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Almanac Astrae Divinitus
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Average
+    weight: 6
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Arms Coffer
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 0.5
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Auspex/Scanner
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Auto Quill
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 120
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Calculance Array
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 1
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Combi-Tool
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Common
+    weight: 0.5
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Data-Slate
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 1
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Demo Charge
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 4
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Diagnostor
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Abundant
+    weight: 0.5
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Glow-Globe/Lamp Pack
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Average
+    weight: 2
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Grapnel
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 15
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Grav Chute
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 13
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Data-Loom (Hadd-Pattern)
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 25
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Jump Pack (Lathe-Pattern)
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 1
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: 'Lord-Captain''s Baton'
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 2
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Magboots
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Average
+    weight: 0.5
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Magnoculars
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Plentiful
+    weight: 1
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Manacles
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 2
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: 'Mefonte''s Orthodoxy'
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Average
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Micro-Bead
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Multikey
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Near Unique
+    weight: 4
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Multicompass
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 1
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Navis Prima
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Common
+    weight: 1
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Pict Recorder
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Psy-Focus
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 7
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Renumeration Engine
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Average
+    weight: 1.5
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Screamers
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Common
+    weight: 6
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Shipboard Emergency Kit
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Average
+    weight: 2
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Stummers
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Venom Ring
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 0
+    cost: ''
+    source: RT
+    category: gear
+    quantity: 1
+img: icons/svg/item-bag.svg
+name: Vox-Caster
+type: gear
+---

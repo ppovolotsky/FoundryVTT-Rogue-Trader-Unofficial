@@ -1,0 +1,57 @@
+<section class="tab {{#if (eq activeTab "inventory")}}active{{/if}}" data-tab="inventory" data-group="main">
+  <p class="rt-inventory__hint">{{localize "RT.Inventory.DropHint"}}</p>
+
+  {{#each inventorySections as |section|}}
+  <section class="rt-sheet-section rt-inventory-section" data-inventory-section="{{section.key}}">
+    <div class="rt-inventory-section__header">
+      <h3 class="rt-sheet-section__title">{{localize section.label}}</h3>
+      <button type="button" class="rt-button rt-button--small" data-action="createInventoryItem"
+              data-type="{{section.type}}" data-category="{{section.category}}"
+              title="{{localize "RT.Inventory.Add"}}">
+        <i class="fa-solid fa-plus"></i> {{localize "RT.Inventory.Add"}}
+      </button>
+    </div>
+
+    {{#if section.items.length}}
+    <div class="rt-inventory-list">
+      {{#each section.items as |item|}}
+      <div class="rt-inventory-row" data-item-id="{{item.id}}">
+        <img class="rt-inventory-row__img" src="{{item.img}}" alt=""/>
+        <button type="button" class="rt-inventory-row__name" data-action="editInventoryItem" data-item-id="{{item.id}}">{{item.name}}</button>
+
+        {{#if item.showEquipped}}
+        <label class="rt-inventory-row__equip" title="{{localize "RT.Inventory.Equipped"}}">
+          <input type="checkbox" {{checked item.equipped}} data-item-id="{{item.id}}" data-equip-toggle="1"/>
+        </label>
+        {{else}}
+        <span></span>
+        {{/if}}
+
+        {{#if item.showQuantity}}
+        <div class="rt-stepper rt-inventory-row__qty">
+          <input type="number" value="{{item.quantity}}" data-dtype="Number" disabled/>
+          <div class="rt-stepper__buttons">
+            <button type="button" class="rt-stepper__btn" data-action="adjustItemQuantity" data-item-id="{{item.id}}" data-delta="1" title="+1"><i class="fa-solid fa-chevron-up"></i></button>
+            <button type="button" class="rt-stepper__btn" data-action="adjustItemQuantity" data-item-id="{{item.id}}" data-delta="-1" title="-1"><i class="fa-solid fa-chevron-down"></i></button>
+          </div>
+        </div>
+        {{else}}
+        <span></span>
+        {{/if}}
+
+        {{#if item.summary}}
+        <span class="rt-inventory-row__summary">{{item.summary}}</span>
+        {{/if}}
+
+        <button type="button" class="rt-button rt-button--small rt-inventory-row__delete" data-action="deleteInventoryItem" data-item-id="{{item.id}}" title="{{localize "RT.Inventory.Delete"}}">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+      {{/each}}
+    </div>
+    {{else}}
+    <p class="rt-inventory-empty">{{localize "RT.Inventory.Empty"}}</p>
+    {{/if}}
+  </section>
+  {{/each}}
+</section>

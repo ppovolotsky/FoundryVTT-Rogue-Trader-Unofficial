@@ -1,0 +1,420 @@
+---
+data:
+    description: ''
+    availability: Common
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: 'Bows, crossbows, and hand bows.'
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Arrows/Quarrels
+type: ammo
+---
+---
+data:
+    description: 'Can hold: 80 shots Plasma/Melta/Hellgun, 300 Las, 200 SP/Bolt, 60 Flame. Ignore attached weapon''s clip size.'
+    availability: Rare
+    weight: 25
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: 'Any appropriate Pistol or Basic, plus Heavy Stubbers, Bolters, and Flamers.'
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Backpack Ammo Pack
+type: ammo
+---
+---
+data:
+    description: ''
+    availability: Common
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: Flintlock pistols and muskets.
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Shot
+type: ammo
+---
+---
+data:
+    description: ''
+    availability: Plentiful
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: 'Autoguns, autopistols, hand cannons, heavy stubbers, hunting rifles, stub automatics, and stub revolvers.'
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Bullets
+type: ammo
+---
+---
+data:
+    description: ''
+    availability: Common
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: Shotguns.
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Shells
+type: ammo
+---
+---
+data:
+    description: ''
+    availability: Common
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: Laspistols.
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Charge Pack (Pistol)
+type: ammo
+---
+---
+data:
+    description: ''
+    availability: Common
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: 'Las carbines, lasguns, and long las.'
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Charge Pack (Basic)
+type: ammo
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: MP Lascannons.
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Charge Pack (Heavy)
+type: ammo
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: Hand flamers.
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Fuel (Pistol)
+type: ammo
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: Flamers.
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Fuel (Basic)
+type: ammo
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: Heavy flamers.
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Fuel (Heavy)
+type: ammo
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: Bolt.
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Bolt Shells
+type: ammo
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: Inferno pistols.
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Melta Canister (Pistol)
+type: ammo
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: Meltaguns.
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Melta Canister (Basic)
+type: ammo
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: Multi-Meltas.
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Melta Canister (Heavy)
+type: ammo
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: Plasma pistols.
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Plasma Flask (Pistol)
+type: ammo
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: Plasma guns.
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Plasma Flask (Basic)
+type: ammo
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: Plasma cannons.
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Plasma Flask (Heavy)
+type: ammo
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: '*'
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Exotic
+type: ammo
+---
+---
+data:
+    description: +2 Damage.
+    availability: Extremely Rare
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: 'Autoguns, autopistols, hand cannons, shotguns, stub automatics, and stub revolvers.'
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Amputator Shells
+type: ammo
+---
+---
+data:
+    description: +3 Damage vs. biological targets. Has no extra effect vs. Daemonic or Machine trait targets.
+    availability: Rare
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: 'Autoguns, autopistols, hand cannons, stub automatics, and stub revolvers.'
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Bleeder Rounds
+type: ammo
+---
+---
+data:
+    description: 'Adds +2 Damage but doubles target''s AP.'
+    availability: Scarce
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: 'Hand cannons, stub automatics, and stub revolvers.'
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Dumdum Bullets
+type: ammo
+---
+---
+data:
+    description: +1 Damage and Penetration.
+    availability: Scarce
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: 'Autoguns, autopistols, stub automatics, and stub revolvers.'
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Expander Rounds
+type: ammo
+---
+---
+data:
+    description: '-10 penalty to BS, damage type becomes X, no longer Primitive.'
+    availability: Scarce
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: 'Bows, crossbows, and hand bows.'
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Explosive Arrows/Quarrels
+type: ammo
+---
+---
+data:
+    description: '+1 damage, Pen 4, adds Tearing, loses Reliable, clip reduced to 1.'
+    availability: Scarce
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: 'Las carbines, lasguns, laspistols and long las.'
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Hot-Shot Charge Pack
+type: ammo
+---
+---
+data:
+    description: Targets must pass an Agility test or be set on fire.
+    availability: Rare
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: Ranged (Bolt or shotgun).
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Inferno Shells
+type: ammo
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: Naval Pistol (Mars-Pattern).
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Naval Pistol Frag Rounds
+type: ammo
+---
+---
+data:
+    description: Set Penetration to 3.
+    availability: Scarce
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: 'Autoguns, autopistols, hand cannons, hunting rifles, stub automatics, and stub revolvers.'
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Man-Stopper Bullets
+type: ammo
+---
+---
+data:
+    description: '+1 Damage, halves clip size.'
+    availability: Common
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: Pistol/Basic (Las).
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Overcharge Pack
+type: ammo
+---
+---
+data:
+    description: 'Damage type becomes E, gains the Shocking quality. +3 Damage against Machine targets.'
+    availability: Near Unique
+    weight: 0
+    cost: ''
+    source: RT
+    weaponType: ''
+    usedFor: Bolt.
+    quantity: 0
+img: icons/svg/explosion.svg
+name: Tempest Bolt Shells
+type: ammo
+---

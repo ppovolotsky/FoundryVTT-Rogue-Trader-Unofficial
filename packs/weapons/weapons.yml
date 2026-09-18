@@ -1,28 +1,3923 @@
+---
 data:
-    availability: Very Rare
-    class: Pistol
-    type: Bolt
-    craftsmanship: Common
     description: ''
+    availability: Near Unique
+    weight: 4
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 90
+    damage: 1d10+3
+    damageType: Energy
+    penetration: 2
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 3
+      full: 0
+    clip:
+      value: 70
+      max: 70
+    special:
+      tearing: false
+      accurate: true
+      reliable: true
+      unreliable: false
+    specialQualities:
+      -
+        id: reliable
+        label: Reliable
+      -
+        id: accurate
+        label: Accurate
+    specialText: 'Reliable, Accurate'
+img: icons/svg/sword.svg
+name: Archeotech Laspistol
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 1.5
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 45
+    damage: 1d10+5
+    damageType: Energy
+    penetration: 4
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 1
+      max: 1
+    special:
+      tearing: false
+      accurate: true
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: accurate
+        label: Accurate
+    specialText: Accurate
+img: icons/svg/sword.svg
+name: Belasco Dueling Pistol
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 4
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 35
+    damage: 1d10+4
+    damageType: Energy
+    penetration: 7
+    reload: 2Full
+    rateOfFire:
+      single: 1
+      burst: 2
+      full: 0
+    clip:
+      value: 40
+      max: 40
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities: []
+    specialText: ''
+img: icons/svg/sword.svg
+name: 'Hellpistol, Lucius-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 6
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 110
+    damage: 1d10+4
+    damageType: Energy
+    penetration: 7
+    reload: 2Full
+    rateOfFire:
+      single: 1
+      burst: 3
+      full: 0
+    clip:
+      value: 30
+      max: 30
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities: []
+    specialText: ''
+img: icons/svg/sword.svg
+name: 'Hellgun, Lucius-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 3
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 50
+    damage: 1d10+4
+    damageType: Energy
+    penetration: 1
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 4
+      full: 0
+    clip:
+      value: 20
+      max: 20
+    special:
+      tearing: false
+      accurate: false
+      reliable: true
+      unreliable: false
+    specialQualities:
+      -
+        id: reliable
+        label: Reliable
+    specialText: Reliable
+img: icons/svg/sword.svg
+name: Las Gauntlets
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 2.5
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 60
+    damage: 1d10+3
+    damageType: Energy
+    penetration: 0
+    reload: 2Full
+    rateOfFire:
+      single: 1
+      burst: 2
+      full: 0
+    clip:
+      value: 40
+      max: 40
+    special:
+      tearing: false
+      accurate: false
+      reliable: true
+      unreliable: false
+    specialQualities:
+      -
+        id: reliable
+        label: Reliable
+    specialText: Reliable
+img: icons/svg/sword.svg
+name: 'Lascarbine, Locke-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Common
+    weight: 4
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 100
+    damage: 1d10+3
+    damageType: Energy
+    penetration: 0
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 3
+      full: 0
+    clip:
+      value: 60
+      max: 60
+    special:
+      tearing: false
+      accurate: false
+      reliable: true
+      unreliable: false
+    specialQualities:
+      -
+        id: reliable
+        label: Reliable
+    specialText: Reliable
+img: icons/svg/sword.svg
+name: Lasgun
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Common
+    weight: 1.5
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 30
+    damage: 1d10+2
+    damageType: Energy
+    penetration: 0
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 30
+      max: 30
+    special:
+      tearing: false
+      accurate: false
+      reliable: true
+      unreliable: false
+    specialQualities:
+      -
+        id: reliable
+        label: Reliable
+    specialText: Reliable
+img: icons/svg/sword.svg
+name: Laspistol
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 4.5
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 150
+    damage: 1d10+3
+    damageType: Energy
+    penetration: 1
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 40
+      max: 40
+    special:
+      tearing: false
+      accurate: true
+      reliable: true
+      unreliable: false
+    specialQualities:
+      -
+        id: reliable
+        label: Reliable
+      -
+        id: accurate
+        label: Accurate
+    specialText: 'Reliable, Accurate'
+img: icons/svg/sword.svg
+name: Long Las
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 55
+    cost: ''
+    source: RT
+    class: Heavy
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 300
+    damage: 5d10+10
+    damageType: Energy
+    penetration: 10
+    reload: 2Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 5
+      max: 5
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities: []
+    specialText: ''
+img: icons/svg/sword.svg
+name: MP Lascannon
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Average
+    weight: 3.5
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 90
+    damage: 1d10+3
+    damageType: Impact
+    penetration: 0
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 3
+      full: 10
+    clip:
+      value: 30
+      max: 30
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities: []
+    specialText: ''
+img: icons/svg/sword.svg
+name: Autogun
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Common
+    weight: 2.5
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 30
+    damage: 1d10+2
+    damageType: Impact
+    penetration: 0
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 6
+    clip:
+      value: 18
+      max: 18
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities: []
+    specialText: ''
+img: icons/svg/sword.svg
+name: Autopistol
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Average
+    weight: 3
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 35
+    damage: 1d10+4
+    damageType: Impact
+    penetration: 2
+    reload: 2Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 5
+      max: 5
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities: []
+    specialText: ''
+img: icons/svg/sword.svg
+name: Hand Cannon
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Average
+    weight: 35
+    cost: ''
+    source: RT
+    class: Heavy
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 120
+    damage: 1d10+5
+    damageType: Impact
+    penetration: 3
+    reload: 2Full
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 10
+    clip:
+      value: 200
+      max: 200
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities: []
+    specialText: ''
+img: icons/svg/sword.svg
+name: 'Heavy Stubber, Orthlack-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 35
+    cost: ''
+    source: RT
+    class: Heavy
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 120
+    damage: 1d10+5
+    damageType: Impact
+    penetration: 3
+    reload: Full
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 10
+    clip:
+      value: 40
+      max: 40
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities: []
+    specialText: ''
+img: icons/svg/sword.svg
+name: 'Heavy Stubber, Ursid-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 3
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 20
+    damage: 1d10+4
+    damageType: Impact
+    penetration: 0
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 3
+      full: 0
+    clip:
+      value: 6
+      max: 6
+    special:
+      tearing: true
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: tearing
+        label: Tearing
+    specialText: Tearing
+img: icons/svg/sword.svg
+name: 'Naval Pistol, Mars-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 7
+    cost: ''
+    source: RT
+    class: Heavy
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 40
+    damage: 2d10+4
+    damageType: Impact
+    penetration: 0
+    reload: 2Full
+    rateOfFire:
+      single: 1
+      burst: 3
+      full: 0
+    clip:
+      value: 24
+      max: 24
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: true
+    specialQualities:
+      -
+        id: scatter
+        label: Scatter
+      -
+        id: unreliable
+        label: Unreliable
+    specialText: 'Scatter, Unreliable'
+img: icons/svg/sword.svg
+name: Naval Shotcannon
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Average
+    weight: 5
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 30
+    damage: 1d10+4
+    damageType: Impact
+    penetration: 0
+    reload: 2Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 8
+      max: 8
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: scatter
+        label: Scatter
+    specialText: Scatter
+img: icons/svg/sword.svg
+name: Shotgun (Pump-Action)
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Common
+    weight: 5
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 30
+    damage: 1d10+4
+    damageType: Impact
+    penetration: 0
+    reload: 2Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 2
+      max: 2
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: scatter
+        label: Scatter
+    specialText: Scatter
+img: icons/svg/sword.svg
+name: Shotgun
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Average
+    weight: 1
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 10
+    damage: 1d10+4
+    damageType: Impact
+    penetration: 0
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 1
+      max: 1
+    special:
+      tearing: false
+      accurate: false
+      reliable: true
+      unreliable: false
+    specialQualities:
+      -
+        id: scatter
+        label: Scatter
+      -
+        id: reliable
+        label: Reliable
+    specialText: 'Scatter, Reliable'
+img: icons/svg/sword.svg
+name: Shotgun Pistol
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Plentiful
+    weight: 1.5
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 30
+    damage: 1d10+3
+    damageType: Impact
+    penetration: 0
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 3
+      full: 0
+    clip:
+      value: 9
+      max: 9
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities: []
+    specialText: ''
+img: icons/svg/sword.svg
+name: Stub Automatic
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Plentiful
+    weight: 1
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 30
+    damage: 1d10+3
+    damageType: Impact
+    penetration: 0
+    reload: 2Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 6
+      max: 6
+    special:
+      tearing: false
+      accurate: false
+      reliable: true
+      unreliable: false
+    specialQualities:
+      -
+        id: reliable
+        label: Reliable
+    specialText: Reliable
+img: icons/svg/sword.svg
+name: Stub Revolver
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 7
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 90
+    damage: 1d10+5
+    damageType: Explosive
+    penetration: 4
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 2
+      full: 4
+    clip:
+      value: 24
+      max: 24
+    special:
+      tearing: true
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: tearing
+        label: Tearing
+    specialText: Tearing
+img: icons/svg/sword.svg
+name: 'Boltgun, Locke-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 3.5
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
     equipped: false
     range: 30
     damage: 1d10+5
     damageType: Explosive
     penetration: 4
+    reload: Full
     rateOfFire:
-        single: 1
-        burst: 2
-        full: 0
+      single: 1
+      burst: 2
+      full: 0
     clip:
-        max: 8
-        value: 8
-    reload: 'Full Action'
-    modifications: []
-    source: RT - 122
+      value: 8
+      max: 8
     special:
-        tearing: true
+      tearing: true
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: tearing
+        label: Tearing
+    specialText: Tearing
+img: icons/svg/sword.svg
+name: 'Bolt Pistol, Ceres-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Extremely Rare
+    weight: 9
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 90
+    damage: 1d10+5
+    damageType: Explosive
+    penetration: 4
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 2
+      full: 4
+    clip:
+      value: 60
+      max: 60
+    special:
+      tearing: true
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: tearing
+        label: Tearing
+      -
+        id: storm
+        label: Storm
+    specialText: 'Tearing, Storm'
+img: icons/svg/sword.svg
+name: 'Storm Bolter, Mars-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 40
+    cost: ''
+    source: RT
+    class: Heavy
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 120
+    damage: 2d10+2
+    damageType: Explosive
+    penetration: 5
+    reload: Full
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 10
+    clip:
+      value: 60
+      max: 60
+    special:
+      tearing: true
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: tearing
+        label: Tearing
+    specialText: Tearing
+img: icons/svg/sword.svg
+name: 'Heavy Bolter, Solar-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 2.5
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 10
+    damage: 2d10+8
+    damageType: Energy
+    penetration: 13
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 3
+      max: 3
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities: []
+    specialText: ''
+img: icons/svg/sword.svg
+name: 'Inferno Pistol, Mars-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 7.5
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 20
+    damage: 2d10+8
+    damageType: Energy
+    penetration: 13
+    reload: 2Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 5
+      max: 5
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities: []
+    specialText: ''
+img: icons/svg/sword.svg
+name: 'Meltagun, Mars-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 8.5
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 20
+    damage: 2d10+8
+    damageType: Energy
+    penetration: 13
+    reload: 3Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 10
+      max: 10
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities: []
+    specialText: ''
+img: icons/svg/sword.svg
+name: 'Meltagun, Mezoa-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 40
+    cost: ''
+    source: RT
+    class: Heavy
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 10
+    damage: 2d10+10
+    damageType: Energy
+    penetration: 12
+    reload: 2Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 2
+      max: 2
+    special:
+      tearing: false
+      accurate: true
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: accurate
+        label: Accurate
+    specialText: Accurate
+img: icons/svg/sword.svg
+name: 'Thermal Lance, Mars-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 40
+    cost: ''
+    source: RT
+    class: Heavy
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 60
+    damage: 4d10+5
+    damageType: Energy
+    penetration: 13
+    reload: 2Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 10
+      max: 10
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: blast
+        label: Blast
+        param: 1
+    specialText: Blast (1)
+img: icons/svg/sword.svg
+name: 'Multi-Melta, Mars-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 4
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 30
+    damage: 1d10+6
+    damageType: Energy
+    penetration: 6
+    reload: 3Full
+    rateOfFire:
+      single: 1
+      burst: 2
+      full: 0
+    clip:
+      value: 10
+      max: 10
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: overheats
+        label: Overheats
+      -
+        id: maximal
+        label: Maximal
+    specialText: 'Overheats, Maximal'
+img: icons/svg/sword.svg
+name: 'Plasma Pistol, Ryza-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 18
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 90
+    damage: 1d10+7
+    damageType: Energy
+    penetration: 6
+    reload: 5Full
+    rateOfFire:
+      single: 1
+      burst: 2
+      full: 0
+    clip:
+      value: 40
+      max: 40
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: overheats
+        label: Overheats
+      -
+        id: maximal
+        label: Maximal
+    specialText: 'Overheats, Maximal'
+img: icons/svg/sword.svg
+name: 'Plasma Gun, Mezoa-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 40
+    cost: ''
+    source: RT
+    class: Heavy
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 120
+    damage: 2d10+10
+    damageType: Energy
+    penetration: 8
+    reload: 5Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 16
+      max: 16
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: true
+    specialQualities:
+      -
+        id: overheats
+        label: Overheats
+      -
+        id: maximal
+        label: Maximal
+      -
+        id: blast
+        label: Blast
+        param: 1
+      -
+        id: unreliable
+        label: Unreliable
+    specialText: 'Overheats, Maximal, Blast (1), Unreliable'
+img: icons/svg/sword.svg
+name: 'Plasma Cannon, Ryza-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 3.5
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 10
+    damage: 1d10+4
+    damageType: Energy
+    penetration: 2
+    reload: 2Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 2
+      max: 2
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: flame
+        label: Flame
+    specialText: Flame
+img: icons/svg/sword.svg
+name: 'Hand Flamer, Mezoa-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 6
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 20
+    damage: 1d10+4
+    damageType: Energy
+    penetration: 2
+    reload: 2Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 6
+      max: 6
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: flame
+        label: Flame
+    specialText: Flame
+img: icons/svg/sword.svg
+name: 'Flamer, Mezoa-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 20
+    cost: ''
+    source: RT
+    class: Heavy
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 30
+    damage: 2d10+4
+    damageType: Energy
+    penetration: 4
+    reload: 2Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 10
+      max: 10
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: flame
+        label: Flame
+    specialText: Flame
+img: icons/svg/sword.svg
+name: 'Heavy Flamer, Locke-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Average
+    weight: 1.5
+    cost: ''
+    source: RT
+    class: Thrown
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 10
+    damage: ''
+    damageType: ''
+    penetration: 0
+    reload: -
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 1
+      max: 1
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: primitive
+        label: Primitive
+      -
+        id: inaccurate
+        label: Inaccurate
+      -
+        id: snare
+        label: Snare
+    specialText: 'Primitive, Inaccurate, Snare'
+img: icons/svg/sword.svg
+name: Bolas
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Common
+    weight: 2
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 30
+    damage: 1d10
+    damageType: Rending
+    penetration: 0
+    reload: Half
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 1
+      max: 1
+    special:
+      tearing: false
+      accurate: false
+      reliable: true
+      unreliable: false
+    specialQualities:
+      -
+        id: primitive
+        label: Primitive
+      -
+        id: reliable
+        label: Reliable
+    specialText: 'Primitive, Reliable'
+img: icons/svg/sword.svg
+name: Bow
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Common
+    weight: 3
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 30
+    damage: 1d10
+    damageType: Rending
+    penetration: 0
+    reload: 2Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 1
+      max: 1
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: primitive
+        label: Primitive
+    specialText: Primitive
+img: icons/svg/sword.svg
+name: Crossbow
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 1
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 15
+    damage: 1d10
+    damageType: Rending
+    penetration: 0
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 1
+      max: 1
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: primitive
+        label: Primitive
+    specialText: Primitive
+img: icons/svg/sword.svg
+name: Hand Bow
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Common
+    weight: 4
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 15
+    damage: 1d10+2
+    damageType: Impact
+    penetration: 0
+    reload: 3Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 1
+      max: 1
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: true
+    specialQualities:
+      -
+        id: primitive
+        label: Primitive
+      -
+        id: inaccurate
+        label: Inaccurate
+      -
+        id: unreliable
+        label: Unreliable
+    specialText: 'Primitive, Inaccurate, Unreliable'
+img: icons/svg/sword.svg
+name: Flintlock Pistol
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Common
     weight: 7
-img: systems/rogue-trader/...
-name: Bolt Pistol, Ceres-Pattern
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 30
+    damage: 1d10+2
+    damageType: Impact
+    penetration: 0
+    reload: 5Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 1
+      max: 1
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: true
+    specialQualities:
+      -
+        id: primitive
+        label: Primitive
+      -
+        id: inaccurate
+        label: Inaccurate
+      -
+        id: unreliable
+        label: Unreliable
+    specialText: 'Primitive, Inaccurate, Unreliable'
+img: icons/svg/sword.svg
+name: Musket
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Plentiful
+    weight: 0.5
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 15
+    damage: 1d10-2
+    damageType: Impact
+    penetration: 0
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 1
+      max: 1
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: primitive
+        label: Primitive
+    specialText: Primitive
+img: icons/svg/sword.svg
+name: Sling
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 10
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 80
+    damage: '*'
+    damageType: ''
+    penetration: 0
+    reload: Half
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 1
+      max: 1
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: ''
+        label: ''
+    specialText: ''
+img: icons/svg/sword.svg
+name: 'Grenade Launcher, Mezoa-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 12.5
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 60
+    damage: '*'
+    damageType: ''
+    penetration: 0
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 6
+      max: 6
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: ''
+        label: ''
+      -
+        id: inaccurate
+        label: Inaccurate
+    specialText: ', Inaccurate'
+img: icons/svg/sword.svg
+name: 'Grenade Launcher, Voss-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 12
+    cost: ''
+    source: RT
+    class: Heavy
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 250
+    damage: '*'
+    damageType: ''
+    penetration: 0
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 1
+      max: 1
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: ''
+        label: ''
+    specialText: ''
+img: icons/svg/sword.svg
+name: 'Missile Launcher, Locke-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 35
+    cost: ''
+    source: RT
+    class: Heavy
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 200
+    damage: '*'
+    damageType: ''
+    penetration: 0
+    reload: 2Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 5
+      max: 5
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: ''
+        label: ''
+    specialText: ''
+img: icons/svg/sword.svg
+name: 'Missile Launcher, Retobi-Pattern'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 0.5
+    cost: ''
+    source: RT
+    class: Thrown
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 3
+    damage: '3d10E*'
+    damageType: ''
+    penetration: 0
+    reload: -
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: blast
+        label: Blast
+        param: 3
+    specialText: Blast (3)
+img: icons/svg/sword.svg
+name: Anti-Plant
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0.5
+    cost: ''
+    source: RT
+    class: Thrown
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 3
+    damage: '*'
+    damageType: ''
+    penetration: 0
+    reload: -
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: smoke
+        label: Smoke
+    specialText: Smoke
+img: icons/svg/sword.svg
+name: Blind
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Common
+    weight: 0.5
+    cost: ''
+    source: RT
+    class: Thrown
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 3
+    damage: 2d10
+    damageType: Explosive
+    penetration: 0
+    reload: -
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: blast
+        label: Blast
+        param: 4
+    specialText: Blast (4)
+img: icons/svg/sword.svg
+name: Frag
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Average
+    weight: 0.5
+    cost: ''
+    source: RT
+    class: -
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 2d10
+    damageType: Explosive
+    penetration: 4
+    reload: -
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: blast
+        label: Blast
+        param: 6
+    specialText: Blast (6)
+img: icons/svg/sword.svg
+name: Frag Missile
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Extremely Rare
+    weight: 0
+    cost: ''
+    source: RT
+    class: Thrown
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 3
+    damage: 2d10+3
+    damageType: Rending
+    penetration: 4
+    reload: -
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: blast
+        label: Blast
+        param: 3
+    specialText: Blast (3)
+img: icons/svg/sword.svg
+name: Egerian Geode
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0.5
+    cost: ''
+    source: RT
+    class: Thrown
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 3
+    damage: ''
+    damageType: ''
+    penetration: 0
+    reload: -
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities: []
+    specialText: ''
+img: icons/svg/sword.svg
+name: Hallucinogen
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0.5
+    cost: ''
+    source: RT
+    class: Thrown
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 3
+    damage: 2d10+4
+    damageType: Explosive
+    penetration: 6
+    reload: -
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities: []
+    specialText: ''
+img: icons/svg/sword.svg
+name: Krak
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 1.5
+    cost: ''
+    source: RT
+    class: -
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 3d10+10
+    damageType: Explosive
+    penetration: 10
+    reload: -
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: blast
+        label: Blast
+        param: 1
+    specialText: Blast (1)
+img: icons/svg/sword.svg
+name: Krak Missile
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0.5
+    cost: ''
+    source: RT
+    class: Thrown
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 3
+    damage: ''
+    damageType: ''
+    penetration: 0
+    reload: -
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities: []
+    specialText: ''
+img: icons/svg/sword.svg
+name: Photon Flash
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 4
+    cost: ''
+    source: RT
+    class: Thrown
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 3
+    damage: 1d10+6
+    damageType: ''
+    penetration: 6
+    reload: -
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: blast
+        label: Blast
+        param: 1
+    specialText: Blast (1)
+img: icons/svg/sword.svg
+name: Plasma
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Common
+    weight: 0.5
+    cost: ''
+    source: RT
+    class: Thrown
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 3
+    damage: ''
+    damageType: ''
+    penetration: 0
+    reload: -
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: smoke
+        label: Smoke
+    specialText: Smoke
+img: icons/svg/sword.svg
+name: Smoke
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 0.2
+    cost: ''
+    source: RT
+    class: Thrown
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 3
+    damage: ''
+    damageType: ''
+    penetration: 0
+    reload: -
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: blast
+        label: Blast
+        param: 3
+    specialText: Blast (3)
+img: icons/svg/sword.svg
+name: Stun
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Extremely Rare
+    weight: 0.5
+    cost: ''
+    source: RT
+    class: Thrown
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 3
+    damage: 3d10
+    damageType: Impact
+    penetration: 0
+    reload: -
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: toxic
+        label: Toxic
+    specialText: Toxic
+img: icons/svg/sword.svg
+name: Virus
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Extremely Rare
+    weight: 0.5
+    cost: ''
+    source: RT
+    class: Thrown
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 3
+    damage: 4d10+4
+    damageType: Rending
+    penetration: 6
+    reload: -
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: true
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: blast
+        label: Blast
+        param: 1
+      -
+        id: tearing
+        label: Tearing
+    specialText: 'Blast (1), Tearing'
+img: icons/svg/sword.svg
+name: Xeno Filament
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 12
+    cost: ''
+    source: RT
+    class: Placed
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 6d10
+    damageType: Energy
+    penetration: 12
+    reload: -
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: blast
+        label: Blast
+        param: 2
+    specialText: Blast (2)
+img: icons/svg/sword.svg
+name: Melta Bomb
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Near Unique
+    weight: 4
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 80
+    damage: 2d10+5
+    damageType: Energy
+    penetration: 6
+    reload: 4Full
+    rateOfFire:
+      single: 1
+      burst: 3
+      full: 0
+    clip:
+      value: 25
+      max: 25
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: scatter
+        label: Scatter
+    specialText: Scatter
+img: icons/svg/sword.svg
+name: Crux Beam Gun
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 2.5
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 30
+    damage: 1d10
+    damageType: Rending
+    penetration: 0
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 1
+      max: 1
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: toxic
+        label: Toxic
+    specialText: Toxic
+img: icons/svg/sword.svg
+name: Dartcaster
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Extremely Rare
+    weight: 0.5
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 3
+    damage: 1d10+3
+    damageType: Energy
+    penetration: 7
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 1
+      max: 1
+    special:
+      tearing: false
+      accurate: false
+      reliable: true
+      unreliable: false
+    specialQualities:
+      -
+        id: reliable
+        label: Reliable
+    specialText: Reliable
+img: icons/svg/sword.svg
+name: Digi-Laser
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Extremely Rare
+    weight: 0.5
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 3
+    damage: 2d10+4
+    damageType: Energy
+    penetration: 12
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 1
+      max: 1
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities: []
+    specialText: ''
+img: icons/svg/sword.svg
+name: Digi-Melta
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Extremely Rare
+    weight: 0.5
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 3
+    damage: 1d10
+    damageType: Rending
+    penetration: 0
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 1
+      max: 1
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: toxic
+        label: Toxic
+    specialText: Toxic
+img: icons/svg/sword.svg
+name: Digi-Needler
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Extremely Rare
+    weight: 0.5
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 3
+    damage: 1d10+4
+    damageType: Energy
+    penetration: 2
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 1
+      max: 1
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: flame
+        label: Flame
+    specialText: Flame
+img: icons/svg/sword.svg
+name: Digi-Flamer
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Near Unique
+    weight: 5
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 30
+    damage: '*'
+    damageType: ''
+    penetration: 0
+    reload: 2Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 3
+      max: 3
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: blast
+        label: Blast
+        param: 5
+    specialText: Blast (5)
+img: icons/svg/sword.svg
+name: Graviton Gun
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Extremely Rare
+    weight: 6
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 110
+    damage: 1d10+5
+    damageType: Energy
+    penetration: 1
+    reload: 2Full
+    rateOfFire:
+      single: 1
+      burst: 2
+      full: 0
+    clip:
+      value: 6
+      max: 6
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities: []
+    specialText: ''
+img: icons/svg/sword.svg
+name: Kroot Rifle
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Extremely Rare
+    weight: 6
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 1d10
+    damageType: Rending
+    penetration: 0
+    reload: -
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: balanced
+        label: Balanced
+    specialText: Balanced
+img: icons/svg/sword.svg
+name: Melee
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 1.5
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 30
+    damage: 1d10
+    damageType: Rending
+    penetration: 0
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 6
+      max: 6
+    special:
+      tearing: false
+      accurate: true
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: accurate
+        label: Accurate
+      -
+        id: toxic
+        label: Toxic
+    specialText: 'Accurate, Toxic'
+img: icons/svg/sword.svg
+name: Needle Pistol
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 2
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 180
+    damage: 1d10
+    damageType: Rending
+    penetration: 0
+    reload: 2Full
+    rateOfFire:
+      single: 1
+      burst: 0
+      full: 0
+    clip:
+      value: 6
+      max: 6
+    special:
+      tearing: false
+      accurate: true
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: accurate
+        label: Accurate
+      -
+        id: toxic
+        label: Toxic
+    specialText: 'Accurate, Toxic'
+img: icons/svg/sword.svg
+name: Needle Rifle
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 4
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 30
+    damage: 1d10+4
+    damageType: Impact
+    penetration: 0
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 3
+      full: 10
+    clip:
+      value: 30
+      max: 30
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: true
+    specialQualities:
+      -
+        id: inaccurate
+        label: Inaccurate
+      -
+        id: unreliable
+        label: Unreliable
+    specialText: 'Inaccurate, Unreliable'
+img: icons/svg/sword.svg
+name: Ork Shoota
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 2
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 60
+    damage: 1d10+4
+    damageType: Impact
+    penetration: 0
+    reload: Full
+    rateOfFire:
+      single: 1
+      burst: 3
+      full: 0
+    clip:
+      value: 18
+      max: 18
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: true
+    specialQualities:
+      -
+        id: inaccurate
+        label: Inaccurate
+      -
+        id: unreliable
+        label: Unreliable
+    specialText: 'Inaccurate, Unreliable'
+img: icons/svg/sword.svg
+name: Ork Slugga
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 2.5
+    cost: ''
+    source: RT
+    class: Basic
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 60
+    damage: 1d10+4
+    damageType: Rending
+    penetration: 6
+    reload: 2Full
+    rateOfFire:
+      single: 1
+      burst: 3
+      full: 10
+    clip:
+      value: 100
+      max: 100
+    special:
+      tearing: false
+      accurate: false
+      reliable: true
+      unreliable: false
+    specialQualities:
+      -
+        id: reliable
+        label: Reliable
+    specialText: Reliable
+img: icons/svg/sword.svg
+name: Shuriken Catapult
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 1.2
+    cost: ''
+    source: RT
+    class: Pistol
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 30
+    damage: 1d10+4
+    damageType: Rending
+    penetration: 4
+    reload: 2Full
+    rateOfFire:
+      single: 1
+      burst: 3
+      full: 5
+    clip:
+      value: 40
+      max: 40
+    special:
+      tearing: false
+      accurate: false
+      reliable: true
+      unreliable: false
+    specialQualities:
+      -
+        id: reliable
+        label: Reliable
+    specialText: Reliable
+img: icons/svg/sword.svg
+name: Shuriken Pistol
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 7
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: Two-Handed
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 2d10
+    damageType: Rending
+    penetration: 0
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: primitive
+        label: Primitive
+      -
+        id: unwieldy
+        label: Unwieldy
+    specialText: 'Primitive, Unwieldy'
+img: icons/svg/sword.svg
+name: Great Weapon
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 4
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 3
+    damage: 1d10+3
+    damageType: Rending
+    penetration: 0
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: true
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: primitive
+        label: Primitive
+      -
+        id: flexible
+        label: Flexible
+      -
+        id: tearing
+        label: Tearing
+    specialText: 'Primitive, Flexible, Tearing'
+img: icons/svg/sword.svg
+name: Groxwhip
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: '*'
+    weight: 0
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 1d10-2
+    damageType: Impact
+    penetration: 0
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: primitive
+        label: Primitive
+      -
+        id: unbalanced
+        label: Unbalanced
+    specialText: 'Primitive, Unbalanced'
+img: icons/svg/sword.svg
+name: Improvised
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Abundant
+    weight: 1
+    cost: ''
+    source: RT
+    class: Melee/Thr
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 5
+    damage: 1d5
+    damageType: Rending
+    penetration: 0
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: primitive
+        label: Primitive
+    specialText: Primitive
+img: icons/svg/sword.svg
+name: Knife
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Extremely Rare
+    weight: 4
+    cost: ''
+    source: RT
+    class: Melee/Thr
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 5
+    damage: 1d5+1
+    damageType: Rending
+    penetration: 1
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: primitive
+        label: Primitive
+    specialText: Primitive
+img: icons/svg/sword.svg
+name: Kraken Tooth Dagger
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Common
+    weight: 3
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 1d5
+    damageType: Impact
+    penetration: 0
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: primitive
+        label: Primitive
+      -
+        id: defensive
+        label: Defensive
+    specialText: 'Primitive, Defensive'
+img: icons/svg/sword.svg
+name: Shield
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Common
+    weight: 3
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: Two-Handed
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 1d10
+    damageType: Rending
+    penetration: 0
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: primitive
+        label: Primitive
+    specialText: Primitive
+img: icons/svg/sword.svg
+name: Spear
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Plentiful
+    weight: 3
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: Two-Handed
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 1d10
+    damageType: Impact
+    penetration: 0
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: primitive
+        label: Primitive
+      -
+        id: balanced
+        label: Balanced
+    specialText: 'Primitive, Balanced'
+img: icons/svg/sword.svg
+name: Staff
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Common
+    weight: 3
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 1d10
+    damageType: Rending
+    penetration: 0
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: primitive
+        label: Primitive
+      -
+        id: balanced
+        label: Balanced
+    specialText: 'Primitive, Balanced'
+img: icons/svg/sword.svg
+name: Sword
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Plentiful
+    weight: 2
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 1d10
+    damageType: Impact
+    penetration: 0
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: primitive
+        label: Primitive
+    specialText: Primitive
+img: icons/svg/sword.svg
+name: Truncheon
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 4.5
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 1d10+2
+    damageType: Impact
+    penetration: 1
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: primitive
+        label: Primitive
+    specialText: Primitive
+img: icons/svg/sword.svg
+name: Warhammer
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Average
+    weight: 6
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 1d10+2
+    damageType: Rending
+    penetration: 2
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: true
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: tearing
+        label: Tearing
+      -
+        id: balanced
+        label: Balanced
+    specialText: 'Tearing, Balanced'
+img: icons/svg/sword.svg
+name: Chainsword (Hecate-Pattern)
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Average
+    weight: 13
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 1d10+4
+    damageType: Rending
+    penetration: 2
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: true
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: tearing
+        label: Tearing
+    specialText: Tearing
+img: icons/svg/sword.svg
+name: Chain Axe
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Extremely Rare
+    weight: 8
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 2d10+4
+    damageType: Energy
+    penetration: 6
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: powerField
+        label: Power Field
+      -
+        id: unbalanced
+        label: Unbalanced
+    specialText: 'Power Field, Unbalanced'
+img: icons/svg/sword.svg
+name: Omnissian Axe (Sollex-Pattern)
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 6
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 1d10+7
+    damageType: Energy
+    penetration: 7
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: powerField
+        label: Power Field
+      -
+        id: unbalanced
+        label: Unbalanced
+    specialText: 'Power Field, Unbalanced'
+img: icons/svg/sword.svg
+name: Power Axe (Mezoa-Pattern)
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 13
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 2d10
+    damageType: Energy
+    penetration: 9
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: powerField
+        label: Power Field
+      -
+        id: unwieldy
+        label: Unwieldy
+    specialText: 'Power Field, Unwieldy'
+img: icons/svg/sword.svg
+name: Power Fist (Mezoa-Pattern)
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 3.5
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 1d10+5
+    damageType: Energy
+    penetration: 4
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: powerField
+        label: Power Field
+      -
+        id: shocking
+        label: Shocking
+    specialText: 'Power Field, Shocking'
+img: icons/svg/sword.svg
+name: Power Maul (High)
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 3.5
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 1d10+1
+    damageType: Energy
+    penetration: 2
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: shocking
+        label: Shocking
+    specialText: Shocking
+img: icons/svg/sword.svg
+name: (Low)
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 3
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 1d10+5
+    damageType: Energy
+    penetration: 5
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: powerField
+        label: Power Field
+      -
+        id: balanced
+        label: Balanced
+    specialText: 'Power Field, Balanced'
+img: icons/svg/sword.svg
+name: Power Sword (Mordian-Pattern)
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 3
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 1d10
+    damageType: Rending
+    penetration: 0
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: shocking
+        label: Shocking
+    specialText: Shocking
+img: icons/svg/sword.svg
+name: 'Officer''s Cutlass'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 1.5
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 1d10
+    damageType: Impact
+    penetration: 0
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: shocking
+        label: Shocking
+    specialText: Shocking
+img: icons/svg/sword.svg
+name: Shock Glove
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 2
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 1d5+3
+    damageType: Impact
+    penetration: 0
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: shocking
+        label: Shocking
+    specialText: Shocking
+img: icons/svg/sword.svg
+name: Shock-Staff
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Extremely Rare
+    weight: 1
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 1d10+1
+    damageType: Rending
+    penetration: 7
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: powerField
+        label: Power Field
+      -
+        id: balanced
+        label: Balanced
+    specialText: 'Power Field, Balanced'
+img: icons/svg/sword.svg
+name: Fractal Blade
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Extremely Rare
+    weight: 1
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 1d10+3
+    damageType: Energy
+    penetration: 6
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: powerField
+        label: Power Field
+      -
+        id: balanced
+        label: Balanced
+    specialText: 'Power Field, Balanced'
+img: icons/svg/sword.svg
+name: Ghost Sword
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Extremely Rare
+    weight: 1
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 1d10+8
+    damageType: Rending
+    penetration: 10
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: true
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: tearing
+        label: Tearing
+    specialText: Tearing
+img: icons/svg/sword.svg
+name: 'Harlequin''s Kiss'
+type: weapon
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 8
+    cost: ''
+    source: RT
+    class: Melee
+    weaponType: ''
+    craftsmanship: ''
+    equipped: false
+    range: 0
+    damage: 1d10+1
+    damageType: Rending
+    penetration: 2
+    reload: ''
+    rateOfFire:
+      single: 0
+      burst: 0
+      full: 0
+    clip:
+      value: 0
+      max: 0
+    special:
+      tearing: false
+      accurate: false
+      reliable: false
+      unreliable: false
+    specialQualities:
+      -
+        id: unbalanced
+        label: Unbalanced
+    specialText: Unbalanced
+img: icons/svg/sword.svg
+name: Ork Choppa
 type: weapon
 ---

@@ -1,0 +1,351 @@
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Bionic Arm/Leg
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Bionic Locomotion
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Bionic Respiratory System
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Augur Array
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Augmented Senses
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Near Unique
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Baleful Eye
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Ballistic Mechadendrite
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Bionic Heart
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Calculus Logi Upgrade
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Cortex Implants
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Cranial Armor
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Cybernetic Senses
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Locator Matrix
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Manipulator Mechadendrite
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Medicae Mechadendrite
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Memorance Implant
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Mind Impulse Unit (MIU)
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: MIU Weapon Interface
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Optical Mechadendrite
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Respiratory Filter Implant
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Scribe-tines
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Subskin Armor
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Synthetic Muscle Grafts
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Very Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Utility Mechadendrite
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Voidskin
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Rare
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Volitor Implant
+type: gear
+---
+---
+data:
+    description: ''
+    availability: Scarce
+    weight: 0
+    cost: ''
+    source: RT
+    category: cybernetic
+    quantity: 1
+img: icons/svg/downgrade.svg
+name: Vox Implant
+type: gear
+---

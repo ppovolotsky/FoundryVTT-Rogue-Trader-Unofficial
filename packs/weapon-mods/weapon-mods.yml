@@ -1,0 +1,196 @@
+---
+data:
+    description: 'Halves weight, range, and clip size. -1 damage, -20 on skill tests to find the weapon.'
+    availability: Average
+    weight: 1
+    cost: ''
+    source: RT
+    category: weaponMod
+    usedFor: 'Pistol/Basic (Las, SP, Bolt, Plasma, or Flame).'
+    quantity: 1
+img: icons/svg/upgrade.svg
+name: Compact
+type: gear
+---
+---
+data:
+    description: The wielder can choose between three different ammunition types at the beginning of each turn.
+    availability: Scarce
+    weight: 1
+    cost: ''
+    source: RT
+    category: weaponMod
+    usedFor: Pistol/Basic (SP or Bolt).
+    quantity: 1
+img: icons/svg/upgrade.svg
+name: Fire Selector
+type: gear
+---
+---
+data:
+    description: 'Can use pistol while keeping hands free. Reduces range by 30%.'
+    availability: Scarce
+    weight: 1
+    cost: ''
+    source: RT
+    category: weaponMod
+    usedFor: 'Pistol (Las, SP, Bolt, Melta, or Primitive).'
+    quantity: 1
+img: icons/svg/upgrade.svg
+name: Forearm Weapon Mounting
+type: gear
+---
+---
+data:
+    description: Counts as Spear in melee.
+    availability: Plentiful
+    weight: 2
+    cost: ''
+    source: RT
+    category: weaponMod
+    usedFor: Basic.
+    quantity: 1
+img: icons/svg/upgrade.svg
+name: Melee Attachment
+type: gear
+---
+---
+data:
+    description: 'No longer Primitive, +2 Penetration. Power weapons are only affected with field off.'
+    availability: Scarce
+    weight: 0
+    cost: ''
+    source: RT
+    category: weaponMod
+    usedFor: Melee (Primitive).
+    quantity: 1
+img: icons/svg/upgrade.svg
+name: Mono
+type: gear
+---
+---
+data:
+    description: +10 to BS when firing on Semi-Auto or Full Auto.
+    availability: Very Rare
+    weight: 0.5
+    cost: ''
+    source: RT
+    category: weaponMod
+    usedFor: 'Ranged (non-Primitive, auto).'
+    quantity: 1
+img: icons/svg/upgrade.svg
+name: Motion Predictor
+type: gear
+---
+---
+data:
+    description: 'Sight. Combines Preysense, Red-Dot, and Telescopic scopes.'
+    availability: Near Unique
+    weight: 2
+    cost: ''
+    source: RT
+    category: weaponMod
+    usedFor: 'Basic (Las, SP, Bolt, Plasma, or Primitive).'
+    quantity: 1
+img: icons/svg/upgrade.svg
+name: Omni-Scope
+type: gear
+---
+---
+data:
+    description: Sight. No penalties due to darkness.
+    availability: Very Rare
+    weight: 0.5
+    cost: ''
+    source: RT
+    category: weaponMod
+    usedFor: 'Basic (Las, SP, Bolt, Plasma, or Primitive).'
+    quantity: 1
+img: icons/svg/upgrade.svg
+name: Photo Sight
+type: gear
+---
+---
+data:
+    description: 'Sight. No penalties due to darkness, +20 to visual Perception tests in the dark.'
+    availability: Very Rare
+    weight: 0.5
+    cost: ''
+    source: RT
+    category: weaponMod
+    usedFor: 'Basic (Las, SP, Bolt, Plasma, or Primitive).'
+    quantity: 1
+img: icons/svg/upgrade.svg
+name: Preysense Sight
+type: gear
+---
+---
+data:
+    description: Sight. +10 to BS when fired on single shot.
+    availability: Scarce
+    weight: 0.5
+    cost: ''
+    source: RT
+    category: weaponMod
+    usedFor: 'Pistol/Basic (Las, SP, Bolt, Plasma, or Primitive).'
+    quantity: 1
+img: icons/svg/upgrade.svg
+name: Red-Dot Laser Sight
+type: gear
+---
+---
+data:
+    description: Awareness tests to hear this weapon take a -20 penalty and can only be attempted at half the normal distance.
+    availability: Plentiful
+    weight: 0.5
+    cost: ''
+    source: RT
+    category: weaponMod
+    usedFor: 'Autoguns, hand cannons, long-las, needle pistols, needle rifles, stub automatics, and stub revolvers.'
+    quantity: 1
+img: icons/svg/upgrade.svg
+name: Silencer
+type: gear
+---
+---
+data:
+    description: 'Halves weight, user always counts as Braced, can fire Semi-Auto or Full-Auto as a Half Action.'
+    availability: Extremely Rare
+    weight: 1
+    cost: ''
+    source: RT
+    category: weaponMod
+    usedFor: Heavy.
+    quantity: 1
+img: icons/svg/upgrade.svg
+name: Suspensors
+type: gear
+---
+---
+data:
+    description: Sight. Ignore penalties for long and extreme range with a Full Action Aim.
+    availability: Average
+    weight: 1
+    cost: ''
+    source: RT
+    category: weaponMod
+    usedFor: 'Basic (Las, SP, Bolt, Plasma, or Primitive).'
+    quantity: 1
+img: icons/svg/upgrade.svg
+name: Telescopic Sight
+type: gear
+---
+---
+data:
+    description: 'Fire, operate shot selector, switch firing modes by voice command.'
+    availability: Rare
+    weight: 0.5
+    cost: ''
+    source: RT
+    category: weaponMod
+    usedFor: Ranged (non-Primitive) or Grenade.
+    quantity: 1
+img: icons/svg/upgrade.svg
+name: Vox-Operated
+type: gear
+---

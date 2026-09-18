@@ -10,11 +10,31 @@
     <div class="form-group">
       <label>{{localize field.label}}</label>
       <div class="form-fields">
+        {{#if (eq field.input "checkbox")}}
+        <input type="checkbox" name="{{field.name}}" {{checked field.value}}/>
+        {{else}}
         <input type="{{field.input}}" name="{{field.name}}" value="{{field.value}}" data-dtype="{{#if (eq field.input "number")}}Number{{else}}String{{/if}}"/>
+        {{/if}}
       </div>
     </div>
     {{/each}}
   </section>
+
+  {{#if specialRows.length}}
+  <section class="rt-sheet-section rt-special-qualities">
+    <label class="rt-sheet-section__title">{{localize "RT.Items.Weapon.SpecialQualities"}}</label>
+    <ul class="rt-special-qualities__list">
+      {{#each specialRows as |row|}}
+      <li class="rt-special-qualities__item">
+        <strong class="rt-special-qualities__name">{{row.title}}</strong>
+        {{#if row.summary}}
+        <span class="rt-special-qualities__summary">{{row.summary}}</span>
+        {{/if}}
+      </li>
+      {{/each}}
+    </ul>
+  </section>
+  {{/if}}
 
   <section class="rt-sheet-section">
     <label class="rt-sheet-section__title">{{localize "RT.Items.Description"}}</label>

@@ -530,6 +530,7 @@
                                                   "description":  "",
                                                   "availability":  "",
                                                   "weight":  0,
+                                                  "cost":  "",
                                                   "source":  ""
                                               }
                                },
@@ -560,7 +561,9 @@
                                                 "accurate":  false,
                                                 "reliable":  false,
                                                 "unreliable":  false
-                                            }
+                                            },
+                                "specialQualities":  [],
+                                "specialText":  ""
                             },
                  "armour":  {
                                 "templates":  [
@@ -582,6 +585,8 @@
                               "templates":  [
                                                 "common"
                                             ],
+                              "category":  "gear",
+                              "usedFor":  "",
                               "quantity":  1
                           },
                  "ammo":  {
@@ -589,6 +594,7 @@
                                                 "common"
                                             ],
                               "weaponType":  "",
+                              "usedFor":  "",
                               "quantity":  0
                           }
              }
