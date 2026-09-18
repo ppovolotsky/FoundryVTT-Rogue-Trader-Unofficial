@@ -85,17 +85,18 @@ export async function rollTest({
 }
 
 /**
- * Roll dialog: target and modifier. The roll mode (1d100 / 2d10) comes only
- * from the global system setting; it can only be overridden via the rollTest API.
+ * Roll dialog: target and modifier. The roll mode (1d100 / 2d10) comes from
+ * the actor's override if set, otherwise from the global system setting.
  */
 export async function showRollDialog({
   target = 0,
   modifier = 0,
   label = "",
   speaker = null,
-  showTarget = true
+  showTarget = true,
+  actor = null
 } = {}) {
-  const mode = game.settings.get(SYSTEM_ID, "defaultRollMode");
+  const mode = actor?.system?.settings?.rollMode || game.settings.get(SYSTEM_ID, "defaultRollMode");
   // When the target field is hidden the target is passed programmatically,
   // so keep it out of the form-read values.
   const baseTarget = Number(target) || 0;

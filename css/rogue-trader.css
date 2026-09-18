@@ -1244,3 +1244,36 @@ body.theme-dark,
 .rt-row-chat__description {
   white-space: pre-line;
 }
+
+/* ---------- Rank and sheet settings ---------- */
+
+.rogue-trader.sheet .rt-field--rank {
+  flex: 0 0 90px;
+}
+
+.rogue-trader.sheet .rt-rank {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rogue-trader.sheet .rt-rank input[type="text"] {
+  width: 44px;
+  text-align: center;
+  font-weight: bold;
+  background: var(--rt-field);
+  border: 1px solid var(--rt-border);
+  color: var(--rt-text);
+  border-radius: 3px;
+  padding: 2px 4px;
+}
+
+.rogue-trader.sheet .rt-settings-hint {
+  margin: 2px 0 0;
+  font-size: 0.75em;
+  color: var(--rt-muted);
+}
+
+.rogue-trader.sheet .rt-char-chip__abbr {
+  font-size: 0.85em;
+}

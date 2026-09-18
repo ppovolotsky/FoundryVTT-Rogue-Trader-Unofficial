@@ -10,7 +10,45 @@
     </div>
   </div>
 
-  <section class="rt-stub-note">
-    <p>{{localize "RT.Sheet.SettingsNote"}}</p>
-  </section>
+  <div class="form-group">
+    <label>{{localize "RT.Settings.Sheet.RollMode"}}</label>
+    <div class="form-fields">
+      <select name="system.settings.rollMode">
+        <option value="" {{#if (eq system.settings.rollMode "")}}selected{{/if}}>{{localize "RT.Settings.Sheet.RollModeGlobal"}}</option>
+        <option value="1d100" {{#if (eq system.settings.rollMode "1d100")}}selected{{/if}}>1d100</option>
+        <option value="2d10" {{#if (eq system.settings.rollMode "2d10")}}selected{{/if}}>2d10</option>
+      </select>
+    </div>
+    <p class="rt-settings-hint">{{localize "RT.Settings.Sheet.RollModeHint"}}</p>
+  </div>
+
+  <div class="form-group">
+    <label>{{localize "RT.Settings.Sheet.FreeSkillChars"}}</label>
+    <div class="form-fields">
+      <input type="checkbox" name="system.settings.freeSkillChars" {{checked system.settings.freeSkillChars}}/>
+    </div>
+    <p class="rt-settings-hint">{{localize "RT.Settings.Sheet.FreeSkillCharsHint"}}</p>
+  </div>
+
+  <div class="form-group">
+    <label>{{localize "RT.Settings.Sheet.Language"}}</label>
+    <div class="form-fields">
+      <select data-client-setting="language">
+        <option value="ru" {{#if (eq clientLang "ru")}}selected{{/if}}>Русский</option>
+        <option value="en" {{#if (eq clientLang "en")}}selected{{/if}}>English</option>
+      </select>
+    </div>
+    <p class="rt-settings-hint">{{localize "RT.Settings.Sheet.LanguageHint"}}</p>
+  </div>
+
+  <div class="form-group">
+    <label>{{localize "RT.Settings.Sheet.Theme"}}</label>
+    <div class="form-fields">
+      <select data-client-setting="colorSchemeApplication">
+        <option value="light" {{#if (eq clientTheme "light")}}selected{{/if}}>{{localize "RT.Theme.Light"}}</option>
+        <option value="dark" {{#if (eq clientTheme "dark")}}selected{{/if}}>{{localize "RT.Theme.Dark"}}</option>
+      </select>
+    </div>
+    <p class="rt-settings-hint">{{localize "RT.Settings.Sheet.ThemeHint"}}</p>
+  </div>
 </section>

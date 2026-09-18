@@ -97,6 +97,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       target: this.document.system.characteristics?.[key]?.total ?? 0,
       label: game.i18n.localize(cfg.label),
       speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      actor: this.document,
       // The target is known, so the dialog only asks for the modifier.
       showTarget: false
     });
@@ -118,6 +119,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const roll = await new Roll("1d5").evaluate();
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.document }),
+
       flavor: "1d5",
       rolls: [roll]
     });
@@ -155,6 +157,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       target: state.total ?? 0,
       label: game.i18n.localize(def.name),
       speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      actor: this.document,
       showTarget: false
     });
   }
@@ -168,6 +171,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       target: row.total ?? 0,
       label: `${row.name} (${game.i18n.localize(group?.name ?? "")})`,
       speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      actor: this.document,
       showTarget: false
     });
   }
@@ -274,6 +278,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     });
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.document }),
+
       content
     });
   }
@@ -287,6 +292,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       target: base,
       label: game.i18n.localize("RT.Acquisition.Roll"),
       speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      actor: this.document,
       showTarget: false
     });
   }
@@ -326,15 +332,25 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       selected: context.edition === edition.id
     }));
 
+    context.freeSkillChars = this.document.system.settings?.freeSkillChars ?? false;
+    context.clientLang = game.settings.get("core", "language");
+    context.clientTheme = game.settings.get("core", "colorSchemeApplication");
     context.skillsBasic = [];
     context.skillsAdvanced = [];
     for (const def of SKILLS) {
       const state = this.document.system.skills?.[def.key] ?? {};
+      const currentChar = state.characteristic ?? def.char;
+      const allowedChars = context.freeSkillChars ? Object.keys(CHARACTERISTICS) : [def.char];
       const entry = {
         key: def.key,
         name: game.i18n.localize(def.name),
         desc: game.i18n.localize(def.desc),
-        charAbbr: charAbbr(def.char),
+        charAbbr: charAbbr(currentChar),
+        charOptions: allowedChars.map((cKey) => ({
+          id: cKey,
+          abbr: charAbbr(cKey),
+          selected: currentChar === cKey
+        })),
         trained: state.trained ?? false,
         plus10: state.plus10 ?? false,
         plus20: state.plus20 ?? false,

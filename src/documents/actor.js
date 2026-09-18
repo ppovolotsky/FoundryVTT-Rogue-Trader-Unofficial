@@ -66,9 +66,9 @@ export class RTActor extends Actor {
     for (const def of SKILLS) {
       const state = system.skills?.[def.key];
       if (!state) continue;
-      state.char = def.char;
+      state.char = state.characteristic ?? def.char;
       state.basic = def.basic;
-      state.total = skillValue(def.char, state, def.basic || (state.asBasic ?? false));
+      state.total = skillValue(state.char, state, def.basic || (state.asBasic ?? false));
       xpSpent += state.xp ?? 0;
       xpSkills += state.xp ?? 0;
     }
@@ -103,6 +103,15 @@ export class RTActor extends Actor {
     system.xp.spent = xpSpent;
     // Free XP is intentionally allowed to go negative so overspending stays visible.
     system.xp.free = (system.xp.total ?? 0) - xpSpent;
+    // Per-source breakdown shown in the Progression tab.
+    system.xp.characteristics = xpChars;
+    system.xp.skills = xpSkills;
+    system.xp.talents = xpTalents;
+    system.xp.misc = xpMisc;
+
+    // Rank grows with the total spent XP and caps at 8 (RT progression table).
+    const RANK_THRESHOLDS = [5000, 7000, 10000, 13000, 17000, 21000, 25000, 30000];
+    system.xp.rank = RANK_THRESHOLDS.filter((threshold) => xpSpent >= threshold).length;
     // Per-source breakdown shown in the Progression tab.
     system.xp.characteristics = xpChars;
     system.xp.skills = xpSkills;

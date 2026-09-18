@@ -1,252 +1,595 @@
 {
-  "Actor": {
-    "types": [
-      "character",
-      "npc",
-      "ship",
-      "colony"
-    ],
-    "templates": {
-      "common": {
-        "wounds": {
-          "value": 0,
-          "max": 0
-        },
-        "fate": {
-          "value": 0,
-          "max": 0
-        }
-      },
-      "living": {
-        "characteristics": {
-          "bs": {
-            "value": 0,
-            "advance": 0,
-            "reduction": 0,
-            "xp": 0,
-            "bonusMod": 0
-          },
-          "ws": {
-            "value": 0,
-            "advance": 0,
-            "reduction": 0,
-            "xp": 0,
-            "bonusMod": 0
-          },
-          "s": {
-            "value": 0,
-            "advance": 0,
-            "reduction": 0,
-            "xp": 0,
-            "bonusMod": 0
-          },
-          "t": {
-            "value": 0,
-            "advance": 0,
-            "reduction": 0,
-            "xp": 0,
-            "bonusMod": 0
-          },
-          "ag": {
-            "value": 0,
-            "advance": 0,
-            "reduction": 0,
-            "xp": 0,
-            "bonusMod": 0
-          },
-          "int": {
-            "value": 0,
-            "advance": 0,
-            "reduction": 0,
-            "xp": 0,
-            "bonusMod": 0
-          },
-          "per": {
-            "value": 0,
-            "advance": 0,
-            "reduction": 0,
-            "xp": 0,
-            "bonusMod": 0
-          },
-          "wp": {
-            "value": 0,
-            "advance": 0,
-            "reduction": 0,
-            "xp": 0,
-            "bonusMod": 0
-          },
-          "fel": {
-            "value": 0,
-            "advance": 0,
-            "reduction": 0,
-            "xp": 0,
-            "bonusMod": 0
-          }
-        },
-        "playerName": "",
-        "appearance": "",
-        "allies": "",
-        "goals": "",
-        "notes": "",
-        "talents": [],
-        "progression": [],
-        "profitFactor": 0,
-        "acquisition": {
-          "availability": "scarce",
-          "scale": "standard",
-          "component": "structural",
-          "quality": "standard"
-        },
-        "skills": {
-          "awareness": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "barter": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "carouse": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "charm": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "command": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "climb": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "concealment": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "disguise": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "contortionist": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "deceive": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "dodge": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "evaluate": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "gamble": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "inquiry": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "intimidate": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "logic": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "scrutiny": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "search": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "silentMove": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "swim": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "acrobatics": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "gossip": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "chemUse": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "commerce": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "demolition": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "interrogation": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "invocation": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "literacy": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "medicae": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "psyniscience": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "security": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "shadowing": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "sleightOfHand": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "survival": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "techUse": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "tracking": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 },
-          "animalTraining": { "trained": false, "plus10": false, "plus20": false, "talent": 0, "asBasic": false, "modifier": 0, "xp": 0 }
-        },
-        "groupSkills": [],
-        "fatigue": {
-          "value": 0,
-          "penalty": false
-        },
-        "xp": {
-          "total": 0
-        },
-        "psykana": {
-          "type": "psyker"
-        },
-        "bio": ""
-      }
-    },
-    "character": {
-      "templates": [
-        "common",
-        "living"
-      ]
-    },
-    "npc": {
-      "templates": [
-        "common",
-        "living"
-      ]
-    },
-    "ship": {
-      "templates": [
-        "common"
-      ],
-      "description": ""
-    },
-    "colony": {
-      "templates": [
-        "common"
-      ],
-      "description": ""
-    }
-  },
-  "Item": {
-    "types": [
-      "weapon",
-      "armour",
-      "gear",
-      "ammo"
-    ],
-    "templates": {
-      "common": {
-        "description": "",
-        "availability": "",
-        "weight": 0,
-        "source": ""
-      }
-    },
-    "weapon": {
-      "templates": [
-        "common"
-      ],
-      "class": "",
-      "weaponType": "",
-      "craftsmanship": "",
-      "equipped": false,
-      "range": 0,
-      "damage": "",
-      "damageType": "",
-      "penetration": 0,
-      "reload": "",
-      "rateOfFire": {
-        "single": 0,
-        "burst": 0,
-        "full": 0
-      },
-      "clip": {
-        "value": 0,
-        "max": 0
-      },
-      "special": {
-        "tearing": false,
-        "accurate": false,
-        "reliable": false,
-        "unreliable": false
-      }
-    },
-    "armour": {
-      "templates": [
-        "common"
-      ],
-      "armourType": "",
-      "locations": {
-        "head": 0,
-        "body": 0,
-        "leftArm": 0,
-        "rightArm": 0,
-        "leftLeg": 0,
-        "rightLeg": 0
-      },
-      "maxAgilityPenalty": 0,
-      "equipped": false
-    },
-    "gear": {
-      "templates": [
-        "common"
-      ],
-      "quantity": 1
-    },
-    "ammo": {
-      "templates": [
-        "common"
-      ],
-      "weaponType": "",
-      "quantity": 0
-    }
-  }
+    "Actor":  {
+                  "types":  [
+                                "character",
+                                "npc",
+                                "ship",
+                                "colony"
+                            ],
+                  "templates":  {
+                                    "common":  {
+                                                   "wounds":  {
+                                                                  "value":  0,
+                                                                  "max":  0
+                                                              },
+                                                   "fate":  {
+                                                                "value":  0,
+                                                                "max":  0
+                                                            }
+                                               },
+                                    "living":  {
+                                                   "characteristics":  {
+                                                                           "bs":  {
+                                                                                      "value":  0,
+                                                                                      "advance":  0,
+                                                                                      "reduction":  0,
+                                                                                      "xp":  0,
+                                                                                      "bonusMod":  0
+                                                                                  },
+                                                                           "ws":  {
+                                                                                      "value":  0,
+                                                                                      "advance":  0,
+                                                                                      "reduction":  0,
+                                                                                      "xp":  0,
+                                                                                      "bonusMod":  0
+                                                                                  },
+                                                                           "s":  {
+                                                                                     "value":  0,
+                                                                                     "advance":  0,
+                                                                                     "reduction":  0,
+                                                                                     "xp":  0,
+                                                                                     "bonusMod":  0
+                                                                                 },
+                                                                           "t":  {
+                                                                                     "value":  0,
+                                                                                     "advance":  0,
+                                                                                     "reduction":  0,
+                                                                                     "xp":  0,
+                                                                                     "bonusMod":  0
+                                                                                 },
+                                                                           "ag":  {
+                                                                                      "value":  0,
+                                                                                      "advance":  0,
+                                                                                      "reduction":  0,
+                                                                                      "xp":  0,
+                                                                                      "bonusMod":  0
+                                                                                  },
+                                                                           "int":  {
+                                                                                       "value":  0,
+                                                                                       "advance":  0,
+                                                                                       "reduction":  0,
+                                                                                       "xp":  0,
+                                                                                       "bonusMod":  0
+                                                                                   },
+                                                                           "per":  {
+                                                                                       "value":  0,
+                                                                                       "advance":  0,
+                                                                                       "reduction":  0,
+                                                                                       "xp":  0,
+                                                                                       "bonusMod":  0
+                                                                                   },
+                                                                           "wp":  {
+                                                                                      "value":  0,
+                                                                                      "advance":  0,
+                                                                                      "reduction":  0,
+                                                                                      "xp":  0,
+                                                                                      "bonusMod":  0
+                                                                                  },
+                                                                           "fel":  {
+                                                                                       "value":  0,
+                                                                                       "advance":  0,
+                                                                                       "reduction":  0,
+                                                                                       "xp":  0,
+                                                                                       "bonusMod":  0
+                                                                                   }
+                                                                       },
+                                                   "playerName":  "",
+                                                   "appearance":  "",
+                                                   "allies":  "",
+                                                   "goals":  "",
+                                                   "notes":  "",
+                                                   "talents":  [
+
+                                                               ],
+                                                   "progression":  [
+
+                                                                   ],
+                                                   "profitFactor":  0,
+                                                   "acquisition":  {
+                                                                       "availability":  "scarce",
+                                                                       "scale":  "standard",
+                                                                       "component":  "structural",
+                                                                       "quality":  "standard"
+                                                                   },
+                                                   "skills":  {
+                                                                  "awareness":  {
+                                                                                    "trained":  false,
+                                                                                    "plus10":  false,
+                                                                                    "plus20":  false,
+                                                                                    "talent":  0,
+                                                                                    "asBasic":  false,
+                                                                                    "modifier":  0,
+                                                                                    "xp":  0,
+                                                                                    "characteristic":  "per"
+                                                                                },
+                                                                  "barter":  {
+                                                                                 "trained":  false,
+                                                                                 "plus10":  false,
+                                                                                 "plus20":  false,
+                                                                                 "talent":  0,
+                                                                                 "asBasic":  false,
+                                                                                 "modifier":  0,
+                                                                                 "xp":  0,
+                                                                                 "characteristic":  "fel"
+                                                                             },
+                                                                  "carouse":  {
+                                                                                  "trained":  false,
+                                                                                  "plus10":  false,
+                                                                                  "plus20":  false,
+                                                                                  "talent":  0,
+                                                                                  "asBasic":  false,
+                                                                                  "modifier":  0,
+                                                                                  "xp":  0,
+                                                                                  "characteristic":  "t"
+                                                                              },
+                                                                  "charm":  {
+                                                                                "trained":  false,
+                                                                                "plus10":  false,
+                                                                                "plus20":  false,
+                                                                                "talent":  0,
+                                                                                "asBasic":  false,
+                                                                                "modifier":  0,
+                                                                                "xp":  0,
+                                                                                "characteristic":  "fel"
+                                                                            },
+                                                                  "command":  {
+                                                                                  "trained":  false,
+                                                                                  "plus10":  false,
+                                                                                  "plus20":  false,
+                                                                                  "talent":  0,
+                                                                                  "asBasic":  false,
+                                                                                  "modifier":  0,
+                                                                                  "xp":  0,
+                                                                                  "characteristic":  "fel"
+                                                                              },
+                                                                  "climb":  {
+                                                                                "trained":  false,
+                                                                                "plus10":  false,
+                                                                                "plus20":  false,
+                                                                                "talent":  0,
+                                                                                "asBasic":  false,
+                                                                                "modifier":  0,
+                                                                                "xp":  0,
+                                                                                "characteristic":  "s"
+                                                                            },
+                                                                  "concealment":  {
+                                                                                      "trained":  false,
+                                                                                      "plus10":  false,
+                                                                                      "plus20":  false,
+                                                                                      "talent":  0,
+                                                                                      "asBasic":  false,
+                                                                                      "modifier":  0,
+                                                                                      "xp":  0,
+                                                                                      "characteristic":  "ag"
+                                                                                  },
+                                                                  "disguise":  {
+                                                                                   "trained":  false,
+                                                                                   "plus10":  false,
+                                                                                   "plus20":  false,
+                                                                                   "talent":  0,
+                                                                                   "asBasic":  false,
+                                                                                   "modifier":  0,
+                                                                                   "xp":  0,
+                                                                                   "characteristic":  "ag"
+                                                                               },
+                                                                  "contortionist":  {
+                                                                                        "trained":  false,
+                                                                                        "plus10":  false,
+                                                                                        "plus20":  false,
+                                                                                        "talent":  0,
+                                                                                        "asBasic":  false,
+                                                                                        "modifier":  0,
+                                                                                        "xp":  0,
+                                                                                        "characteristic":  "ag"
+                                                                                    },
+                                                                  "deceive":  {
+                                                                                  "trained":  false,
+                                                                                  "plus10":  false,
+                                                                                  "plus20":  false,
+                                                                                  "talent":  0,
+                                                                                  "asBasic":  false,
+                                                                                  "modifier":  0,
+                                                                                  "xp":  0,
+                                                                                  "characteristic":  "fel"
+                                                                              },
+                                                                  "dodge":  {
+                                                                                "trained":  false,
+                                                                                "plus10":  false,
+                                                                                "plus20":  false,
+                                                                                "talent":  0,
+                                                                                "asBasic":  false,
+                                                                                "modifier":  0,
+                                                                                "xp":  0,
+                                                                                "characteristic":  "ag"
+                                                                            },
+                                                                  "evaluate":  {
+                                                                                   "trained":  false,
+                                                                                   "plus10":  false,
+                                                                                   "plus20":  false,
+                                                                                   "talent":  0,
+                                                                                   "asBasic":  false,
+                                                                                   "modifier":  0,
+                                                                                   "xp":  0,
+                                                                                   "characteristic":  "int"
+                                                                               },
+                                                                  "gamble":  {
+                                                                                 "trained":  false,
+                                                                                 "plus10":  false,
+                                                                                 "plus20":  false,
+                                                                                 "talent":  0,
+                                                                                 "asBasic":  false,
+                                                                                 "modifier":  0,
+                                                                                 "xp":  0,
+                                                                                 "characteristic":  "int"
+                                                                             },
+                                                                  "inquiry":  {
+                                                                                  "trained":  false,
+                                                                                  "plus10":  false,
+                                                                                  "plus20":  false,
+                                                                                  "talent":  0,
+                                                                                  "asBasic":  false,
+                                                                                  "modifier":  0,
+                                                                                  "xp":  0,
+                                                                                  "characteristic":  "fel"
+                                                                              },
+                                                                  "intimidate":  {
+                                                                                     "trained":  false,
+                                                                                     "plus10":  false,
+                                                                                     "plus20":  false,
+                                                                                     "talent":  0,
+                                                                                     "asBasic":  false,
+                                                                                     "modifier":  0,
+                                                                                     "xp":  0,
+                                                                                     "characteristic":  "fel"
+                                                                                 },
+                                                                  "logic":  {
+                                                                                "trained":  false,
+                                                                                "plus10":  false,
+                                                                                "plus20":  false,
+                                                                                "talent":  0,
+                                                                                "asBasic":  false,
+                                                                                "modifier":  0,
+                                                                                "xp":  0,
+                                                                                "characteristic":  "int"
+                                                                            },
+                                                                  "scrutiny":  {
+                                                                                   "trained":  false,
+                                                                                   "plus10":  false,
+                                                                                   "plus20":  false,
+                                                                                   "talent":  0,
+                                                                                   "asBasic":  false,
+                                                                                   "modifier":  0,
+                                                                                   "xp":  0,
+                                                                                   "characteristic":  "per"
+                                                                               },
+                                                                  "search":  {
+                                                                                 "trained":  false,
+                                                                                 "plus10":  false,
+                                                                                 "plus20":  false,
+                                                                                 "talent":  0,
+                                                                                 "asBasic":  false,
+                                                                                 "modifier":  0,
+                                                                                 "xp":  0,
+                                                                                 "characteristic":  "per"
+                                                                             },
+                                                                  "silentMove":  {
+                                                                                     "trained":  false,
+                                                                                     "plus10":  false,
+                                                                                     "plus20":  false,
+                                                                                     "talent":  0,
+                                                                                     "asBasic":  false,
+                                                                                     "modifier":  0,
+                                                                                     "xp":  0,
+                                                                                     "characteristic":  "ag"
+                                                                                 },
+                                                                  "swim":  {
+                                                                               "trained":  false,
+                                                                               "plus10":  false,
+                                                                               "plus20":  false,
+                                                                               "talent":  0,
+                                                                               "asBasic":  false,
+                                                                               "modifier":  0,
+                                                                               "xp":  0,
+                                                                               "characteristic":  "s"
+                                                                           },
+                                                                  "acrobatics":  {
+                                                                                     "trained":  false,
+                                                                                     "plus10":  false,
+                                                                                     "plus20":  false,
+                                                                                     "talent":  0,
+                                                                                     "asBasic":  false,
+                                                                                     "modifier":  0,
+                                                                                     "xp":  0,
+                                                                                     "characteristic":  "ag"
+                                                                                 },
+                                                                  "gossip":  {
+                                                                                 "trained":  false,
+                                                                                 "plus10":  false,
+                                                                                 "plus20":  false,
+                                                                                 "talent":  0,
+                                                                                 "asBasic":  false,
+                                                                                 "modifier":  0,
+                                                                                 "xp":  0,
+                                                                                 "characteristic":  "fel"
+                                                                             },
+                                                                  "chemUse":  {
+                                                                                  "trained":  false,
+                                                                                  "plus10":  false,
+                                                                                  "plus20":  false,
+                                                                                  "talent":  0,
+                                                                                  "asBasic":  false,
+                                                                                  "modifier":  0,
+                                                                                  "xp":  0,
+                                                                                  "characteristic":  "int"
+                                                                              },
+                                                                  "commerce":  {
+                                                                                   "trained":  false,
+                                                                                   "plus10":  false,
+                                                                                   "plus20":  false,
+                                                                                   "talent":  0,
+                                                                                   "asBasic":  false,
+                                                                                   "modifier":  0,
+                                                                                   "xp":  0,
+                                                                                   "characteristic":  "fel"
+                                                                               },
+                                                                  "demolition":  {
+                                                                                     "trained":  false,
+                                                                                     "plus10":  false,
+                                                                                     "plus20":  false,
+                                                                                     "talent":  0,
+                                                                                     "asBasic":  false,
+                                                                                     "modifier":  0,
+                                                                                     "xp":  0,
+                                                                                     "characteristic":  "int"
+                                                                                 },
+                                                                  "interrogation":  {
+                                                                                        "trained":  false,
+                                                                                        "plus10":  false,
+                                                                                        "plus20":  false,
+                                                                                        "talent":  0,
+                                                                                        "asBasic":  false,
+                                                                                        "modifier":  0,
+                                                                                        "xp":  0,
+                                                                                        "characteristic":  "fel"
+                                                                                    },
+                                                                  "invocation":  {
+                                                                                     "trained":  false,
+                                                                                     "plus10":  false,
+                                                                                     "plus20":  false,
+                                                                                     "talent":  0,
+                                                                                     "asBasic":  false,
+                                                                                     "modifier":  0,
+                                                                                     "xp":  0,
+                                                                                     "characteristic":  "wp"
+                                                                                 },
+                                                                  "literacy":  {
+                                                                                   "trained":  false,
+                                                                                   "plus10":  false,
+                                                                                   "plus20":  false,
+                                                                                   "talent":  0,
+                                                                                   "asBasic":  false,
+                                                                                   "modifier":  0,
+                                                                                   "xp":  0,
+                                                                                   "characteristic":  "int"
+                                                                               },
+                                                                  "medicae":  {
+                                                                                  "trained":  false,
+                                                                                  "plus10":  false,
+                                                                                  "plus20":  false,
+                                                                                  "talent":  0,
+                                                                                  "asBasic":  false,
+                                                                                  "modifier":  0,
+                                                                                  "xp":  0,
+                                                                                  "characteristic":  "int"
+                                                                              },
+                                                                  "psyniscience":  {
+                                                                                       "trained":  false,
+                                                                                       "plus10":  false,
+                                                                                       "plus20":  false,
+                                                                                       "talent":  0,
+                                                                                       "asBasic":  false,
+                                                                                       "modifier":  0,
+                                                                                       "xp":  0,
+                                                                                       "characteristic":  "wp"
+                                                                                   },
+                                                                  "security":  {
+                                                                                   "trained":  false,
+                                                                                   "plus10":  false,
+                                                                                   "plus20":  false,
+                                                                                   "talent":  0,
+                                                                                   "asBasic":  false,
+                                                                                   "modifier":  0,
+                                                                                   "xp":  0,
+                                                                                   "characteristic":  "ag"
+                                                                               },
+                                                                  "shadowing":  {
+                                                                                    "trained":  false,
+                                                                                    "plus10":  false,
+                                                                                    "plus20":  false,
+                                                                                    "talent":  0,
+                                                                                    "asBasic":  false,
+                                                                                    "modifier":  0,
+                                                                                    "xp":  0,
+                                                                                    "characteristic":  "fel"
+                                                                                },
+                                                                  "sleightOfHand":  {
+                                                                                        "trained":  false,
+                                                                                        "plus10":  false,
+                                                                                        "plus20":  false,
+                                                                                        "talent":  0,
+                                                                                        "asBasic":  false,
+                                                                                        "modifier":  0,
+                                                                                        "xp":  0,
+                                                                                        "characteristic":  "ag"
+                                                                                    },
+                                                                  "survival":  {
+                                                                                   "trained":  false,
+                                                                                   "plus10":  false,
+                                                                                   "plus20":  false,
+                                                                                   "talent":  0,
+                                                                                   "asBasic":  false,
+                                                                                   "modifier":  0,
+                                                                                   "xp":  0,
+                                                                                   "characteristic":  "int"
+                                                                               },
+                                                                  "techUse":  {
+                                                                                  "trained":  false,
+                                                                                  "plus10":  false,
+                                                                                  "plus20":  false,
+                                                                                  "talent":  0,
+                                                                                  "asBasic":  false,
+                                                                                  "modifier":  0,
+                                                                                  "xp":  0,
+                                                                                  "characteristic":  "int"
+                                                                              },
+                                                                  "tracking":  {
+                                                                                   "trained":  false,
+                                                                                   "plus10":  false,
+                                                                                   "plus20":  false,
+                                                                                   "talent":  0,
+                                                                                   "asBasic":  false,
+                                                                                   "modifier":  0,
+                                                                                   "xp":  0,
+                                                                                   "characteristic":  "per"
+                                                                               },
+                                                                  "animalTraining":  {
+                                                                                         "trained":  false,
+                                                                                         "plus10":  false,
+                                                                                         "plus20":  false,
+                                                                                         "talent":  0,
+                                                                                         "asBasic":  false,
+                                                                                         "modifier":  0,
+                                                                                         "xp":  0,
+                                                                                         "characteristic":  "int"
+                                                                                     }
+                                                              },
+                                                   "groupSkills":  [
+
+                                                                   ],
+                                                   "fatigue":  {
+                                                                   "value":  0,
+                                                                   "penalty":  false
+                                                               },
+                                                   "xp":  {
+                                                              "total":  0
+                                                          },
+                                                   "psykana":  {
+                                                                   "type":  "psyker"
+                                                               },
+                                                   "bio":  "",
+                                                   "settings":  {
+                                                                    "rollMode":  "",
+                                                                    "freeSkillChars":  false
+                                                                }
+                                               }
+                                },
+                  "character":  {
+                                    "templates":  [
+                                                      "common",
+                                                      "living"
+                                                  ]
+                                },
+                  "npc":  {
+                              "templates":  [
+                                                "common",
+                                                "living"
+                                            ]
+                          },
+                  "ship":  {
+                               "templates":  [
+                                                 "common"
+                                             ],
+                               "description":  ""
+                           },
+                  "colony":  {
+                                 "templates":  [
+                                                   "common"
+                                               ],
+                                 "description":  ""
+                             }
+              },
+    "Item":  {
+                 "types":  [
+                               "weapon",
+                               "armour",
+                               "gear",
+                               "ammo"
+                           ],
+                 "templates":  {
+                                   "common":  {
+                                                  "description":  "",
+                                                  "availability":  "",
+                                                  "weight":  0,
+                                                  "source":  ""
+                                              }
+                               },
+                 "weapon":  {
+                                "templates":  [
+                                                  "common"
+                                              ],
+                                "class":  "",
+                                "weaponType":  "",
+                                "craftsmanship":  "",
+                                "equipped":  false,
+                                "range":  0,
+                                "damage":  "",
+                                "damageType":  "",
+                                "penetration":  0,
+                                "reload":  "",
+                                "rateOfFire":  {
+                                                   "single":  0,
+                                                   "burst":  0,
+                                                   "full":  0
+                                               },
+                                "clip":  {
+                                             "value":  0,
+                                             "max":  0
+                                         },
+                                "special":  {
+                                                "tearing":  false,
+                                                "accurate":  false,
+                                                "reliable":  false,
+                                                "unreliable":  false
+                                            }
+                            },
+                 "armour":  {
+                                "templates":  [
+                                                  "common"
+                                              ],
+                                "armourType":  "",
+                                "locations":  {
+                                                  "head":  0,
+                                                  "body":  0,
+                                                  "leftArm":  0,
+                                                  "rightArm":  0,
+                                                  "leftLeg":  0,
+                                                  "rightLeg":  0
+                                              },
+                                "maxAgilityPenalty":  0,
+                                "equipped":  false
+                            },
+                 "gear":  {
+                              "templates":  [
+                                                "common"
+                                            ],
+                              "quantity":  1
+                          },
+                 "ammo":  {
+                              "templates":  [
+                                                "common"
+                                            ],
+                              "weaponType":  "",
+                              "quantity":  0
+                          }
+             }
 }

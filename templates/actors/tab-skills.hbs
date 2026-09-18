@@ -5,7 +5,11 @@
       {{#each skillsBasic as |s|}}
       <div class="rt-skill-row">
         <span class="rt-skill-row__name">{{s.name}}<i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{s.desc}}"></i></span>
-        <span class="rt-skill-row__char">{{s.charAbbr}}</span>
+        <select class="rt-skill-row__char" name="system.skills.{{s.key}}.characteristic">
+          {{#each s.charOptions as |option|}}
+          <option value="{{option.id}}" {{#if option.selected}}selected{{/if}}>{{option.abbr}}</option>
+          {{/each}}
+        </select>
         <button type="button" class="rt-skill-row__total" data-action="rollSkill" data-skill="{{s.key}}">{{s.total}}</button>
       </div>
       {{/each}}    </div>
@@ -15,7 +19,11 @@
       {{#each skillsAdvanced as |s|}}
       <div class="rt-skill-row">
         <span class="rt-skill-row__name">{{s.name}}<i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{s.desc}}"></i></span>
-        <span class="rt-skill-row__char">{{s.charAbbr}}</span>
+        <select class="rt-skill-row__char" name="system.skills.{{s.key}}.characteristic">
+          {{#each s.charOptions as |option|}}
+          <option value="{{option.id}}" {{#if option.selected}}selected{{/if}}>{{option.abbr}}</option>
+          {{/each}}
+        </select>
         <button type="button" class="rt-skill-row__total" data-action="rollSkill" data-skill="{{s.key}}">{{s.total}}</button>
       </div>
       {{/each}}

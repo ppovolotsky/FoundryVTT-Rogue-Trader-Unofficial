@@ -1,5 +1,11 @@
 <section class="tab {{#if (eq activeTab "xp")}}active{{/if}}" data-tab="xp" data-group="main">
   <div class="rt-xp-totals">
+    <div class="rt-field rt-field--rank">
+      <label>{{localize "RT.XP.Rank"}} <i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{localize "RT.XP.RankHint"}}"></i></label>
+      <div class="rt-rank">
+        <input type="text" disabled value="{{system.xp.rank}}" data-dtype="Number"/>
+      </div>
+    </div>
     <div class="rt-field">
       <label>{{localize "RT.Sheet.XP.Total"}}</label>
       <input type="number" name="system.xp.total" value="{{system.xp.total}}" data-dtype="Number"/>
