@@ -497,7 +497,7 @@ body.theme-dark,
 }
 
 .rogue-trader.sheet .rt-skill-row__char {
-  width: 34px;
+  width: 46px;
   text-align: center;
   color: var(--rt-muted);
   font-size: 0.8em;
@@ -1397,4 +1397,21 @@ body.theme-dark,
 
 .rogue-trader.sheet .rt-char-chip__abbr {
   font-size: 0.85em;
+}
+
+/* ---------- All selects: compact custom chevron ----------
+   The native arrow zone clips the selected option text in narrow
+   columns (skill characteristic selects looked empty until opened),
+   so every select uses appearance:none with its own chevron instead. */
+.rogue-trader.sheet select {
+  appearance: none;
+  background-color: var(--rt-field);
+  border: 1px solid var(--rt-border);
+  color: var(--rt-text);
+  border-radius: 3px;
+  padding: 2px 14px 2px 4px;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%239a978f' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 4px center;
+  background-size: 8px 5px;
 }
