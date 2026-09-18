@@ -10,12 +10,12 @@
     </div>
   </div>
 
-  <div class="form-group">
-    <label>{{localize "RT.Settings.Sheet.FreeSkillChars"}}</label>
-    <div class="form-fields">
-      <input type="checkbox" name="system.settings.freeSkillChars" {{checked system.settings.freeSkillChars}}/>
-    </div>
-    <p class="rt-settings-hint">{{localize "RT.Settings.Sheet.FreeSkillCharsHint"}}</p>
+  <div class="rt-settings-divider"></div>
+
+  <div class="rt-settings-toggle">
+    <input type="checkbox" name="system.settings.freeSkillChars" id="rt-free-skill-chars" {{checked system.settings.freeSkillChars}}/>
+    <label for="rt-free-skill-chars">{{localize "RT.Settings.Sheet.FreeSkillChars"}}</label>
+    <i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{localize "RT.Settings.Sheet.FreeSkillCharsHint"}}"></i>
   </div>
 
   <section class="rt-stub-note">

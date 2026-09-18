@@ -828,11 +828,11 @@ body.theme-dark,
 .rogue-trader.sheet .rt-acquisition__selects select {
   width: 100%;
   font-size: 0.85em;
-  background: var(--rt-field);
+  background-color: var(--rt-field);
   border: 1px solid var(--rt-border);
   color: var(--rt-text);
   border-radius: 3px;
-  padding: 2px 4px;
+  padding: 0 14px 0 4px;
 }
 
 .rogue-trader.sheet .rt-acquisition__selects select option {
@@ -1179,7 +1179,7 @@ body.theme-dark,
   background-repeat: no-repeat;
   background-position: right 3px center;
   background-size: 8px 5px;
-  padding: 2px 12px 2px 3px;
+  padding: 0 12px 0 3px;
   text-align: left;
 }
 
@@ -1190,7 +1190,7 @@ body.theme-dark,
   background-repeat: no-repeat;
   background-position: right 3px center;
   background-size: 8px 5px;
-  padding: 2px 12px 2px 3px;
+  padding: 0 12px 0 3px;
   text-align: left;
 }
 
@@ -1395,6 +1395,27 @@ body.theme-dark,
   color: var(--rt-muted);
 }
 
+.rogue-trader.sheet .rt-settings-divider {
+  border-top: 1px solid var(--rt-border);
+  margin: 10px 0;
+}
+
+.rogue-trader.sheet .rt-settings-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rogue-trader.sheet .rt-settings-toggle input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
+
+.rogue-trader.sheet .rt-settings-toggle label {
+  margin: 0;
+  cursor: pointer;
+}
+
 .rogue-trader.sheet .rt-char-chip__abbr {
   font-size: 0.85em;
 }
@@ -1402,14 +1423,20 @@ body.theme-dark,
 /* ---------- All selects: compact custom chevron ----------
    The native arrow zone clips the selected option text in narrow
    columns (skill characteristic selects looked empty until opened),
-   so every select uses appearance:none with its own chevron instead. */
+   so every select uses appearance:none with its own chevron instead.
+   Height and line-height are fixed explicitly: with appearance:none
+   the browser no longer centers the text itself, and Foundry's global
+   field styles would otherwise stretch the rows. */
 .rogue-trader.sheet select {
   appearance: none;
+  height: 22px;
+  box-sizing: border-box;
+  line-height: 20px;
+  padding: 0 14px 0 4px;
   background-color: var(--rt-field);
   border: 1px solid var(--rt-border);
   color: var(--rt-text);
   border-radius: 3px;
-  padding: 2px 14px 2px 4px;
   background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%239a978f' stroke-width='1.5'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 4px center;

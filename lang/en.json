@@ -84,7 +84,7 @@
   "RT.Settings.Sheet.RollModeGlobal": "As system settings",
   "RT.Settings.Sheet.RollModeHint": "Overrides the global roll mode for this character.",
   "RT.Settings.Sheet.FreeSkillChars": "Free skill tests",
-  "RT.Settings.Sheet.FreeSkillCharsHint": "Allows choosing any characteristic for a skill in the XP table.",
+  "RT.Settings.Sheet.FreeSkillCharsHint": "Allows choosing any characteristic for basic and advanced skill checks.",
   "RT.Sheet.Edition": "Rules Edition",
 
   "RT.Sheet.XP.Advance": "Advance",

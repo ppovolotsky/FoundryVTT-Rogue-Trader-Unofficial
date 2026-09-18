@@ -84,7 +84,7 @@
   "RT.Settings.Sheet.RollModeGlobal": "Как в настройках системы",
   "RT.Settings.Sheet.RollModeHint": "Переопределяет глобальный режим бросков для этого персонажа.",
   "RT.Settings.Sheet.FreeSkillChars": "Свободные броски навыков",
-  "RT.Settings.Sheet.FreeSkillCharsHint": "Позволяет выбирать любую характеристику для умения в таблице опыта.",
+  "RT.Settings.Sheet.FreeSkillCharsHint": "Позволяет выбирать любую характеристику для проверки базовых и продвинутых навыков.",
   "RT.Sheet.Edition": "Редакция правил",
 
   "RT.Sheet.XP.Advance": "Улучшение",
