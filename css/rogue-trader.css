@@ -908,41 +908,40 @@ body.theme-dark,
   text-align: center;
 }
 
-/* Checkboxes: drawn from scratch (appearance:none) to look like the XP
-   skills rows regardless of Foundry's own checkbox styling — dark square,
-   orange fill with a dark tick when checked. */
+/* Checkboxes: drawn from scratch with !important — Foundry's own checkbox
+   rules were overriding plain author rules here. The border matches the
+   other sheet fields in both states. */
 .rogue-trader.sheet .rt-power-block__level input[type="checkbox"] {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 16px;
-  height: 16px;
-  margin: 0;
-  align-self: center;
-  background: var(--rt-field);
-  border: 1px solid var(--rt-border);
-  border-radius: 3px;
-  display: inline-grid;
-  place-content: center;
-  cursor: pointer;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 16px !important;
+  height: 16px !important;
+  margin: 0 !important;
+  align-self: center !important;
+  background: var(--rt-field) !important;
+  border: 1px solid var(--rt-border) !important;
+  border-radius: 3px !important;
+  display: inline-grid !important;
+  place-content: center !important;
+  cursor: pointer !important;
 }
 
 .rogue-trader.sheet .rt-power-block__level input[type="checkbox"]::before {
-  content: "";
-  width: 10px;
-  height: 10px;
-  transform: scale(0);
-  transition: 120ms transform ease-in-out;
-  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+  content: "" !important;
+  width: 10px !important;
+  height: 10px !important;
+  transform: scale(0) !important;
+  transition: 120ms transform ease-in-out !important;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%) !important;
 }
 
 .rogue-trader.sheet .rt-power-block__level input[type="checkbox"]:checked {
-  background: #ec9a43;
-  border-color: #ec9a43;
+  background: #ec9a43 !important;
 }
 
 .rogue-trader.sheet .rt-power-block__level input[type="checkbox"]:checked::before {
-  transform: scale(1);
-  box-shadow: inset 10px 10px #2b2921;
+  transform: scale(1) !important;
+  box-shadow: inset 10px 10px #2b2921 !important;
 }
 
 .rogue-trader.sheet .rt-power-block__mod {
