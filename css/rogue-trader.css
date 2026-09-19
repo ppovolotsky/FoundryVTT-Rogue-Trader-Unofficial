@@ -908,18 +908,19 @@ body.theme-dark,
   text-align: center;
 }
 
-/* Checkboxes: same overrides as the XP skills rows, so Foundry's global
-   checkbox styling applies unchanged. The v14 checkbox glyph is font-driven,
-   and the XP rows sit in a 0.85em context — match it. */
+/* Checkboxes: match the XP skills rows — native checkbox tinted with the
+   theme accent (color sampled from the rendered XP checkboxes). */
 .rogue-trader.sheet .rt-power-block__level input[type="checkbox"] {
-  width: auto;
+  width: 16px;
+  height: 16px;
   margin: 0;
   align-self: center;
-  font-size: 0.85em;
+  accent-color: #ec9a43;
+  cursor: pointer;
 }
 
 .rogue-trader.sheet .rt-power-block__mod {
-  flex: 0 0 54px;
+  flex: 0 0 34px;
 }
 
 .rogue-trader.sheet .rt-power-block__mod input {
@@ -936,6 +937,15 @@ body.theme-dark,
 .rogue-trader.sheet .rt-power-block__details input {
   flex: 1;
   min-width: 40px;
+}
+
+/* Activation takes the space freed by the compact Type field. */
+.rogue-trader.sheet .rt-power-block__details input[data-jfield="activation"] {
+  flex: 1.6;
+}
+
+.rogue-trader.sheet .rt-power-block__details input[data-jfield="type"] {
+  flex: 0 0 44px;
 }
 
 .rogue-trader.sheet .rt-power-block__details .rt-button {
