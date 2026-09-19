@@ -365,7 +365,11 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const row = RTCharacterSheet.#auxListRows(this.document, list)[index];
     if (!row || !row.name) return;
     const localize = (key) => game.i18n.localize(key);
-    // Navigator powers: the description is split by progression level.
+    // Navigator powers: the description is split by progression level, with
+    // the activation time and range shown above it when filled.
+    const metaParts = [];
+    if (row.activation) metaParts.push(`${localize("RT.Psykana.PowerActivation")}: ${row.activation}`);
+    if (row.range) metaParts.push(`${localize("RT.Psykana.PowerRange")}: ${row.range}`);
     const content = await foundry.applications.handlebars.renderTemplate(
       list === "powers"
         ? "systems/rogue-trader/templates/chat/power-card.hbs"
@@ -373,6 +377,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       list === "powers"
         ? {
             name: row.name,
+            meta: metaParts.join(" · "),
             levels: [
               { label: localize("RT.Psykana.LevelNovice"), text: row.descNovice ?? "" },
               { label: localize("RT.Psykana.LevelAdept"), text: row.descAdept ?? "" },

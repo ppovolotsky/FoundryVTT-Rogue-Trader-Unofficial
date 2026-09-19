@@ -1,5 +1,6 @@
 <div class="rt-row-chat">
   <h3 class="rt-row-chat__name">{{name}}</h3>
+  {{#if meta}}<div class="rt-row-chat__meta">{{meta}}</div>{{/if}}
   {{#each levels as |level|}}
   {{#if level.text}}<div class="rt-row-chat__description"><strong>{{level.label}}:</strong> {{level.text}}</div>{{/if}}
   {{/each}}

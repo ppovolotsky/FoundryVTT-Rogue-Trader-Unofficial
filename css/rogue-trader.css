@@ -980,11 +980,11 @@ body.theme-dark,
 
 /* Activation takes the space freed by the compact Type field. */
 .rogue-trader.sheet .rt-power-block__details input[data-jfield="activation"] {
-  flex: 1.6;
+  flex: 1.8;
 }
 
 .rogue-trader.sheet .rt-power-block__details input[data-jfield="type"] {
-  flex: 0 0 44px;
+  flex: 0 0 38px;
 }
 
 .rogue-trader.sheet .rt-power-block__details .rt-button {
@@ -1594,6 +1594,12 @@ body.theme-dark,
 
 .rt-row-chat__description {
   white-space: pre-line;
+}
+
+.rt-row-chat__meta {
+  font-size: 0.85em;
+  color: var(--rt-muted);
+  margin-bottom: 4px;
 }
 
 /* ---------- Rank and sheet settings ---------- */
