@@ -891,6 +891,10 @@ body.theme-dark,
 
 .rogue-trader.sheet .rt-power-block__source {
   flex: 0 0 auto;
+  /* Compact closed select (characteristic abbreviations); the opened popup
+     still shows the full option labels. Foundry's width:100% field default
+     would otherwise stretch the select across the whole row. */
+  width: 44px !important;
   align-self: flex-end;
   min-height: 22px;
 }
@@ -900,8 +904,18 @@ body.theme-dark,
   align-self: center;
 }
 
+/* Level checkbox: bordered cell around the checkbox itself (the label stays
+   above it), like the XP skills table cells. */
 .rogue-trader.sheet .rt-power-block__level {
   flex: 0 0 auto;
+}
+
+.rogue-trader.sheet .rt-power-block__cell {
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--rt-border);
+  border-radius: 3px;
+  padding: 3px;
 }
 
 .rogue-trader.sheet .rt-power-block__level label {

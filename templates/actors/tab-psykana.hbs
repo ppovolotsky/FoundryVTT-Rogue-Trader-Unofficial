@@ -90,15 +90,21 @@
             </select>
             <div class="rt-field rt-power-block__level">
               <label>{{localize "RT.Psykana.LevelNovice"}}</label>
-              <input type="checkbox" data-jlist="powers" data-jindex="{{p.index}}" data-jfield="novice" {{checked p.novice}}/>
+              <div class="rt-power-block__cell">
+                <input type="checkbox" data-jlist="powers" data-jindex="{{p.index}}" data-jfield="novice" {{checked p.novice}}/>
+              </div>
             </div>
             <div class="rt-field rt-power-block__level">
               <label>{{localize "RT.Psykana.LevelAdept"}}</label>
-              <input type="checkbox" data-jlist="powers" data-jindex="{{p.index}}" data-jfield="adept" {{checked p.adept}}/>
+              <div class="rt-power-block__cell">
+                <input type="checkbox" data-jlist="powers" data-jindex="{{p.index}}" data-jfield="adept" {{checked p.adept}}/>
+              </div>
             </div>
             <div class="rt-field rt-power-block__level">
               <label>{{localize "RT.Psykana.LevelMaster"}}</label>
-              <input type="checkbox" data-jlist="powers" data-jindex="{{p.index}}" data-jfield="master" {{checked p.master}}/>
+              <div class="rt-power-block__cell">
+                <input type="checkbox" data-jlist="powers" data-jindex="{{p.index}}" data-jfield="master" {{checked p.master}}/>
+              </div>
             </div>
             <div class="rt-field rt-power-block__mod">
               <label>{{localize "RT.Psykana.PowerMod"}}</label>
