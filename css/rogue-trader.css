@@ -845,6 +845,93 @@ body.theme-dark,
   font-weight: bold;
 }
 
+.rogue-trader.sheet .rt-psykana-toggle-row {
+  display: flex;
+  justify-content: center;
+  margin: 2px 0 10px;
+}
+
+/* Navigator power block */
+.rogue-trader.sheet .rt-power-block__row {
+  display: flex;
+  gap: 6px;
+  align-items: flex-end;
+  margin-bottom: 5px;
+}
+
+.rogue-trader.sheet .rt-power-block__row .rt-field {
+  flex: 1;
+  min-width: 0;
+  gap: 1px;
+}
+
+.rogue-trader.sheet .rt-power-block input[type="text"],
+.rogue-trader.sheet .rt-power-block input[type="number"],
+.rogue-trader.sheet .rt-power-block textarea {
+  width: 100%;
+  background: var(--rt-field);
+  border: 1px solid var(--rt-border);
+  color: var(--rt-text);
+  border-radius: 3px;
+  padding: 2px 6px;
+}
+
+.rogue-trader.sheet .rt-power-block label {
+  display: block;
+  font-size: 0.72em;
+  color: var(--rt-muted);
+}
+
+.rogue-trader.sheet .rt-power-block__source {
+  flex: 0 0 48px;
+  align-self: flex-end;
+}
+
+.rogue-trader.sheet .rt-power-block__row .rt-row-edit {
+  margin-left: auto;
+}
+
+.rogue-trader.sheet .rt-power-block__levels {
+  gap: 12px;
+}
+
+.rogue-trader.sheet .rt-power-block__levels .rt-field {
+  flex: 0 0 auto;
+}
+
+.rogue-trader.sheet .rt-power-block__levels input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
+
+.rogue-trader.sheet .rt-power-block__mod {
+  flex: 0 0 54px !important;
+  margin-left: auto;
+}
+
+.rogue-trader.sheet .rt-power-block__mod input {
+  text-align: center;
+}
+
+.rogue-trader.sheet .rt-power-block__total {
+  flex: 0 0 44px;
+}
+
+.rogue-trader.sheet .rt-power-block__details input {
+  flex: 1;
+  min-width: 40px;
+}
+
+.rogue-trader.sheet .rt-power-block__details .rt-button {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.rogue-trader.sheet .rt-power-block__body textarea {
+  display: block;
+  margin-bottom: 4px;
+}
+
 /* Navigator mode: lineage column + powers column */
 .rogue-trader.sheet .rt-psykana-columns {
   display: flex;

@@ -21,13 +21,29 @@ const { Roll } = foundry.dice;
 // Auxiliary per-actor lists edited in row blocks (talents/progression on the
 // XP tab; lineage benefits and mutations on the Psykana tab). The psykana
 // lists live under system.psykana, hence the path map.
-const AUX_LISTS = ["talents", "progression", "lineageBenefits", "mutations"];
+const AUX_LISTS = ["talents", "progression", "lineageBenefits", "mutations", "powers"];
 const AUX_LIST_PATHS = {
   talents: "talents",
   progression: "progression",
   lineageBenefits: "psykana.lineageBenefits",
-  mutations: "psykana.mutations"
+  mutations: "psykana.mutations",
+  powers: "psykana.powers"
 };
+
+// Navigator powers: what the power test rolls against. Psyniscience uses the
+// final skill total from the Skills tab (trained marks, +10/+20, talent).
+const POWER_SOURCES = [
+  { id: "per", abbrKey: "RT.CharacteristicsAbbr.Per" },
+  { id: "wp", abbrKey: "RT.CharacteristicsAbbr.WP" },
+  { id: "psyniscience", abbrKey: "RT.Psykana.SourcePsyniscience" }
+];
+
+function powerTestTotal(system, row) {
+  const base = row.source === "psyniscience"
+    ? system.skills?.psyniscience?.total ?? 0
+    : system.characteristics?.[row.source]?.total ?? 0;
+  return base + (row.adept ? 10 : 0) + (row.master ? 10 : 0) + (Number(row.mod) || 0);
+}
 
 // The navigator mutation RollTable shipped in the system's Tables compendium.
 async function findNavigatorMutationTable() {
@@ -90,6 +106,8 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       sendRowToChat: RTCharacterSheet.#onSendRowToChat,
       rollMutationTest: RTCharacterSheet.#onRollMutationTest,
       rollMutationTable: RTCharacterSheet.#onRollMutationTable,
+      rollPower: RTCharacterSheet.#onRollPower,
+      rollPowerDamage: RTCharacterSheet.#onRollPowerDamage,
       createInventoryItem: RTCharacterSheet.#onCreateInventoryItem,
       editInventoryItem: RTCharacterSheet.#onEditInventoryItem,
       deleteInventoryItem: RTCharacterSheet.#onDeleteInventoryItem,
@@ -105,7 +123,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   groupEdit = {};
 
   // Auxiliary lists (talents, progression, psykana lists) in row-editing mode.
-  listEdit = { talents: false, progression: false, lineageBenefits: false, mutations: false };
+  listEdit = { talents: false, progression: false, lineageBenefits: false, mutations: false, powers: false };
 
   // Expanded description windows, keyed "list:index" — re-applied after renders.
   expandedRows = {};
@@ -278,7 +296,13 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     // Psykana lists carry no XP cost field.
     rows.push(list === "lineageBenefits" || list === "mutations"
       ? { name: "", description: "" }
-      : { name: "", description: "", xp: 0 });
+      : list === "powers"
+        ? {
+            name: "", source: "per", novice: false, adept: false, master: false,
+            mod: 0, activation: "", range: "", damage: "", type: "",
+            descNovice: "", descAdept: "", descMaster: ""
+          }
+        : { name: "", description: "", xp: 0 });
     await this.document.update({ [`system.${AUX_LIST_PATHS[list]}`]: rows }).catch(() => {});
   }
 
@@ -340,14 +364,58 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const index = Number(target.dataset.index);
     const row = RTCharacterSheet.#auxListRows(this.document, list)[index];
     if (!row || !row.name) return;
-    const content = await foundry.applications.handlebars.renderTemplate("systems/rogue-trader/templates/chat/row-card.hbs", {
-      name: row.name,
-      description: row.description ?? ""
-    });
+    const localize = (key) => game.i18n.localize(key);
+    // Navigator powers: the description is split by progression level.
+    const content = await foundry.applications.handlebars.renderTemplate(
+      list === "powers"
+        ? "systems/rogue-trader/templates/chat/power-card.hbs"
+        : "systems/rogue-trader/templates/chat/row-card.hbs",
+      list === "powers"
+        ? {
+            name: row.name,
+            levels: [
+              { label: localize("RT.Psykana.LevelNovice"), text: row.descNovice ?? "" },
+              { label: localize("RT.Psykana.LevelAdept"), text: row.descAdept ?? "" },
+              { label: localize("RT.Psykana.LevelMaster"), text: row.descMaster ?? "" }
+            ]
+          }
+        : { name: row.name, description: row.description ?? "" }
+    );
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.document }),
 
       content
+    });
+  }
+
+  static async #onRollPower(event, target) {
+    const row = RTCharacterSheet.#auxListRows(this.document, "powers")[Number(target.dataset.index)];
+    if (!row) return;
+    await showRollDialog({
+      target: powerTestTotal(this.document.system, row),
+      label: row.name || game.i18n.localize("RT.Psykana.NavigatorPowers"),
+      speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      actor: this.document,
+      showTarget: false
+    });
+  }
+
+  static async #onRollPowerDamage(event, target) {
+    const row = RTCharacterSheet.#auxListRows(this.document, "powers")[Number(target.dataset.index)];
+    if (!row) return;
+    const formula = (row.damage ?? "").trim();
+    if (!formula) return;
+    let roll;
+    try {
+      roll = await new Roll(formula).evaluate();
+    } catch {
+      ui.notifications.error(game.i18n.localize("RT.Psykana.DamageFormulaInvalid"));
+      return;
+    }
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      flavor: `${row.name} — ${game.i18n.localize("RT.Psykana.PowerDamage")}`,
+      rolls: [roll]
     });
   }
 
@@ -600,6 +668,17 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       .map((row, index) => ({ ...row, index }));
     context.mutations = normalizeGroupRows(this.document.system.psykana?.mutations)
       .map((row, index) => ({ ...row, index }));
+    context.powers = normalizeGroupRows(this.document.system.psykana?.powers)
+      .map((row, index) => ({
+        ...row,
+        index,
+        total: powerTestTotal(this.document.system, row),
+        sources: POWER_SOURCES.map((s) => ({
+          id: s.id,
+          abbr: game.i18n.localize(s.abbrKey),
+          selected: (row.source ?? "per") === s.id
+        }))
+      }));
     context.listEdit = this.listEdit;
 
     context.acquisition = {
