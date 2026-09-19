@@ -15,6 +15,23 @@ function rollTensAndUnits(rawTens, rawUnits) {
 }
 
 /**
+ * Raw d100 roll in the given mode ("1d100" / "2d10", null = system default).
+ * Returns the Foundry roll plus the tens/units breakdown for the chat card.
+ */
+export async function rollRawD100({ mode = null } = {}) {
+  if (!mode) mode = game.settings.get(SYSTEM_ID, "defaultRollMode");
+  if (!Object.keys(ROLL_MODES).includes(mode)) mode = "1d100";
+
+  if (mode === "2d10") {
+    const roll = await new Roll("1d10 + 1d10").evaluate();
+    const { tens, units, value } = rollTensAndUnits(roll.dice[0].total, roll.dice[1].total);
+    return { mode, roll, tens, units, value };
+  }
+  const roll = await new Roll("1d100").evaluate();
+  return { mode, roll, tens: null, units: null, value: roll.total };
+}
+
+/**
  * Basic test: success if the roll is less than or equal to the target.
  * Modes: "1d100" - a single percentile die; "2d10" - tens and units from two d10.
  */
@@ -26,23 +43,10 @@ export async function rollTest({
   speaker = null,
   createMessage = true
 } = {}) {
-  if (!mode) mode = game.settings.get(SYSTEM_ID, "defaultRollMode");
-  if (!Object.keys(ROLL_MODES).includes(mode)) mode = "1d100";
-
   const finalTarget = Number(target) + Number(modifier || 0);
-
-  let roll;
-  let tens = null;
-  let units = null;
-  let value = 0;
-
-  if (mode === "2d10") {
-    roll = await new Roll("1d10 + 1d10").evaluate();
-    ({ tens, units, value } = rollTensAndUnits(roll.dice[0].total, roll.dice[1].total));
-  } else {
-    roll = await new Roll("1d100").evaluate();
-    value = roll.total;
-  }
+  const raw = await rollRawD100({ mode });
+  mode = raw.mode;
+  const { roll, tens, units, value } = raw;
 
   // Natural 01 and 100: critical success and critical failure regardless of the target.
   const criticalSuccess = value === 1;

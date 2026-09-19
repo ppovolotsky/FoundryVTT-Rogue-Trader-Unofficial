@@ -845,6 +845,46 @@ body.theme-dark,
   font-weight: bold;
 }
 
+/* Navigator mode: lineage column + powers column */
+.rogue-trader.sheet .rt-psykana-columns {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.rogue-trader.sheet .rt-psykana-column {
+  flex: 1 1 50%;
+  min-width: 0;
+}
+
+.rogue-trader.sheet .rt-psykana-column .rt-sheet-section__title {
+  margin: 10px 0 4px;
+}
+
+.rogue-trader.sheet .rt-psykana-mutation-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin: 6px 0 8px;
+}
+
+.rogue-trader.sheet .rt-psykana-mutation-row button {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.rogue-trader.sheet .rt-psykana-mutation-row input[type="number"] {
+  width: 54px;
+  flex: 0 0 auto;
+  background: var(--rt-field);
+  border: 1px solid var(--rt-border);
+  color: var(--rt-text);
+  border-radius: 3px;
+  padding: 2px 4px;
+  text-align: center;
+}
+
 /* ---------- Misc sheet styles ---------- */
 
 .rogue-trader.sheet .window-content {
@@ -1063,6 +1103,26 @@ body.theme-dark,
   border-radius: 5px;
   padding: 8px 10px;
   color: var(--rt-text);
+}
+
+/* Table draw card (navigator mutations): result text below the dice */
+.rt-table-result {
+  border-top: 1px solid var(--rt-border);
+  margin-top: 6px;
+  padding-top: 6px;
+}
+
+.rt-table-result__name {
+  margin: 0 0 4px;
+  font-weight: bold;
+  color: var(--rt-accent);
+}
+
+.rt-table-result__description {
+  font-size: 0.85em;
+  line-height: 1.35;
+  color: var(--rt-text);
+  white-space: pre-line;
 }
 
 .rt-roll-card__header {

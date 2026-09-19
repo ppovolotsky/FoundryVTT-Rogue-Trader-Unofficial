@@ -484,7 +484,11 @@
                                                               "total":  0
                                                           },
                                                    "psykana":  {
-                                                                   "type":  "psyker"
+                                                                   "type":  "psyker",
+                                                                   "lineage":  "",
+                                                                   "mutationMod":  0,
+                                                                   "lineageBenefits":  [],
+                                                                   "mutations":  []
                                                                },
                                                    "bio":  "",
                                                    "settings":  {

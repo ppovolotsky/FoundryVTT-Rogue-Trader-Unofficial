@@ -146,6 +146,27 @@ export const ROLL_MODES = {
   "2d10": "RT.Modes.TwoD10"
 };
 
+// Navigator mutations (The Navis Primer): d100 ranges map onto the
+// "Мутации навигатора" table. The same table ships in the Tables
+// compendium; result documents carry the mutationKey flag.
+export const NAVIGATOR_MUTATIONS = [
+  { key: "weirdLimbs", min: 1, max: 15, name: "RT.Psykana.Mutations.WeirdLimbs.Name", desc: "RT.Psykana.Mutations.WeirdLimbs.Desc" },
+  { key: "stretchedForm", min: 16, max: 30, name: "RT.Psykana.Mutations.StretchedForm.Name", desc: "RT.Psykana.Mutations.StretchedForm.Desc" },
+  { key: "paleFlesh", min: 31, max: 45, name: "RT.Psykana.Mutations.PaleFlesh.Name", desc: "RT.Psykana.Mutations.PaleFlesh.Desc" },
+  { key: "voidEyes", min: 46, max: 55, name: "RT.Psykana.Mutations.VoidEyes.Name", desc: "RT.Psykana.Mutations.VoidEyes.Desc" },
+  { key: "witheredFrame", min: 56, max: 60, name: "RT.Psykana.Mutations.WitheredFrame.Name", desc: "RT.Psykana.Mutations.WitheredFrame.Desc" },
+  { key: "bloatedFrame", min: 61, max: 65, name: "RT.Psykana.Mutations.BloatedFrame.Name", desc: "RT.Psykana.Mutations.BloatedFrame.Desc" },
+  { key: "webbedDevelopment", min: 66, max: 70, name: "RT.Psykana.Mutations.WebbedDevelopment.Name", desc: "RT.Psykana.Mutations.WebbedDevelopment.Desc" },
+  { key: "inhumanFace", min: 71, max: 75, name: "RT.Psykana.Mutations.InhumanFace.Name", desc: "RT.Psykana.Mutations.InhumanFace.Desc" },
+  { key: "clawedFingers", min: 76, max: 80, name: "RT.Psykana.Mutations.ClawedFingers.Name", desc: "RT.Psykana.Mutations.ClawedFingers.Desc" },
+  { key: "needleTeeth", min: 81, max: 85, name: "RT.Psykana.Mutations.NeedleTeeth.Name", desc: "RT.Psykana.Mutations.NeedleTeeth.Desc" },
+  { key: "eerieGrace", min: 86, max: 90, name: "RT.Psykana.Mutations.EerieGrace.Name", desc: "RT.Psykana.Mutations.EerieGrace.Desc" },
+  { key: "strangeVitality", min: 91, max: 95, name: "RT.Psykana.Mutations.StrangeVitality.Name", desc: "RT.Psykana.Mutations.StrangeVitality.Desc" },
+  { key: "unnaturalPresence", min: 96, max: 100, name: "RT.Psykana.Mutations.UnnaturalPresence.Name", desc: "RT.Psykana.Mutations.UnnaturalPresence.Desc" }
+];
+
+export const NAVIGATOR_MUTATION_TABLE_NAME = "Мутации навигатора";
+
 export const ACTOR_TYPES = {
   character: "RT.ActorTypes.Character",
   npc: "RT.ActorTypes.Npc",

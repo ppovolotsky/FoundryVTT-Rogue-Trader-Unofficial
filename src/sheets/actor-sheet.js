@@ -1,4 +1,4 @@
-import { showRollDialog } from "../dice.js";
+import { showRollDialog, rollRawD100, rollTest } from "../dice.js";
 import {
   SYSTEM_ID,
   CHARACTERISTICS,
@@ -6,7 +6,10 @@ import {
   SKILLS,
   SKILL_GROUPS,
   ACQUISITION,
-  acquisitionModifier
+  acquisitionModifier,
+  ROLL_MODES,
+  NAVIGATOR_MUTATIONS,
+  NAVIGATOR_MUTATION_TABLE_NAME
 } from "../config.js";
 import { normalizeGroupRows } from "../documents/actor.js";
 
@@ -14,6 +17,29 @@ const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
 const { ChatMessage, Item } = foundry.documents;
 const { Roll } = foundry.dice;
+
+// Auxiliary per-actor lists edited in row blocks (talents/progression on the
+// XP tab; lineage benefits and mutations on the Psykana tab). The psykana
+// lists live under system.psykana, hence the path map.
+const AUX_LISTS = ["talents", "progression", "lineageBenefits", "mutations"];
+const AUX_LIST_PATHS = {
+  talents: "talents",
+  progression: "progression",
+  lineageBenefits: "psykana.lineageBenefits",
+  mutations: "psykana.mutations"
+};
+
+// The navigator mutation RollTable shipped in the system's Tables compendium.
+async function findNavigatorMutationTable() {
+  const pack = game.packs.get(`${SYSTEM_ID}.tables`);
+  if (!pack) return null;
+  try {
+    const entry = pack.index.find((i) => i.name === NAVIGATOR_MUTATION_TABLE_NAME);
+    return entry ? await pack.getDocument(entry._id) : null;
+  } catch {
+    return null;
+  }
+}
 
 const INVENTORY_SECTIONS = [
   { key: "weapons", label: "RT.Inventory.Weapons", type: "weapon", category: "", newName: "RT.Inventory.NewWeapon" },
@@ -62,6 +88,8 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       toggleListEdit: RTCharacterSheet.#onToggleListEdit,
       toggleRowExpand: RTCharacterSheet.#onToggleRowExpand,
       sendRowToChat: RTCharacterSheet.#onSendRowToChat,
+      rollMutationTest: RTCharacterSheet.#onRollMutationTest,
+      rollMutationTable: RTCharacterSheet.#onRollMutationTable,
       createInventoryItem: RTCharacterSheet.#onCreateInventoryItem,
       editInventoryItem: RTCharacterSheet.#onEditInventoryItem,
       deleteInventoryItem: RTCharacterSheet.#onDeleteInventoryItem,
@@ -76,8 +104,8 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   // Group tables currently in row-editing mode (keyed by group key).
   groupEdit = {};
 
-  // Auxiliary XP lists (talents, progression) in row-editing mode.
-  listEdit = { talents: false, progression: false };
+  // Auxiliary lists (talents, progression, psykana lists) in row-editing mode.
+  listEdit = { talents: false, progression: false, lineageBenefits: false, mutations: false };
 
   // Expanded description windows, keyed "list:index" — re-applied after renders.
   expandedRows = {};
@@ -245,31 +273,39 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   static async #onAddListRow(event, target) {
     const list = target.dataset.list;
-    if (!["talents", "progression"].includes(list)) return;
-    const rows = normalizeGroupRows(this.document.system[list]);
-    rows.push({ name: "", description: "", xp: 0 });
-    await this.document.update({ [`system.${list}`]: rows }).catch(() => {});
+    if (!AUX_LISTS.includes(list)) return;
+    const rows = RTCharacterSheet.#auxListRows(this.document, list);
+    // Psykana lists carry no XP cost field.
+    rows.push(list === "lineageBenefits" || list === "mutations"
+      ? { name: "", description: "" }
+      : { name: "", description: "", xp: 0 });
+    await this.document.update({ [`system.${AUX_LIST_PATHS[list]}`]: rows }).catch(() => {});
   }
 
   static async #onDeleteListRow(event, target) {
     const list = target.dataset.list;
-    if (!["talents", "progression"].includes(list)) return;
-    const rows = normalizeGroupRows(this.document.system[list]);
+    if (!AUX_LISTS.includes(list)) return;
+    const rows = RTCharacterSheet.#auxListRows(this.document, list);
     const index = Number(target.dataset.index);
     if (index < 0 || index >= rows.length) return;
     rows.splice(index, 1);
-    await this.document.update({ [`system.${list}`]: rows }).catch(() => {});
+    await this.document.update({ [`system.${AUX_LIST_PATHS[list]}`]: rows }).catch(() => {});
   }
 
   static async #onMoveListRow(event, target) {
     const list = target.dataset.list;
-    if (!["talents", "progression"].includes(list)) return;
-    const rows = normalizeGroupRows(this.document.system[list]);
+    if (!AUX_LISTS.includes(list)) return;
+    const rows = RTCharacterSheet.#auxListRows(this.document, list);
     const index = Number(target.dataset.index);
     const next = index + Number(target.dataset.delta || 0);
     if (index < 0 || index >= rows.length || next < 0 || next >= rows.length) return;
     [rows[index], rows[next]] = [rows[next], rows[index]];
-    await this.document.update({ [`system.${list}`]: rows }).catch(() => {});
+    await this.document.update({ [`system.${AUX_LIST_PATHS[list]}`]: rows }).catch(() => {});
+  }
+
+  // Normalized rows of an auxiliary list, addressed by its data-list key.
+  static #auxListRows(sheet, list) {
+    return normalizeGroupRows(foundry.utils.getProperty(sheet.system, AUX_LIST_PATHS[list]));
   }
 
   static #onToggleListEdit(event, target) {
@@ -292,9 +328,9 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static async #onSendRowToChat(event, target) {
     const shell = target.closest("[data-list-shell]");
     const list = shell?.dataset.listShell;
-    if (!["talents", "progression"].includes(list)) return;
+    if (!AUX_LISTS.includes(list)) return;
     const index = Number(target.dataset.index);
-    const row = normalizeGroupRows(this.document.system[list])[index];
+    const row = RTCharacterSheet.#auxListRows(this.document, list)[index];
     if (!row || !row.name) return;
     const content = await foundry.applications.handlebars.renderTemplate("systems/rogue-trader/templates/chat/row-card.hbs", {
       name: row.name,
@@ -304,6 +340,62 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       speaker: ChatMessage.getSpeaker({ actor: this.document }),
 
       content
+    });
+  }
+
+  static async #onRollMutationTest(event) {
+    const system = this.document.system;
+    await rollTest({
+      target: system.characteristics?.t?.total ?? 0,
+      modifier: system.psykana?.mutationMod ?? 0,
+      mode: system.settings?.rollMode || null,
+      label: game.i18n.localize("RT.Psykana.MutationTest"),
+      speaker: ChatMessage.getSpeaker({ actor: this.document })
+    });
+  }
+
+  static async #onRollMutationTable(event) {
+    // The roll honors the actor's mode override, otherwise the system default.
+    const mode = this.document.system.settings?.rollMode || null;
+    const { mode: resolvedMode, roll, tens, units, value } = await rollRawD100({ mode });
+
+    let name = "";
+    let description = "";
+    // Prefer the compendium table; fall back to the built-in catalog.
+    const table = await findNavigatorMutationTable();
+    if (table) {
+      const [result] = table.results.filter(
+        (r) => value >= r.range?.[0] && value <= r.range?.[1]
+      );
+      if (result) {
+        const nameKey = result.getFlag?.(SYSTEM_ID, "mutationName");
+        const descKey = result.getFlag?.(SYSTEM_ID, "mutationDesc");
+        if (nameKey && game.i18n.has(nameKey)) name = game.i18n.localize(nameKey);
+        else name = result.text;
+        if (descKey && game.i18n.has(descKey)) description = game.i18n.localize(descKey);
+      }
+    } else {
+      const entry = NAVIGATOR_MUTATIONS.find((m) => value >= m.min && value <= m.max);
+      if (entry) {
+        name = game.i18n.localize(entry.name);
+        description = game.i18n.localize(entry.desc);
+      }
+    }
+
+    const content = await foundry.applications.handlebars.renderTemplate("systems/rogue-trader/templates/dice/table-card.hbs", {
+      label: game.i18n.localize("RT.Psykana.MutationsTableName"),
+      mode: resolvedMode,
+      modeLabel: ROLL_MODES[resolvedMode],
+      tens,
+      units,
+      value,
+      name,
+      description
+    });
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      content,
+      rolls: [roll]
     });
   }
 
@@ -496,6 +588,10 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       .map((row, index) => ({ ...row, index }));
     context.progression = normalizeGroupRows(this.document.system.progression)
       .map((row, index) => ({ ...row, index }));
+    context.lineageBenefits = normalizeGroupRows(this.document.system.psykana?.lineageBenefits)
+      .map((row, index) => ({ ...row, index }));
+    context.mutations = normalizeGroupRows(this.document.system.psykana?.mutations)
+      .map((row, index) => ({ ...row, index }));
     context.listEdit = this.listEdit;
 
     context.acquisition = {
@@ -561,19 +657,20 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       row[field] = el.type === "checkbox" ? el.checked : el.type === "number" ? Number(el.value || 0) : el.value;
       await this.document.update({ "system.groupSkills": rows }).catch(() => {});
     });
-    // Auxiliary lists (talents, progression) update their rows the same way.
+    // Auxiliary lists (talents, progression, psykana lists) update their rows
+    // the same way.
     this.element.addEventListener("change", async (event) => {
       const el = event.target;
       const list = el.dataset.jlist;
       const index = el.dataset.jindex;
       const field = el.dataset.jfield;
       if (!list || index === undefined || field === undefined) return;
-      if (!["talents", "progression"].includes(list)) return;
-      const rows = normalizeGroupRows(this.document.system[list]);
+      if (!AUX_LISTS.includes(list)) return;
+      const rows = RTCharacterSheet.#auxListRows(this.document, list);
       const row = rows[Number(index)];
       if (!row) return;
       row[field] = el.type === "checkbox" ? el.checked : el.type === "number" ? Number(el.value || 0) : el.value;
-      await this.document.update({ [`system.${list}`]: rows }).catch(() => {});
+      await this.document.update({ [`system.${AUX_LIST_PATHS[list]}`]: rows }).catch(() => {});
     });
     // Acquisition controls are not form-bound either (avoids save races).
     this.element.addEventListener("change", async (event) => {

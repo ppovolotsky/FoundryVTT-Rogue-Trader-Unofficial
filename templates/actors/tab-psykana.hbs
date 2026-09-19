@@ -8,7 +8,87 @@
     </div>
   </div>
 
+  {{#if (eq system.psykana.type "navigator")}}
+  <div class="rt-psykana-columns">
+
+    <div class="rt-psykana-column">
+      <div class="rt-field">
+        <label>{{localize "RT.Psykana.Lineage"}}</label>
+        <input type="text" name="system.psykana.lineage" value="{{system.psykana.lineage}}"/>
+      </div>
+
+      <h3 class="rt-sheet-section__title">{{localize "RT.Psykana.LineageBenefits"}}</h3>
+      <div class="rt-talents-list" data-list-shell="lineageBenefits">
+        {{#each lineageBenefits as |p|}}
+        <div class="rt-talent-block" data-block-index="{{p.index}}">
+          <div class="rt-talent-block__header">
+            <input type="text" data-jlist="lineageBenefits" data-jindex="{{p.index}}" data-jfield="name" value="{{p.name}}" placeholder="{{localize "RT.Psykana.BenefitName"}}"/>
+            <div class="rt-view-buttons">
+              <button type="button" class="rt-button rt-button--small" data-action="toggleRowExpand" title="{{localize "RT.Talents.ShowDesc"}}"><i class="fa-solid fa-chevron-down"></i></button>
+              <button type="button" class="rt-button rt-button--small" data-action="sendRowToChat" data-index="{{p.index}}" title="{{localize "RT.Talents.SendToChat"}}"><i class="fa-solid fa-comment-dots"></i></button>
+            </div>
+            <div class="rt-row-edit rt-hidden">
+              <button type="button" class="rt-row-edit__btn" data-action="moveListRow" data-list="lineageBenefits" data-index="{{p.index}}" data-delta="-1" title="{{localize "RT.Skills.MoveUp"}}"><i class="fa-solid fa-arrow-up"></i></button>
+              <button type="button" class="rt-row-edit__btn" data-action="moveListRow" data-list="lineageBenefits" data-index="{{p.index}}" data-delta="1" title="{{localize "RT.Skills.MoveDown"}}"><i class="fa-solid fa-arrow-down"></i></button>
+              <button type="button" class="rt-row-edit__btn" data-action="deleteListRow" data-list="lineageBenefits" data-index="{{p.index}}" title="{{localize "RT.Skills.Delete"}}"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+          <div class="rt-talent-block__body rt-hidden">
+            <textarea class="rt-description" data-jlist="lineageBenefits" data-jindex="{{p.index}}" data-jfield="description" rows="4">{{p.description}}</textarea>
+          </div>
+        </div>
+        {{/each}}
+      </div>
+      <div class="rt-skill-group-table__footer">
+        <button type="button" class="rt-button rt-button--small" data-action="addListRow" data-list="lineageBenefits" title="{{localize "RT.Skills.Add"}}">+</button>
+        <button type="button" class="rt-button rt-button--small" data-action="toggleListEdit" data-list-shell="lineageBenefits" title="{{localize "RT.Skills.EditRows"}}"><i class="fa-solid fa-gear"></i></button>
+      </div>
+
+      <h3 class="rt-sheet-section__title">{{localize "RT.Psykana.MutationsHeader"}}</h3>
+      <div class="rt-psykana-mutation-row">
+        <button type="button" class="rt-button" data-action="rollMutationTest" title="{{localize "RT.Psykana.MutationTestTitle"}}">{{localize "RT.Psykana.MutationTest"}}</button>
+        <input type="number" name="system.psykana.mutationMod" value="{{system.psykana.mutationMod}}" data-dtype="Number" title="{{localize "RT.Psykana.MutationMod"}}"/>
+        <button type="button" class="rt-button" data-action="rollMutationTable" title="{{localize "RT.Psykana.MutationTableTitle"}}">{{localize "RT.Psykana.MutationTable"}}</button>
+      </div>
+
+      <div class="rt-talents-list" data-list-shell="mutations">
+        {{#each mutations as |m|}}
+        <div class="rt-talent-block" data-block-index="{{m.index}}">
+          <div class="rt-talent-block__header">
+            <input type="text" data-jlist="mutations" data-jindex="{{m.index}}" data-jfield="name" value="{{m.name}}" placeholder="{{localize "RT.Psykana.MutationName"}}"/>
+            <div class="rt-view-buttons">
+              <button type="button" class="rt-button rt-button--small" data-action="toggleRowExpand" title="{{localize "RT.Talents.ShowDesc"}}"><i class="fa-solid fa-chevron-down"></i></button>
+              <button type="button" class="rt-button rt-button--small" data-action="sendRowToChat" data-index="{{m.index}}" title="{{localize "RT.Talents.SendToChat"}}"><i class="fa-solid fa-comment-dots"></i></button>
+            </div>
+            <div class="rt-row-edit rt-hidden">
+              <button type="button" class="rt-row-edit__btn" data-action="moveListRow" data-list="mutations" data-index="{{m.index}}" data-delta="-1" title="{{localize "RT.Skills.MoveUp"}}"><i class="fa-solid fa-arrow-up"></i></button>
+              <button type="button" class="rt-row-edit__btn" data-action="moveListRow" data-list="mutations" data-index="{{m.index}}" data-delta="1" title="{{localize "RT.Skills.MoveDown"}}"><i class="fa-solid fa-arrow-down"></i></button>
+              <button type="button" class="rt-row-edit__btn" data-action="deleteListRow" data-list="mutations" data-index="{{m.index}}" title="{{localize "RT.Skills.Delete"}}"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+          <div class="rt-talent-block__body rt-hidden">
+            <textarea class="rt-description" data-jlist="mutations" data-jindex="{{m.index}}" data-jfield="description" rows="4">{{m.description}}</textarea>
+          </div>
+        </div>
+        {{/each}}
+      </div>
+      <div class="rt-skill-group-table__footer">
+        <button type="button" class="rt-button rt-button--small" data-action="addListRow" data-list="mutations" title="{{localize "RT.Skills.Add"}}">+</button>
+        <button type="button" class="rt-button rt-button--small" data-action="toggleListEdit" data-list-shell="mutations" title="{{localize "RT.Skills.EditRows"}}"><i class="fa-solid fa-gear"></i></button>
+      </div>
+    </div>
+
+    <div class="rt-psykana-column">
+      <h3 class="rt-sheet-section__title">{{localize "RT.Psykana.NavigatorPowers"}}</h3>
+      <section class="rt-stub-note">
+        <p>{{localize "RT.Psykana.PowersStub"}}</p>
+      </section>
+    </div>
+
+  </div>
+  {{else}}
   <section class="rt-stub-note">
     <p>{{localize "RT.Sheet.StubNote"}}</p>
   </section>
+  {{/if}}
 </section>
