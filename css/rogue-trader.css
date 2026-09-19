@@ -859,6 +859,18 @@ body.theme-dark,
 
 .rogue-trader.sheet .rt-psykana-column .rt-sheet-section__title {
   margin: 10px 0 4px;
+  /* Match the skills column titles ("Базовые навыки" style). */
+  font-size: 0.95em;
+  color: var(--rt-accent);
+}
+
+.rogue-trader.sheet input.rt-psykana-lineage {
+  width: 100%;
+  background: var(--rt-field);
+  border: 1px solid var(--rt-border);
+  color: var(--rt-text);
+  border-radius: 3px;
+  padding: 2px 6px;
 }
 
 .rogue-trader.sheet .rt-psykana-mutation-row {
@@ -1269,7 +1281,8 @@ body.theme-dark,
 
 .rogue-trader.sheet .rt-xp-parts label {
   font-size: 0.75em;
-  color: var(--rt-muted);
+  font-weight: bold;
+  color: var(--rt-text);
 }
 
 .rogue-trader.sheet .rt-xp-parts input[type="text"] {

@@ -318,11 +318,19 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
 
   static #onToggleRowExpand(event, target) {
-    // Pure DOM toggle of the description body within this block.
     const block = target.closest(".rt-talent-block");
+    const shell = target.closest("[data-list-shell]");
     const body = block?.querySelector(".rt-talent-block__body");
     if (!body) return;
-    body.classList.toggle("rt-hidden");
+    // The sheet re-renders on every change submit (submitOnChange), so the
+    // expanded state must survive renders or the body collapses on blur.
+    const hidden = body.classList.toggle("rt-hidden");
+    const list = shell?.dataset.listShell;
+    const index = block.dataset.blockIndex;
+    if (list && index !== undefined) {
+      if (hidden) delete this.expandedRows[`${list}:${index}`];
+      else this.expandedRows[`${list}:${index}`] = true;
+    }
   }
 
   static async #onSendRowToChat(event, target) {
