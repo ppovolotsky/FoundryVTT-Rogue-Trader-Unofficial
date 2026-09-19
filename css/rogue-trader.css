@@ -851,24 +851,29 @@ body.theme-dark,
   margin: 2px 0 10px;
 }
 
-/* Navigator power block */
+/* Navigator power block: name, source, level checkboxes, modifier and total
+   share one compact row; the detail fields sit on the second row. */
 .rogue-trader.sheet .rt-power-block__row {
   display: flex;
-  gap: 6px;
+  gap: 5px;
   align-items: flex-end;
   margin-bottom: 5px;
 }
 
 .rogue-trader.sheet .rt-power-block__row .rt-field {
-  flex: 1;
-  min-width: 0;
   gap: 1px;
 }
 
+.rogue-trader.sheet .rt-power-block__name {
+  flex: 1;
+  min-width: 0;
+}
+
 .rogue-trader.sheet .rt-power-block input[type="text"],
-.rogue-trader.sheet .rt-power-block input[type="number"],
-.rogue-trader.sheet .rt-power-block textarea {
+.rogue-trader.sheet .rt-power-block input[type="number"] {
   width: 100%;
+  height: 22px;
+  box-sizing: border-box;
   background: var(--rt-field);
   border: 1px solid var(--rt-border);
   color: var(--rt-text);
@@ -883,30 +888,33 @@ body.theme-dark,
 }
 
 .rogue-trader.sheet .rt-power-block__source {
-  flex: 0 0 48px;
+  flex: 0 0 44px;
   align-self: flex-end;
 }
 
 .rogue-trader.sheet .rt-power-block__row .rt-row-edit {
   margin-left: auto;
+  align-self: center;
 }
 
-.rogue-trader.sheet .rt-power-block__levels {
-  gap: 12px;
-}
-
-.rogue-trader.sheet .rt-power-block__levels .rt-field {
+.rogue-trader.sheet .rt-power-block__level {
   flex: 0 0 auto;
 }
 
-.rogue-trader.sheet .rt-power-block__levels input[type="checkbox"] {
+.rogue-trader.sheet .rt-power-block__level label {
+  text-align: center;
+}
+
+/* Checkboxes: same overrides as the XP skills rows, so Foundry's global
+   checkbox styling applies unchanged. */
+.rogue-trader.sheet .rt-power-block__level input[type="checkbox"] {
   width: auto;
   margin: 0;
+  align-self: center;
 }
 
 .rogue-trader.sheet .rt-power-block__mod {
-  flex: 0 0 54px !important;
-  margin-left: auto;
+  flex: 0 0 54px;
 }
 
 .rogue-trader.sheet .rt-power-block__mod input {
@@ -915,6 +923,8 @@ body.theme-dark,
 
 .rogue-trader.sheet .rt-power-block__total {
   flex: 0 0 44px;
+  height: 22px;
+  box-sizing: border-box;
 }
 
 .rogue-trader.sheet .rt-power-block__details input {
@@ -930,6 +940,8 @@ body.theme-dark,
 .rogue-trader.sheet .rt-power-block__body textarea {
   display: block;
   margin-bottom: 4px;
+  min-height: 0;
+  padding: 2px 6px;
 }
 
 /* Navigator mode: lineage column + powers column */

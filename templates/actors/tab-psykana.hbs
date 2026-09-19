@@ -78,7 +78,7 @@
       <div class="rt-talents-list" data-list-shell="powers">
         {{#each powers as |p|}}
         <div class="rt-talent-block rt-power-block" data-block-index="{{p.index}}">
-          <div class="rt-power-block__row">
+          <div class="rt-power-block__row rt-power-block__main">
             <div class="rt-field rt-power-block__name">
               <label>{{localize "RT.Psykana.PowerName"}}</label>
               <input type="text" data-jlist="powers" data-jindex="{{p.index}}" data-jfield="name" value="{{p.name}}"/>
@@ -88,13 +88,6 @@
               <option value="{{s.id}}" {{#if s.selected}}selected{{/if}}>{{s.abbr}}</option>
               {{/each}}
             </select>
-            <div class="rt-row-edit rt-hidden">
-              <button type="button" class="rt-row-edit__btn" data-action="moveListRow" data-list="powers" data-index="{{p.index}}" data-delta="-1" title="{{localize "RT.Skills.MoveUp"}}"><i class="fa-solid fa-arrow-up"></i></button>
-              <button type="button" class="rt-row-edit__btn" data-action="moveListRow" data-list="powers" data-index="{{p.index}}" data-delta="1" title="{{localize "RT.Skills.MoveDown"}}"><i class="fa-solid fa-arrow-down"></i></button>
-              <button type="button" class="rt-row-edit__btn" data-action="deleteListRow" data-list="powers" data-index="{{p.index}}" title="{{localize "RT.Skills.Delete"}}"><i class="fa-solid fa-trash"></i></button>
-            </div>
-          </div>
-          <div class="rt-power-block__row rt-power-block__levels">
             <div class="rt-field rt-power-block__level">
               <label>{{localize "RT.Psykana.LevelNovice"}}</label>
               <input type="checkbox" data-jlist="powers" data-jindex="{{p.index}}" data-jfield="novice" {{checked p.novice}}/>
@@ -112,6 +105,11 @@
               <input type="number" data-jlist="powers" data-jindex="{{p.index}}" data-jfield="mod" value="{{p.mod}}" data-dtype="Number"/>
             </div>
             <button type="button" class="rt-skill-row__total rt-power-block__total" data-action="rollPower" data-index="{{p.index}}" title="{{localize "RT.Psykana.PowerTotalTitle"}}">{{p.total}}</button>
+            <div class="rt-row-edit rt-hidden">
+              <button type="button" class="rt-row-edit__btn" data-action="moveListRow" data-list="powers" data-index="{{p.index}}" data-delta="-1" title="{{localize "RT.Skills.MoveUp"}}"><i class="fa-solid fa-arrow-up"></i></button>
+              <button type="button" class="rt-row-edit__btn" data-action="moveListRow" data-list="powers" data-index="{{p.index}}" data-delta="1" title="{{localize "RT.Skills.MoveDown"}}"><i class="fa-solid fa-arrow-down"></i></button>
+              <button type="button" class="rt-row-edit__btn" data-action="deleteListRow" data-list="powers" data-index="{{p.index}}" title="{{localize "RT.Skills.Delete"}}"><i class="fa-solid fa-trash"></i></button>
+            </div>
           </div>
           <div class="rt-power-block__row rt-power-block__details">
             <input type="text" placeholder="{{localize "RT.Psykana.PowerActivation"}}" data-jlist="powers" data-jindex="{{p.index}}" data-jfield="activation" value="{{p.activation}}"/>
@@ -123,9 +121,9 @@
             <button type="button" class="rt-button rt-button--small" data-action="toggleRowExpand" title="{{localize "RT.Talents.ShowDesc"}}"><i class="fa-solid fa-chevron-down"></i></button>
           </div>
           <div class="rt-talent-block__body rt-hidden rt-power-block__body">
-            <textarea class="rt-description" placeholder="{{localize "RT.Psykana.LevelNovice"}}" data-jlist="powers" data-jindex="{{p.index}}" data-jfield="descNovice" rows="2">{{p.descNovice}}</textarea>
-            <textarea class="rt-description" placeholder="{{localize "RT.Psykana.LevelAdept"}}" data-jlist="powers" data-jindex="{{p.index}}" data-jfield="descAdept" rows="2">{{p.descAdept}}</textarea>
-            <textarea class="rt-description" placeholder="{{localize "RT.Psykana.LevelMaster"}}" data-jlist="powers" data-jindex="{{p.index}}" data-jfield="descMaster" rows="2">{{p.descMaster}}</textarea>
+            <textarea class="rt-description" placeholder="{{localize "RT.Psykana.LevelNovice"}}" data-jlist="powers" data-jindex="{{p.index}}" data-jfield="descNovice" rows="1">{{p.descNovice}}</textarea>
+            <textarea class="rt-description" placeholder="{{localize "RT.Psykana.LevelAdept"}}" data-jlist="powers" data-jindex="{{p.index}}" data-jfield="descAdept" rows="1">{{p.descAdept}}</textarea>
+            <textarea class="rt-description" placeholder="{{localize "RT.Psykana.LevelMaster"}}" data-jlist="powers" data-jindex="{{p.index}}" data-jfield="descMaster" rows="1">{{p.descMaster}}</textarea>
           </div>
         </div>
         {{/each}}
