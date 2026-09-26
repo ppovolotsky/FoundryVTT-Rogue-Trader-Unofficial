@@ -1,0 +1,28 @@
+<div class="rt-roll-card">
+  <div class="rt-roll-card__header">
+    <span class="rt-roll-card__label">{{label}}</span>
+    {{#if modeLabel}}<span class="rt-roll-card__mode">{{localize modeLabel}}</span>{{/if}}
+  </div>
+
+  {{#if dice}}
+  <div class="rt-roll-card__dice">
+    {{#each dice}}
+    <div class="rt-roll-card__die"><span class="rt-roll-card__die-value">{{this}}</span></div>
+    {{/each}}
+  </div>
+  {{else}}
+  <div class="rt-roll-card__dice">
+    {{#if (eq mode "2d10")}}
+    <div class="rt-roll-card__die"><span class="rt-roll-card__die-caption">{{localize "RT.Roll.Tens"}}</span><span class="rt-roll-card__die-value">{{tens}}</span></div>
+    <span class="rt-roll-card__operator">+</span>
+    <div class="rt-roll-card__die"><span class="rt-roll-card__die-caption">{{localize "RT.Roll.Units"}}</span><span class="rt-roll-card__die-value">{{units}}</span></div>
+    <span class="rt-roll-card__operator">=</span>
+    {{/if}}
+    <span class="rt-roll-card__value">{{value}}</span>
+  </div>
+  {{/if}}
+
+  {{#if note}}
+  <div class="rt-table-result__description">{{note}}</div>
+  {{/if}}
+</div>

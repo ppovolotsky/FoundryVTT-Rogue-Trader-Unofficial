@@ -489,7 +489,24 @@
                                                                    "mutationMod":  0,
                                                                    "lineageBenefits":  [],
                                                                    "mutations":  [],
-                                                                   "powers":  []
+                                                                   "powers":  [],
+                                                                   "focusMod":  0,
+                                                                   "pr":  0,
+                                                                   "disciplines":  [
+                                                                                       "",
+                                                                                       "",
+                                                                                       "",
+                                                                                       "",
+                                                                                       ""
+                                                                                   ],
+                                                                   "disciplinesMastered":  [
+                                                                                               false,
+                                                                                               false,
+                                                                                               false,
+                                                                                               false,
+                                                                                               false
+                                                                                           ],
+                                                                   "psyPowers":  []
                                                                },
                                                    "bio":  "",
                                                    "settings":  {

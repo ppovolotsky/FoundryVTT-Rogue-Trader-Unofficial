@@ -1,0 +1,44 @@
+<div class="rt-roll-card">
+  <div class="rt-roll-card__header">
+    <span class="rt-roll-card__label">{{name}}</span>
+    <span class="rt-roll-card__mode">{{localize modeLabel}}</span>
+  </div>
+
+  <div class="rt-roll-card__dice">
+    {{#if (eq mode "2d10")}}
+    <div class="rt-roll-card__die">
+      <span class="rt-roll-card__die-caption">{{localize "RT.Roll.Tens"}}</span>
+      <span class="rt-roll-card__die-value">{{tens}}</span>
+    </div>
+    <span class="rt-roll-card__operator">+</span>
+    <div class="rt-roll-card__die">
+      <span class="rt-roll-card__die-caption">{{localize "RT.Roll.Units"}}</span>
+      <span class="rt-roll-card__die-value">{{units}}</span>
+    </div>
+    <span class="rt-roll-card__operator">=</span>
+    {{/if}}
+    <span class="rt-roll-card__value">{{value}}</span>
+  </div>
+
+  <div class="rt-roll-card__target">
+    {{localize "RT.Roll.Target"}}: <strong>{{target}}</strong>{{#if focusMod}} <span class="rt-roll-card__modifier">(мод. фокусировки {{focusMod}})</span>{{/if}}
+    · {{epLabel}}: <strong>{{ep}}</strong>
+  </div>
+
+  <div class="rt-roll-card__degrees">
+    {{#if criticalSuccess}}{{localize "RT.Roll.CriticalSuccess"}}{{else if criticalFailure}}{{localize "RT.Roll.CriticalFailure"}}{{else if success}}{{localize "RT.Roll.Success"}}{{else}}{{localize "RT.Roll.Failure"}}{{/if}}
+  </div>
+
+  {{#if restrictionFail}}
+  <div class="rt-roll-card__result">{{restrictionText}}</div>
+  {{else}}
+  {{#if damage}}
+  <div class="rt-roll-card__target">
+    {{damageLabel}}: <strong>{{damage.total}}</strong> · {{penLabel}}: <strong>{{damage.pen}}</strong>{{#if damage.type}} · {{damage.type}}{{/if}}
+  </div>
+  {{/if}}
+  {{#each labels}}
+  <div class="rt-roll-card__degrees rt-psypower__phenomena">{{this}}</div>
+  {{/each}}
+  {{/if}}
+</div>

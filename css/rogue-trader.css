@@ -1054,6 +1054,162 @@ body.theme-dark,
   text-align: center;
 }
 
+/* ---------- Psykana: psyker mode ---------- */
+
+.rogue-trader.sheet .rt-psy-header {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  margin: 4px 0 8px;
+}
+
+.rogue-trader.sheet .rt-psy-header__field {
+  gap: 1px;
+}
+
+.rogue-trader.sheet .rt-psy-header__field input {
+  width: 64px;
+  height: 22px;
+  box-sizing: border-box;
+  background: var(--rt-field);
+  border: 1px solid var(--rt-border);
+  color: var(--rt-text);
+  border-radius: 3px;
+  padding: 2px 6px;
+}
+
+.rogue-trader.sheet .rt-psy-header label {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  font-size: 0.72em;
+  color: var(--rt-muted);
+}
+
+/* Keep the "?" help icons the same visual size as elsewhere despite the
+   small label font they sit in. */
+.rogue-trader.sheet .rt-psy-header label .rt-skill-help,
+.rogue-trader.sheet .rt-psypower-block .rt-skill-help {
+  font-size: 1.15em;
+}
+
+.rogue-trader.sheet .rt-psy-header .rt-button .rt-skill-help {
+  font-size: 0.85em;
+}
+
+.rogue-trader.sheet .rt-psy-header button {
+  white-space: nowrap;
+}
+
+.rogue-trader.sheet .rt-psy-disciplines {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+  margin-bottom: 5px;
+}
+
+.rogue-trader.sheet .rt-psy-disciplines input {
+  width: 100%;
+  height: 22px;
+  box-sizing: border-box;
+  background: var(--rt-field);
+  border: 1px solid var(--rt-border);
+  color: var(--rt-text);
+  border-radius: 3px;
+  padding: 2px 6px;
+}
+
+.rogue-trader.sheet .rt-psy-disciplines--buttons {
+  margin-bottom: 10px;
+}
+
+.rogue-trader.sheet .rt-psy-mastery {
+  font-size: 0.72em;
+  padding: 2px 2px;
+}
+
+.rogue-trader.sheet .rt-psy-mastery.active {
+  background: var(--rt-fill);
+  color: var(--rt-fill-text);
+  border-color: var(--rt-accent);
+}
+
+/* Psyker power block */
+.rogue-trader.sheet .rt-psypower-block input[type="text"],
+.rogue-trader.sheet .rt-psypower-block input[type="number"],
+.rogue-trader.sheet .rt-psypower-block select,
+.rogue-trader.sheet .rt-psypower-block textarea {
+  height: 22px;
+  min-height: 22px;
+  box-sizing: border-box;
+  background: var(--rt-field);
+  border: 1px solid var(--rt-border);
+  color: var(--rt-text);
+  border-radius: 3px;
+  padding: 2px 6px;
+}
+
+.rogue-trader.sheet .rt-psypower-block textarea {
+  height: auto;
+  min-height: 38px;
+  max-height: 56px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.rogue-trader.sheet .rt-psypower__row {
+  display: flex;
+  gap: 5px;
+  align-items: flex-end;
+  margin-bottom: 5px;
+}
+
+.rogue-trader.sheet .rt-psypower__row > label {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  font-size: 0.72em;
+  color: var(--rt-muted);
+  white-space: nowrap;
+}
+
+.rogue-trader.sheet .rt-psypower__row .rt-field {
+  gap: 1px;
+  flex: 0 0 auto;
+}
+
+.rogue-trader.sheet .rt-psypower__name {
+  flex: 1;
+  min-width: 60px;
+}
+
+.rogue-trader.sheet .rt-psypower__plus {
+  color: var(--rt-muted);
+  align-self: center;
+}
+
+.rogue-trader.sheet .rt-psypower__arrow {
+  color: var(--rt-muted);
+  align-self: center;
+  font-size: 0.8em;
+}
+
+.rogue-trader.sheet .rt-psypower__range input {
+  width: 54px;
+}
+
+.rogue-trader.sheet .rt-psypower__sustain.active {
+  background: var(--rt-fill);
+  color: var(--rt-fill-text);
+  border-color: var(--rt-accent);
+}
+
+.rt-psypower__phenomena {
+  color: var(--rt-accent) !important;
+  font-weight: bold;
+}
+
 /* ---------- Misc sheet styles ---------- */
 
 .rogue-trader.sheet .window-content {

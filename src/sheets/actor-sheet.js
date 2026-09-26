@@ -9,26 +9,63 @@ import {
   acquisitionModifier,
   ROLL_MODES,
   NAVIGATOR_MUTATIONS,
-  NAVIGATOR_MUTATION_TABLE_NAME
+  NAVIGATOR_MUTATION_TABLE_NAME,
+  PSY_SOURCES,
+  PSY_LEVELS,
+  PSYCHIC_PHENOMENA,
+  WARP_DANGERS
 } from "../config.js";
 import { normalizeGroupRows } from "../documents/actor.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
+const { DialogV2 } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
 const { ChatMessage, Item } = foundry.documents;
 const { Roll } = foundry.dice;
 
 // Auxiliary per-actor lists edited in row blocks (talents/progression on the
-// XP tab; lineage benefits and mutations on the Psykana tab). The psykana
-// lists live under system.psykana, hence the path map.
-const AUX_LISTS = ["talents", "progression", "lineageBenefits", "mutations", "powers"];
+// XP tab; lineage benefits, mutations, navigator powers and psyker powers on
+// the Psykana tab). The psykana lists live under system.psykana, hence the
+// path map.
+const AUX_LISTS = ["talents", "progression", "lineageBenefits", "mutations", "powers", "psyPowers"];
 const AUX_LIST_PATHS = {
   talents: "talents",
   progression: "progression",
   lineageBenefits: "psykana.lineageBenefits",
   mutations: "psykana.mutations",
-  powers: "psykana.powers"
+  powers: "psykana.powers",
+  psyPowers: "psykana.psyPowers"
 };
+
+// Psyker mode: effective Psy Rating of a power.
+// Bound: PR/2 rounded up (+1 if the power's discipline is mastered);
+// Unbound: PR; Push N: PR + N. The power's PR modifier and the sustained
+// powers penalty apply afterwards (sustaining 2+ powers: -1 per power).
+function psyEffectiveRating(system, row) {
+  const psy = system.psykana ?? {};
+  const pr = Number(psy.pr) || 0;
+  const level = row.level ?? "bound";
+  let ep;
+  if (level === "bound") {
+    ep = Math.ceil(pr / 2);
+    const disc = Number(row.discipline ?? 0);
+    if (psy.disciplinesMastered?.[disc]) ep += 1;
+  } else if (level === "unbound") {
+    ep = pr;
+  } else {
+    ep = pr + Number(level.slice(4));
+  }
+  ep += Number(row.modPr) || 0;
+  const sustainedCount = (psy.psyPowers ?? []).filter((p) => p.sustain).length;
+  if (sustainedCount >= 2) ep -= sustainedCount;
+  return Math.max(0, ep);
+}
+
+// The characteristic/skill total the power test rolls against.
+function psySourceTotal(system, row) {
+  if (row.source === "psyniscience") return system.skills?.psyniscience?.total ?? 0;
+  return system.characteristics?.[row.source ?? "wp"]?.total ?? 0;
+}
 
 // Navigator powers: what the power test rolls against. Psyniscience uses the
 // final skill total from the Skills tab (trained marks, +10/+20, talent).
@@ -108,6 +145,12 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       rollMutationTable: RTCharacterSheet.#onRollMutationTable,
       rollPower: RTCharacterSheet.#onRollPower,
       rollPowerDamage: RTCharacterSheet.#onRollPowerDamage,
+      psyRollPhenomena: RTCharacterSheet.#onPsyRollPhenomena,
+      psyRollDangers: RTCharacterSheet.#onPsyRollDangers,
+      psyRollDangersTable: RTCharacterSheet.#onPsyRollDangersTable,
+      toggleDisciplineMastery: RTCharacterSheet.#onToggleDisciplineMastery,
+      togglePsySustain: RTCharacterSheet.#onTogglePsySustain,
+      applyPsyPower: RTCharacterSheet.#onApplyPsyPower,
       createInventoryItem: RTCharacterSheet.#onCreateInventoryItem,
       editInventoryItem: RTCharacterSheet.#onEditInventoryItem,
       deleteInventoryItem: RTCharacterSheet.#onDeleteInventoryItem,
@@ -123,7 +166,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   groupEdit = {};
 
   // Auxiliary lists (talents, progression, psykana lists) in row-editing mode.
-  listEdit = { talents: false, progression: false, lineageBenefits: false, mutations: false, powers: false };
+  listEdit = { talents: false, progression: false, lineageBenefits: false, mutations: false, powers: false, psyPowers: false };
 
   // Expanded description windows, keyed "list:index" — re-applied after renders.
   expandedRows = {};
@@ -302,7 +345,13 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             mod: 0, activation: "", range: "", damage: "", type: "",
             descNovice: "", descAdept: "", descMaster: ""
           }
-        : { name: "", description: "", xp: 0 });
+        : list === "psyPowers"
+          ? {
+              name: "", level: "bound", modPr: 0, activation: "", discipline: 0, source: "wp",
+              rangeMult: 0, sustain: false, damage: "", damageMult: "none", damageType: "", pen: 0,
+              description: ""
+            }
+          : { name: "", description: "", xp: 0 });
     await this.document.update({ [`system.${AUX_LIST_PATHS[list]}`]: rows }).catch(() => {});
   }
 
@@ -422,6 +471,219 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       flavor: `${row.name} — ${game.i18n.localize("RT.Psykana.PowerDamage")}`,
       rolls: [roll]
     });
+  }
+
+  // ---------- Psyker mode ----------
+
+  static async #onPsyRollPhenomena(event) {
+    const sys = this.document.system;
+    const localize = (key) => game.i18n.localize(key);
+    const sustainedCount = (sys.psykana?.psyPowers ?? []).filter((p) => p.sustain).length;
+    const autoMod = sustainedCount >= 2 ? (sustainedCount - 1) * 10 : 0;
+    const label = localize("RT.Psykana.Phenomena");
+
+    const content = await foundry.applications.handlebars.renderTemplate(
+      "systems/rogue-trader/templates/dialog/roll-dialog.hbs",
+      { label, target: 0, modifier: autoMod, showTarget: false }
+    );
+    const modifier = await DialogV2.wait({
+      window: { title: label },
+      content,
+      default: "roll",
+      buttons: [
+        {
+          action: "roll",
+          label: localize("RT.Dialog.Roll"),
+          icon: "fas fa-dice-d100",
+          callback: (event, button, dialog) => {
+            const data = Object.fromEntries(new FormData(dialog.element.querySelector("form")));
+            return Number(data.modifier || 0);
+          }
+        },
+        { action: "cancel", label: localize("RT.Dialog.Cancel"), icon: "fas fa-xmark" }
+      ]
+    });
+    if (typeof modifier !== "number" || Number.isNaN(modifier)) return;
+
+    const raw = await rollRawD100({ mode: sys.settings?.rollMode || null });
+    const total = raw.value + autoMod + modifier;
+    const entry = PSYCHIC_PHENOMENA.find((p) => total >= p.min && total <= p.max);
+    const card = await foundry.applications.handlebars.renderTemplate(
+      "systems/rogue-trader/templates/dice/table-card.hbs",
+      {
+        label,
+        mode: raw.mode,
+        modeLabel: ROLL_MODES[raw.mode],
+        tens: raw.tens,
+        units: raw.units,
+        value: total,
+        name: entry?.name ?? "",
+        description: entry?.desc ?? ""
+      }
+    );
+    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: this.document }), content: card, rolls: [raw.roll] });
+  }
+
+  static async #onPsyRollDangers(event) {
+    const sys = this.document.system;
+    const localize = (key) => game.i18n.localize(key);
+    const label = localize("RT.Psykana.Dangers");
+    const content = await foundry.applications.handlebars.renderTemplate(
+      "systems/rogue-trader/templates/dialog/psy-dangers-dialog.hbs",
+      {}
+    );
+    const sanctioned = await DialogV2.wait({
+      window: { title: label },
+      content,
+      default: "roll",
+      buttons: [
+        {
+          action: "roll",
+          label: localize("RT.Dialog.Roll"),
+          icon: "fas fa-dice-d100",
+          callback: (event, button, dialog) => dialog.element.querySelector("[data-sanctioned]").value
+        },
+        { action: "cancel", label: localize("RT.Dialog.Cancel"), icon: "fas fa-xmark" }
+      ]
+    });
+    if (sanctioned !== "yes" && sanctioned !== "no") return;
+
+    if (sanctioned === "yes") {
+      const roll = await new Roll("3d10").evaluate();
+      const dice = roll.dice[0].results.map((r) => r.result);
+      const card = await foundry.applications.handlebars.renderTemplate(
+        "systems/rogue-trader/templates/dice/psy-dangers-card.hbs",
+        { label, dice, note: localize("RT.Psykana.DangersPickCombo") }
+      );
+      await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: this.document }), content: card, rolls: [roll] });
+    } else {
+      const raw = await rollRawD100({ mode: sys.settings?.rollMode || null });
+      const card = await foundry.applications.handlebars.renderTemplate(
+        "systems/rogue-trader/templates/dice/psy-dangers-card.hbs",
+        {
+          label,
+          mode: raw.mode,
+          modeLabel: ROLL_MODES[raw.mode],
+          tens: raw.tens,
+          units: raw.units,
+          value: raw.value,
+          note: localize("RT.Psykana.DangersLookUp")
+        }
+      );
+      await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: this.document }), content: card, rolls: [raw.roll] });
+    }
+  }
+
+  static async #onPsyRollDangersTable(event) {
+    const sys = this.document.system;
+    const raw = await rollRawD100({ mode: sys.settings?.rollMode || null });
+    const entry = WARP_DANGERS.find((d) => raw.value >= d.min && raw.value <= d.max);
+    const content = await foundry.applications.handlebars.renderTemplate(
+      "systems/rogue-trader/templates/dice/table-card.hbs",
+      {
+        label: game.i18n.localize("RT.Psykana.DangersTableName"),
+        mode: raw.mode,
+        modeLabel: ROLL_MODES[raw.mode],
+        tens: raw.tens,
+        units: raw.units,
+        value: raw.value,
+        name: entry?.name ?? "",
+        description: entry?.desc ?? ""
+      }
+    );
+    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: this.document }), content, rolls: [raw.roll] });
+  }
+
+  static async #onToggleDisciplineMastery(event, target) {
+    const index = Number(target.dataset.index);
+    if (!(index >= 0 && index <= 4)) return;
+    const arr = [...(this.document.system.psykana?.disciplinesMastered ?? [false, false, false, false, false])];
+    arr[index] = !arr[index];
+    await this.document.update({ "system.psykana.disciplinesMastered": arr }).catch(() => {});
+  }
+
+  static async #onTogglePsySustain(event, target) {
+    const rows = RTCharacterSheet.#auxListRows(this.document, "psyPowers");
+    const row = rows[Number(target.dataset.index)];
+    if (!row) return;
+    row.sustain = !row.sustain;
+    await this.document.update({ "system.psykana.psyPowers": rows }).catch(() => {});
+  }
+
+  static async #onApplyPsyPower(event, target) {
+    const rows = RTCharacterSheet.#auxListRows(this.document, "psyPowers");
+    const row = rows[Number(target.dataset.index)];
+    if (!row) return;
+    const sys = this.document.system;
+    const localize = (key) => game.i18n.localize(key);
+
+    const raw = await rollRawD100({ mode: sys.settings?.rollMode || null });
+    const focusMod = Number(sys.psykana?.focusMod) || 0;
+    const targetVal = psySourceTotal(sys, row) + focusMod;
+    const value = raw.value;
+    const criticalSuccess = value === 1;
+    const criticalFailure = value === 100;
+    const success = criticalSuccess || (!criticalFailure && value <= targetVal);
+
+    // Doubles on 2d10 (or matching digits on 1d100, 00 included) manifest
+    // phenomena for an unbound psyker.
+    const doubles = raw.tens !== null
+      ? raw.tens === raw.units
+      : (value === 100 || Math.floor(value / 10) === value % 10);
+    const level = row.level ?? "bound";
+    const isPush = level.startsWith("push");
+
+    const labels = [];
+    let restrictionFail = false;
+    if (level === "bound" && value >= 91) {
+      restrictionFail = true;
+    } else {
+      if (level === "unbound" && doubles) labels.push(localize("RT.Psykana.PhenomenaManifest"));
+      if (isPush) labels.push(localize("RT.Psykana.PhenomenaManifest"));
+    }
+
+    const ep = psyEffectiveRating(sys, row);
+    let damage = null;
+    if (!restrictionFail && success) {
+      const formula = (row.damage ?? "").trim();
+      if (formula) {
+        const mult = row.damageMult ?? "none";
+        const extra = mult === "none" ? 0 : ep * Number(mult);
+        const full = extra > 0 ? `${formula} + ${extra}` : formula;
+        try {
+          const roll = await new Roll(full).evaluate();
+          damage = { total: roll.total, pen: Number(row.pen) || 0, type: row.damageType ?? "" };
+        } catch {
+          ui.notifications.error(localize("RT.Psykana.DamageFormulaInvalid"));
+        }
+      }
+    }
+
+    const content = await foundry.applications.handlebars.renderTemplate(
+      "systems/rogue-trader/templates/dice/psy-power-card.hbs",
+      {
+        name: row.name || localize("RT.Psykana.PsyPowers"),
+        mode: raw.mode,
+        modeLabel: ROLL_MODES[raw.mode],
+        tens: raw.tens,
+        units: raw.units,
+        value,
+        target: targetVal,
+        focusMod,
+        success,
+        criticalSuccess,
+        criticalFailure,
+        restrictionFail,
+        restrictionText: localize("RT.Psykana.RestrictionFail"),
+        damage,
+        damageLabel: localize("RT.Psykana.PowerDamage"),
+        penLabel: localize("RT.Psykana.Pen"),
+        epLabel: localize("RT.Psykana.EPR"),
+        ep,
+        labels
+      }
+    );
+    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: this.document }), content, rolls: [raw.roll] });
   }
 
   static async #onRollMutationTest(event) {
@@ -684,6 +946,52 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
           selected: (row.source ?? "per") === s.id
         }))
       }));
+
+    // Psyker mode header and power list.
+    const psy = this.document.system.psykana ?? {};
+    const localizeKey = (key) => game.i18n.localize(key);
+    const sustainedCount = (psy.psyPowers ?? []).filter((p) => p.sustain).length;
+    context.psy = {
+      focusMod: psy.focusMod ?? 0,
+      pr: psy.pr ?? 0,
+      // The counter starts changing from the second sustained power.
+      sustained: Math.max(0, sustainedCount - 1),
+      disciplines: [0, 1, 2, 3, 4].map((i) => ({
+        i,
+        n: i + 1,
+        name: psy.disciplines?.[i] ?? "",
+        mastered: !!psy.disciplinesMastered?.[i]
+      }))
+    };
+    context.psyPowers = normalizeGroupRows(psy.psyPowers).map((row, index) => {
+      const ep = psyEffectiveRating(this.document.system, row);
+      return {
+        ...row,
+        index,
+        ep,
+        rangeTotal: (Number(row.rangeMult) || 0) * ep,
+        levels: PSY_LEVELS.map((l) => ({
+          id: l.id,
+          label: localizeKey(l.label),
+          selected: (row.level ?? "bound") === l.id
+        })),
+        sources: PSY_SOURCES.map((s) => ({
+          id: s.id,
+          label: localizeKey(s.label),
+          selected: (row.source ?? "wp") === s.id
+        })),
+        disciplineOptions: [0, 1, 2, 3, 4].map((i) => ({
+          id: i,
+          label: psy.disciplines?.[i] || `${localizeKey("RT.Psykana.Discipline")} (${i + 1})`,
+          selected: (Number(row.discipline) || 0) === i
+        })),
+        damageMults: ["none", "1", "2", "3", "4", "5"].map((m) => ({
+          id: m,
+          label: m === "none" ? "✗" : `${m}×${localizeKey("RT.Psykana.EPRShort")}`,
+          selected: (row.damageMult ?? "none") === m
+        }))
+      };
+    });
     context.listEdit = this.listEdit;
 
     context.acquisition = {
@@ -772,6 +1080,21 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       const value = el.type === "number" ? Number(el.value || 0) : el.value;
       const path = field === "profitFactor" ? "system.profitFactor" : `system.acquisition.${field}`;
       await this.document.update({ [path]: value }).catch(() => {});
+    });
+    // Psyker mode header: focus modifier, Psy Rating, discipline names.
+    this.element.addEventListener("change", async (event) => {
+      const el = event.target;
+      if (el.dataset.psy !== undefined) {
+        await this.document.update({
+          [`system.psykana.${el.dataset.psy}`]: el.type === "number" ? Number(el.value || 0) : el.value
+        }).catch(() => {});
+        return;
+      }
+      if (el.dataset.psydisc !== undefined) {
+        const discs = [...(this.document.system.psykana?.disciplines ?? ["", "", "", "", ""])];
+        discs[Number(el.dataset.psydisc)] = el.value;
+        await this.document.update({ "system.psykana.disciplines": discs }).catch(() => {});
+      }
     });
     // Inventory equipped toggles (checkbox is not form-bound to avoid item/actor form races).
     this.element.addEventListener("change", async (event) => {
