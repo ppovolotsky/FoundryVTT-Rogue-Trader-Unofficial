@@ -1236,6 +1236,30 @@ body.theme-dark,
   margin-bottom: 5px;
 }
 
+/* Flex items must be allowed to shrink below their intrinsic input width,
+   or the damage row overflows the half-width power column. */
+.rogue-trader.sheet .rt-psypower__row input[type="text"],
+.rogue-trader.sheet .rt-psypower__row input[type="number"] {
+  min-width: 0;
+}
+
+.rogue-trader.sheet .rt-psypower__row input[data-jfield="damage"] {
+  flex: 1 1 60px;
+}
+
+.rogue-trader.sheet .rt-psypower__row input[data-jfield="damageType"] {
+  flex: 1 1 50px;
+}
+
+.rogue-trader.sheet .rt-psypower__row input[data-jfield="pen"] {
+  flex: 0 0 40px;
+  width: 40px;
+}
+
+.rogue-trader.sheet .rt-psypower__row select[data-jfield="damageMult"] {
+  flex: 0 0 auto;
+}
+
 .rogue-trader.sheet .rt-psypower__row > label {
   display: flex;
   gap: 2px;
