@@ -1058,48 +1058,53 @@ body.theme-dark,
 
 .rogue-trader.sheet .rt-psy-header {
   display: flex;
-  gap: 8px;
-  align-items: flex-end;
-  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+  flex-wrap: nowrap;
   margin: 4px 0 8px;
-}
-
-.rogue-trader.sheet .rt-psy-header__field {
-  gap: 1px;
-}
-
-.rogue-trader.sheet .rt-psy-header__field input {
-  width: 64px;
-  height: 22px;
-  box-sizing: border-box;
-  background: var(--rt-field);
-  border: 1px solid var(--rt-border);
-  color: var(--rt-text);
-  border-radius: 3px;
-  padding: 2px 6px;
 }
 
 .rogue-trader.sheet .rt-psy-header label {
   display: flex;
   gap: 3px;
   align-items: center;
-  font-size: 0.72em;
-  color: var(--rt-muted);
+  font-size: 0.85em;
+  color: var(--rt-text);
+  white-space: nowrap;
+}
+
+.rogue-trader.sheet .rt-psy-header input {
+  width: 40px;
+  height: 22px;
+  box-sizing: border-box;
+  background: var(--rt-field);
+  border: 1px solid var(--rt-border);
+  color: var(--rt-text);
+  border-radius: 3px;
+  padding: 2px 4px;
+  text-align: center;
+}
+
+.rogue-trader.sheet .rt-psy-header input.rt-psy-header__sustained {
+  width: 30px;
+}
+
+.rogue-trader.sheet .rt-psy-header button {
+  white-space: nowrap;
+  font-size: 0.9em;
+  padding: 2px 6px;
+  height: 22px;
+  box-sizing: border-box;
 }
 
 /* Keep the "?" help icons the same visual size as elsewhere despite the
    small label font they sit in. */
-.rogue-trader.sheet .rt-psy-header label .rt-skill-help,
 .rogue-trader.sheet .rt-psypower-block .rt-skill-help {
   font-size: 1.15em;
 }
 
 .rogue-trader.sheet .rt-psy-header .rt-button .rt-skill-help {
   font-size: 0.85em;
-}
-
-.rogue-trader.sheet .rt-psy-header button {
-  white-space: nowrap;
 }
 
 .rogue-trader.sheet .rt-psy-disciplines {
@@ -1148,6 +1153,26 @@ body.theme-dark,
   color: var(--rt-text);
   border-radius: 3px;
   padding: 2px 6px;
+}
+
+/* Level select: compact (opened popup still shows full labels). */
+.rogue-trader.sheet .rt-psypower__level {
+  width: 84px !important;
+}
+
+/* Discipline and source selects must read as dropdowns, not buttons:
+   Foundry's own select styling was overriding the system chevron. */
+.rogue-trader.sheet .rt-psypower-block select {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  background-color: var(--rt-field) !important;
+  color: var(--rt-text) !important;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%239a978f' stroke-width='1.5'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 4px center !important;
+  background-size: 8px 5px !important;
+  padding: 0 14px 0 6px !important;
+  line-height: 20px;
 }
 
 .rogue-trader.sheet .rt-psypower-block textarea {
@@ -1199,10 +1224,37 @@ body.theme-dark,
   width: 54px;
 }
 
+.rogue-trader.sheet .rt-psypower__modpr,
+.rogue-trader.sheet .rt-psypower__epr {
+  width: 40px !important;
+  text-align: center;
+}
+
+.rogue-trader.sheet .rt-psypower__activation {
+  flex: 1;
+  min-width: 50px;
+}
+
+.rogue-trader.sheet .rt-psy-powers-title {
+  text-align: center;
+}
+
 .rogue-trader.sheet .rt-psypower__sustain.active {
   background: var(--rt-fill);
   color: var(--rt-fill-text);
   border-color: var(--rt-accent);
+}
+
+/* Damage and penetration in the manifest card: large and prominent. */
+.rt-psypower__damage {
+  border-top: 1px solid var(--rt-border);
+  margin-top: 6px;
+  padding: 4px 0 0;
+  font-size: 1.2em;
+}
+
+.rt-psypower__damage strong {
+  color: var(--rt-accent);
 }
 
 .rt-psypower__phenomena {

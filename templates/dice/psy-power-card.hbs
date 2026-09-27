@@ -21,8 +21,7 @@
   </div>
 
   <div class="rt-roll-card__target">
-    {{localize "RT.Roll.Target"}}: <strong>{{target}}</strong>{{#if focusMod}} <span class="rt-roll-card__modifier">(мод. фокусировки {{focusMod}})</span>{{/if}}
-    · {{epLabel}}: <strong>{{ep}}</strong>
+    {{localize "RT.Roll.Target"}}: <strong>{{target}}</strong>{{#if modifier}} <span class="rt-roll-card__modifier">({{localize "RT.Roll.Modifier"}} {{modifier}})</span>{{/if}}
   </div>
 
   <div class="rt-roll-card__degrees">
@@ -33,7 +32,7 @@
   <div class="rt-roll-card__result">{{restrictionText}}</div>
   {{else}}
   {{#if damage}}
-  <div class="rt-roll-card__target">
+  <div class="rt-psypower__damage" title="{{damage.detail}}">
     {{damageLabel}}: <strong>{{damage.total}}</strong> · {{penLabel}}: <strong>{{damage.pen}}</strong>{{#if damage.type}} · {{damage.type}}{{/if}}
   </div>
   {{/if}}

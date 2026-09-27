@@ -144,18 +144,12 @@
   {{else}}
 
   <div class="rt-psy-header">
-    <div class="rt-field rt-psy-header__field">
-      <label>{{localize "RT.Psykana.FocusMod"}}<i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{localize "RT.Psykana.FocusModHint"}}"></i></label>
-      <input type="number" data-psy="focusMod" value="{{psy.focusMod}}" data-dtype="Number"/>
-    </div>
-    <div class="rt-field rt-psy-header__field">
-      <label>{{localize "RT.Psykana.PR"}}</label>
-      <input type="number" data-psy="pr" value="{{psy.pr}}" data-dtype="Number"/>
-    </div>
-    <div class="rt-field rt-psy-header__field">
-      <label>{{localize "RT.Psykana.Sustained"}}<i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{localize "RT.Psykana.SustainedHint"}}"></i></label>
-      <input type="text" disabled value="{{psy.sustained}}"/>
-    </div>
+    <label>{{localize "RT.Psykana.FocusMod"}}<i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{localize "RT.Psykana.FocusModHint"}}"></i></label>
+    <input type="number" data-psy="focusMod" value="{{psy.focusMod}}" data-dtype="Number"/>
+    <label>{{localize "RT.Psykana.PR"}}</label>
+    <input type="number" data-psy="pr" value="{{psy.pr}}" data-dtype="Number"/>
+    <label>{{localize "RT.Psykana.Sustained"}}<i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{localize "RT.Psykana.SustainedHint"}}"></i></label>
+    <input type="text" class="rt-psy-header__sustained" disabled value="{{psy.sustained}}"/>
     <button type="button" class="rt-button" data-action="psyRollPhenomena" title="{{localize "RT.Psykana.PhenomenaHint"}}">{{localize "RT.Psykana.Phenomena"}} <i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{localize "RT.Psykana.PhenomenaHint"}}"></i></button>
     <button type="button" class="rt-button" data-action="psyRollDangers" title="{{localize "RT.Psykana.DangersHint"}}">{{localize "RT.Psykana.Dangers"}} <i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{localize "RT.Psykana.DangersHint"}}"></i></button>
     <button type="button" class="rt-button" data-action="psyRollDangersTable" title="{{localize "RT.Psykana.DangersHint"}}">{{localize "RT.Psykana.DangersTable"}}</button>
@@ -172,7 +166,7 @@
     {{/each}}
   </div>
 
-  <h3 class="rt-sheet-section__title">{{localize "RT.Psykana.PsyPowers"}}</h3>
+  <h3 class="rt-sheet-section__title rt-psy-powers-title">{{localize "RT.Psykana.PsyPowers"}}</h3>
   <div class="rt-talents-list" data-list-shell="psyPowers">
     {{#each psyPowers as |p|}}
     <div class="rt-talent-block rt-psypower-block" data-block-index="{{p.index}}">
@@ -197,11 +191,9 @@
 
       <div class="rt-talent-block__body rt-hidden">
         <div class="rt-psypower__row">
-          <div class="rt-field rt-psypower__field">
-            <label>{{localize "RT.Psykana.PrMod"}}<i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{localize "RT.Psykana.PrModHint"}}"></i></label>
-            <input type="number" data-jlist="psyPowers" data-jindex="{{p.index}}" data-jfield="modPr" value="{{p.modPr}}" data-dtype="Number"/>
-          </div>
-          <input type="text" placeholder="{{localize "RT.Psykana.PsyActivation"}}" title="{{localize "RT.Psykana.PsyActivation"}}" data-jlist="psyPowers" data-jindex="{{p.index}}" data-jfield="activation" value="{{p.activation}}"/>
+          <label>{{localize "RT.Psykana.PrMod"}}<i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{localize "RT.Psykana.PrModHint"}}"></i></label>
+          <input type="number" class="rt-psypower__modpr" data-jlist="psyPowers" data-jindex="{{p.index}}" data-jfield="modPr" value="{{p.modPr}}" data-dtype="Number"/>
+          <input type="text" class="rt-psypower__activation" placeholder="{{localize "RT.Psykana.PsyActivation"}}" title="{{localize "RT.Psykana.PsyActivation"}}" data-jlist="psyPowers" data-jindex="{{p.index}}" data-jfield="activation" value="{{p.activation}}"/>
           <select data-jlist="psyPowers" data-jindex="{{p.index}}" data-jfield="discipline">
             {{#each p.disciplineOptions as |opt|}}
             <option value="{{opt.id}}" {{#if opt.selected}}selected{{/if}}>{{opt.label}}</option>
@@ -221,7 +213,8 @@
           <input type="text" readonly value="{{p.rangeTotal}}" title="{{p.rangeTotal}}"/>
           <i class="fa-solid fa-angle-left rt-psypower__arrow"></i>
           <label>{{localize "RT.Psykana.EPR"}}<i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{localize "RT.Psykana.EPRHint"}}"></i></label>
-          <button type="button" class="rt-button rt-button--small rt-psypower__sustain {{#if p.sustain}}active{{/if}}" data-action="togglePsySustain" data-index="{{p.index}}">{{localize "RT.Psykana.Sustain"}}</button>
+          <input type="text" class="rt-psypower__epr" readonly value="{{p.ep}}"/>
+          <button type="button" class="rt-button rt-button--small rt-psypower__sustain {{#if p.sustain}}active{{/if}}" data-action="togglePsySustain" data-index="{{p.index}}">{{localize "RT.Psykana.Sustain"}} <i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{localize "RT.Psykana.SustainHint"}}"></i></button>
         </div>
 
         <div class="rt-psypower__row">

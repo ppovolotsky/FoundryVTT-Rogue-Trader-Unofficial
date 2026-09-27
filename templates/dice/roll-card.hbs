@@ -21,8 +21,8 @@
   </div>
 
   <div class="rt-roll-card__target">
-    {{localize "RT.Roll.Target"}}: <strong>{{finalTarget}}</strong>
-    {{#if modifier}}<span class="rt-roll-card__modifier">({{#if (gt modifier 0)}}+{{/if}}{{modifier}})</span>{{/if}}
+    {{localize "RT.Roll.Target"}}: <strong>{{target}}</strong>
+    {{#if modifier}}<span class="rt-roll-card__modifier">({{localize "RT.Roll.Modifier"}} {{modifier}})</span>{{/if}}
   </div>
 
   <div class="rt-roll-card__degrees">

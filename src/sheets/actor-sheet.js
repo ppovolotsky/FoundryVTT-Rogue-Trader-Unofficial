@@ -112,7 +112,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       contentClasses: ["rogue-trader", "sheet", "actor"],
       resizable: true
     },
-    position: { width: 780, height: 560 },
+    position: { width: 940, height: 600 },
     form: {
       handler: RTCharacterSheet.#onFormSubmit,
       submitOnChange: true,
@@ -652,7 +652,10 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         const full = extra > 0 ? `${formula} + ${extra}` : formula;
         try {
           const roll = await new Roll(full).evaluate();
-          damage = { total: roll.total, pen: Number(row.pen) || 0, type: row.damageType ?? "" };
+          const detail = extra > 0
+            ? `${formula} + ${extra} (${localize("RT.Psykana.EPRShort")} ${ep} × ${mult})`
+            : formula;
+          damage = { total: roll.total, pen: Number(row.pen) || 0, type: row.damageType ?? "", formula: roll.formula, detail };
         } catch {
           ui.notifications.error(localize("RT.Psykana.DamageFormulaInvalid"));
         }
@@ -668,8 +671,8 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         tens: raw.tens,
         units: raw.units,
         value,
-        target: targetVal,
-        focusMod,
+        target: targetVal - focusMod,
+        modifier: focusMod,
         success,
         criticalSuccess,
         criticalFailure,
