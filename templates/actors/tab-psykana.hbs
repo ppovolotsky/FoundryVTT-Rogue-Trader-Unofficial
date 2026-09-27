@@ -144,15 +144,17 @@
   {{else}}
 
   <div class="rt-psy-header">
-    <label>{{localize "RT.Psykana.FocusMod"}}<i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{localize "RT.Psykana.FocusModHint"}}"></i></label>
+    <label><span>{{localize "RT.Psykana.FocusMod"}}</span><i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{localize "RT.Psykana.FocusModHint"}}"></i></label>
     <input type="number" data-psy="focusMod" value="{{psy.focusMod}}" data-dtype="Number"/>
-    <label>{{localize "RT.Psykana.PR"}}</label>
+    <label><span>{{localize "RT.Psykana.PR"}}</span></label>
     <input type="number" data-psy="pr" value="{{psy.pr}}" data-dtype="Number"/>
-    <label>{{localize "RT.Psykana.Sustained"}}<i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{localize "RT.Psykana.SustainedHint"}}"></i></label>
+    <label><span>{{localize "RT.Psykana.Sustained"}}</span><i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{localize "RT.Psykana.SustainedHint"}}"></i></label>
     <input type="text" class="rt-psy-header__sustained" disabled value="{{psy.sustained}}"/>
     <button type="button" class="rt-button" data-action="psyRollPhenomena" title="{{localize "RT.Psykana.PhenomenaHint"}}">{{localize "RT.Psykana.Phenomena"}} <i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{localize "RT.Psykana.PhenomenaHint"}}"></i></button>
-    <button type="button" class="rt-button" data-action="psyRollDangers" title="{{localize "RT.Psykana.DangersHint"}}">{{localize "RT.Psykana.Dangers"}} <i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{localize "RT.Psykana.DangersHint"}}"></i></button>
-    <button type="button" class="rt-button" data-action="psyRollDangersTable" title="{{localize "RT.Psykana.DangersHint"}}">{{localize "RT.Psykana.DangersTable"}}</button>
+    <span class="rt-psy-header__pair">
+      <button type="button" class="rt-button" data-action="psyRollDangers" title="{{localize "RT.Psykana.DangersHint"}}">{{localize "RT.Psykana.Dangers"}} <i class="fa-solid fa-circle-question rt-skill-help" data-tooltip="{{localize "RT.Psykana.DangersHint"}}"></i></button>
+      <button type="button" class="rt-button" data-action="psyRollDangersTable" title="{{localize "RT.Psykana.DangersHint"}}">{{localize "RT.Psykana.DangersTable"}}</button>
+    </span>
   </div>
 
   <div class="rt-psy-disciplines">

@@ -72,6 +72,7 @@
   "RT.Psykana.DangersHint": "Бросайте д100 или 3д10 для санкционированных псайкеров, выберите результат по таблице Опасностей Варпа.",
   "RT.Psykana.DangersTable": "Таблица Опасностей",
   "RT.Psykana.DangersTableName": "Опасности Варпа",
+  "RT.Psykana.DangersValue": "Значение по таблице (1-100)",
   "RT.Psykana.Sanctioned": "Санкционированный?",
   "RT.Psykana.Yes": "Да",
   "RT.Psykana.No": "Нет",

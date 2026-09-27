@@ -72,6 +72,7 @@
   "RT.Psykana.DangersHint": "Roll d100, or 3d10 for sanctioned psykers, and pick the result on the Perils of the Warp table.",
   "RT.Psykana.DangersTable": "Perils table",
   "RT.Psykana.DangersTableName": "Perils of the Warp",
+  "RT.Psykana.DangersValue": "Table value (1-100)",
   "RT.Psykana.Sanctioned": "Sanctioned?",
   "RT.Psykana.Yes": "Yes",
   "RT.Psykana.No": "No",

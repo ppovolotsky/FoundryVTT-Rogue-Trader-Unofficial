@@ -112,7 +112,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       contentClasses: ["rogue-trader", "sheet", "actor"],
       resizable: true
     },
-    position: { width: 940, height: 600 },
+    position: { width: 960, height: 600 },
     form: {
       handler: RTCharacterSheet.#onFormSubmit,
       submitOnChange: true,
@@ -575,23 +575,44 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
 
   static async #onPsyRollDangersTable(event) {
-    const sys = this.document.system;
-    const raw = await rollRawD100({ mode: sys.settings?.rollMode || null });
-    const entry = WARP_DANGERS.find((d) => raw.value >= d.min && raw.value <= d.max);
+    const localize = (key) => game.i18n.localize(key);
+    // No roll: the player enters the value and the matching table result
+    // is shown (e.g. after picking a combination from 3d10).
     const content = await foundry.applications.handlebars.renderTemplate(
+      "systems/rogue-trader/templates/dialog/psy-dangers-value-dialog.hbs",
+      {}
+    );
+    const value = await DialogV2.wait({
+      window: { title: localize("RT.Psykana.DangersTable") },
+      content,
+      default: "roll",
+      buttons: [
+        {
+          action: "roll",
+          label: localize("RT.Dialog.Roll"),
+          icon: "fas fa-dice-d100",
+          callback: (event, button, dialog) => Number(dialog.element.querySelector("[data-dangers-value]").value)
+        },
+        { action: "cancel", label: localize("RT.Dialog.Cancel"), icon: "fas fa-xmark" }
+      ]
+    });
+    if (typeof value !== "number" || Number.isNaN(value)) return;
+    const v = Math.min(100, Math.max(1, Math.floor(value)));
+    const entry = WARP_DANGERS.find((d) => v >= d.min && v <= d.max);
+    const card = await foundry.applications.handlebars.renderTemplate(
       "systems/rogue-trader/templates/dice/table-card.hbs",
       {
-        label: game.i18n.localize("RT.Psykana.DangersTableName"),
-        mode: raw.mode,
-        modeLabel: ROLL_MODES[raw.mode],
-        tens: raw.tens,
-        units: raw.units,
-        value: raw.value,
+        label: localize("RT.Psykana.DangersTableName"),
+        mode: null,
+        modeLabel: "",
+        tens: null,
+        units: null,
+        value: v,
         name: entry?.name ?? "",
         description: entry?.desc ?? ""
       }
     );
-    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: this.document }), content, rolls: [raw.roll] });
+    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: this.document }), content: card });
   }
 
   static async #onToggleDisciplineMastery(event, target) {

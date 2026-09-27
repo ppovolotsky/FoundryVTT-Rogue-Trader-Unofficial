@@ -469,9 +469,9 @@ body.theme-dark,
 
 .rogue-trader.sheet .rt-skill-help {
   color: var(--rt-muted);
-  font-size: 0.78em;
+  font-size: 0.95em;
   cursor: help;
-  margin-left: 4px;
+  margin-left: 2px;
 }
 
 .rogue-trader.sheet .rt-skill-help:hover {
@@ -1058,7 +1058,7 @@ body.theme-dark,
 
 .rogue-trader.sheet .rt-psy-header {
   display: flex;
-  gap: 5px;
+  gap: 4px;
   align-items: center;
   flex-wrap: nowrap;
   margin: 4px 0 8px;
@@ -1066,11 +1066,36 @@ body.theme-dark,
 
 .rogue-trader.sheet .rt-psy-header label {
   display: flex;
-  gap: 3px;
+  gap: 2px;
   align-items: center;
-  font-size: 0.85em;
+  font-size: 1em;
   color: var(--rt-text);
   white-space: nowrap;
+  /* On narrow windows labels yield space to fields, buttons and hint icons. */
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.rogue-trader.sheet .rt-psy-header label span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* "Опасности Варпа" + "Таблица Опасностей" form a joined button pair. */
+.rogue-trader.sheet .rt-psy-header__pair {
+  display: flex;
+}
+
+.rogue-trader.sheet .rt-psy-header__pair .rt-button:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.rogue-trader.sheet .rt-psy-header__pair .rt-button:last-child {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  margin-left: -1px;
 }
 
 .rogue-trader.sheet .rt-psy-header input {
@@ -1099,12 +1124,8 @@ body.theme-dark,
 
 /* Keep the "?" help icons the same visual size as elsewhere despite the
    small label font they sit in. */
-.rogue-trader.sheet .rt-psypower-block .rt-skill-help {
-  font-size: 1.15em;
-}
-
 .rogue-trader.sheet .rt-psy-header .rt-button .rt-skill-help {
-  font-size: 0.85em;
+  font-size: 0.9em;
 }
 
 .rogue-trader.sheet .rt-psy-disciplines {
@@ -1155,9 +1176,34 @@ body.theme-dark,
   padding: 2px 6px;
 }
 
-/* Level select: compact (opened popup still shows full labels). */
+/* Level select: wide enough for "Скованный" (opened popup still shows
+   full labels). */
 .rogue-trader.sheet .rt-psypower__level {
-  width: 84px !important;
+  width: 96px !important;
+}
+
+/* Discipline select fixed to the "Дисциплина" placeholder width; the
+   source select fits "Психонаука" plus chevron clearance. */
+.rogue-trader.sheet .rt-psypower-block select[data-jfield="discipline"] {
+  width: 94px !important;
+  flex: 0 0 auto;
+}
+
+.rogue-trader.sheet .rt-psypower-block select[data-jfield="source"] {
+  width: 102px !important;
+  flex: 0 0 auto;
+}
+
+/* Discipline and source selects: fixed to their longest label so the
+   chevron never hides the text. */
+.rogue-trader.sheet .rt-psypower-block select[data-jfield="discipline"] {
+  width: 92px !important;
+  flex: 0 0 auto;
+}
+
+.rogue-trader.sheet .rt-psypower-block select[data-jfield="source"] {
+  width: 100px !important;
+  flex: 0 0 auto;
 }
 
 /* Discipline and source selects must read as dropdowns, not buttons:
@@ -1192,9 +1238,10 @@ body.theme-dark,
 
 .rogue-trader.sheet .rt-psypower__row > label {
   display: flex;
-  gap: 3px;
+  gap: 2px;
   align-items: center;
-  font-size: 0.72em;
+  /* Same size as the field text (Дальность, ЭПР, Урон, Проб., Мод. ПР). */
+  font-size: 1em;
   color: var(--rt-muted);
   white-space: nowrap;
 }
@@ -1260,6 +1307,18 @@ body.theme-dark,
 .rt-psypower__phenomena {
   color: var(--rt-accent) !important;
   font-weight: bold;
+}
+
+/* Psychic powers fill the left column first, then the right one.
+   Must beat .rt-talents-list's display:flex, which ignores columns. */
+.rogue-trader.sheet .rt-talents-list[data-list-shell="psyPowers"] {
+  display: block;
+  columns: 2;
+  column-gap: 10px;
+}
+
+.rogue-trader.sheet [data-list-shell="psyPowers"] .rt-talent-block {
+  break-inside: avoid;
 }
 
 /* ---------- Misc sheet styles ---------- */
