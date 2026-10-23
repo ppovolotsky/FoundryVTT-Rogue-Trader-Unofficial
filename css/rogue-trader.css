@@ -96,11 +96,10 @@ body.theme-dark,
   gap: 3px;
 }
 
-/* Chips keep Foundry's font scaling (em) but never shrink below their text:
-   min-width:auto holds the intrinsic content width, and the header row wraps
-   at extreme font scales instead of clipping. The chip re-anchors its font
-   to the sheet scale: Foundry styles <button> with a larger global font-size,
-   which inflated every em inside the chip past its borders. */
+/* Chips keep Foundry's font scaling (em) but never shrink below their text.
+   The chip's own font-size re-anchors the em chain to the sheet scale:
+   Foundry styles <button> with a larger global font-size (beating a plain
+   author rule), which inflated every em inside the chip past its borders. */
 .rogue-trader.sheet .rt-char-chip {
   flex: 1 1 auto;
   min-width: auto;
@@ -113,7 +112,7 @@ body.theme-dark,
   border-radius: 4px;
   padding: 6px 2px;
   cursor: pointer;
-  font-size: 0.85em;
+  font-size: 0.85em !important;
 }
 
 .rogue-trader.sheet .rt-char-chip:hover {
