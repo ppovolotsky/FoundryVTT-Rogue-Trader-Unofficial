@@ -1257,6 +1257,9 @@ body.theme-dark,
 }
 
 .rogue-trader.sheet .rt-psypower__row select[data-jfield="damageMult"] {
+  /* Fixed to the longest option ("5×ЭПР"): Foundry's width:100% field
+     default otherwise stretches it past the card edge. */
+  width: 64px !important;
   flex: 0 0 auto;
 }
 
