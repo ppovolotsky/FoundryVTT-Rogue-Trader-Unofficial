@@ -1459,13 +1459,20 @@ body.theme-dark,
 
 .rogue-trader.sheet .rt-inventory-row {
   display: grid;
-  grid-template-columns: 28px minmax(0, 1fr) auto auto minmax(0, 1.2fr) auto;
+  grid-template-columns: 28px minmax(0, 1.4fr) auto auto auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 6px;
   padding: 3px 4px;
   background: var(--rt-panel);
   border: 1px solid var(--rt-border);
   border-radius: 3px;
+}
+
+.rogue-trader.sheet .rt-inventory-row__main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
 }
 
 .rogue-trader.sheet .rt-inventory-row__img {
@@ -1515,6 +1522,143 @@ body.theme-dark,
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.rogue-trader.sheet .rt-inventory-row__weight {
+  color: var(--rt-muted);
+  font-size: 0.8em;
+  text-align: right;
+}
+
+.rogue-trader.sheet .rt-inventory-row__desc {
+  color: var(--rt-muted);
+  font-size: 0.8em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rogue-trader.sheet .rt-identity-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.rogue-trader.sheet .rt-encumbrance {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 14px;
+  padding: 6px 10px;
+  margin: 0 0 10px;
+  background: var(--rt-panel);
+  border: 1px solid var(--rt-border);
+  border-radius: 4px;
+  color: var(--rt-text);
+  font-size: 0.9em;
+}
+
+.rogue-trader.sheet .rt-encumbrance--compact {
+  margin: 0;
+  flex: 1;
+}
+
+.rogue-trader.sheet .rt-encumbrance__label {
+  font-weight: bold;
+}
+
+.rogue-trader.sheet .rt-encumbrance__limits {
+  color: var(--rt-muted);
+  font-size: 0.85em;
+}
+
+.rogue-trader.sheet .rt-encumbrance__level--encumbered {
+  color: #b8860b;
+  font-weight: bold;
+}
+
+.rogue-trader.sheet .rt-encumbrance__level--overloaded {
+  color: #c44;
+  font-weight: bold;
+}
+
+.rogue-trader.sheet .rt-combat-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: stretch;
+  margin-bottom: 8px;
+}
+
+.rogue-trader.sheet .rt-combat-armour__row,
+.rogue-trader.sheet .rt-combat-weapon {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 8px;
+  margin-bottom: 6px;
+  background: var(--rt-panel);
+  border: 1px solid var(--rt-border);
+  border-radius: 4px;
+}
+
+.rogue-trader.sheet .rt-combat-armour__row {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.rogue-trader.sheet .rt-combat-weapon__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.rogue-trader.sheet .rt-combat-weapon__summary,
+.rogue-trader.sheet .rt-combat-weapon__specials {
+  color: var(--rt-muted);
+  font-size: 0.85em;
+}
+
+.rogue-trader.sheet .rt-combat-weapon__mods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+
+.rogue-trader.sheet .rt-combat-weapon__mods label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.85em;
+  color: var(--rt-muted);
+}
+
+.rogue-trader.sheet .rt-combat-weapon__mods select {
+  background: var(--rt-field);
+  border: 1px solid var(--rt-border);
+  color: var(--rt-text);
+  border-radius: 3px;
+  padding: 2px 4px;
+}
+
+.rogue-trader.sheet .rt-combat-macros__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.rt-roll-card__jam {
+  color: #c44;
+  font-weight: bold;
+}
+
+.rt-roll-card__muted {
+  color: var(--rt-muted, #888);
+  font-size: 0.9em;
 }
 
 .rogue-trader.sheet .rt-inventory-empty {

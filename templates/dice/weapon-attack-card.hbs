@@ -1,0 +1,21 @@
+<div class="rt-roll-card">
+  <div class="rt-roll-card__label">{{label}}</div>
+  <div class="rt-roll-card__row">{{localize "RT.Roll.Target"}}: {{finalTarget}} ({{target}}{{#if modifier}} {{modifier}}{{/if}})</div>
+  <div class="rt-roll-card__row">{{localize "RT.Roll.Result"}}: {{value}}</div>
+  <div class="rt-roll-card__result {{#if success}}rt-roll-card__result--ok{{else}}rt-roll-card__result--fail{{/if}}">
+    {{#if criticalSuccess}}{{localize "RT.Roll.CriticalSuccess"}}{{else if criticalFailure}}{{localize "RT.Roll.CriticalFailure"}}{{else if success}}{{localize "RT.Roll.Success"}}{{else}}{{localize "RT.Roll.Failure"}}{{/if}}
+    {{#if degrees}} — {{localize degreesKey}} {{degrees}}{{/if}}
+  </div>
+  {{#if hits}}
+  <div class="rt-roll-card__row">{{localize "RT.Combat.Hits"}}: {{hits}}</div>
+  {{/if}}
+  {{#if jam}}
+  <div class="rt-roll-card__row rt-roll-card__jam">{{localize jamKey}}</div>
+  {{/if}}
+  {{#if specialNotes}}
+  <div class="rt-roll-card__row">{{specialNotes}}</div>
+  {{/if}}
+  {{#if modsSummary}}
+  <div class="rt-roll-card__row rt-roll-card__muted">{{modsSummary}}</div>
+  {{/if}}
+</div>

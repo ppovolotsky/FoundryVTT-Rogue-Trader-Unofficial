@@ -84,10 +84,28 @@
                                                                                    }
                                                                        },
                                                    "playerName":  "",
+                                                   "gender":  "",
+                                                   "age":  "",
+                                                   "height":  "",
+                                                   "weight":  "",
                                                    "appearance":  "",
                                                    "allies":  "",
                                                    "goals":  "",
                                                    "notes":  "",
+                                                   "traits":  [
+
+                                                              ],
+                                                   "criticalWounds":  [
+
+                                                                      ],
+                                                   "size":  "average",
+                                                   "movementMode":  "normal",
+                                                   "movementCustom":  {
+                                                                          "half":  0,
+                                                                          "full":  0,
+                                                                          "charge":  0,
+                                                                          "run":  0
+                                                                      },
                                                    "talents":  [
 
                                                                ],

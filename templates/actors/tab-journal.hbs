@@ -1,5 +1,27 @@
 <section class="tab {{#if (eq activeTab "journal")}}active{{/if}}" data-tab="journal" data-group="main">
   <section class="rt-sheet-section">
+    <label class="rt-sheet-section__title">{{localize "RT.Journal.Identity"}}</label>
+    <div class="rt-identity-row">
+      <div class="rt-field">
+        <label>{{localize "RT.Journal.Gender"}}</label>
+        <input type="text" name="system.gender" value="{{system.gender}}"/>
+      </div>
+      <div class="rt-field">
+        <label>{{localize "RT.Journal.Age"}}</label>
+        <input type="text" name="system.age" value="{{system.age}}"/>
+      </div>
+      <div class="rt-field">
+        <label>{{localize "RT.Journal.Height"}}</label>
+        <input type="text" name="system.height" value="{{system.height}}"/>
+      </div>
+      <div class="rt-field">
+        <label>{{localize "RT.Journal.Weight"}}</label>
+        <input type="text" name="system.weight" value="{{system.weight}}"/>
+      </div>
+    </div>
+  </section>
+
+  <section class="rt-sheet-section">
     <label class="rt-sheet-section__title">{{localize "RT.Journal.Appearance"}}</label>
     <textarea class="rt-description" name="system.appearance" rows="4">{{system.appearance}}</textarea>
   </section>
@@ -7,6 +29,35 @@
   <section class="rt-sheet-section">
     <label class="rt-sheet-section__title">{{localize "RT.Journal.Background"}}</label>
     <textarea class="rt-description" name="system.bio" rows="6">{{system.bio}}</textarea>
+  </section>
+
+  <section class="rt-sheet-section">
+    <label class="rt-sheet-section__title">{{localize "RT.Journal.Traits"}}</label>
+    <div class="rt-talents-list" data-list-shell="traits">
+      {{#each traits as |t|}}
+      <div class="rt-talent-block" data-block-index="{{t.index}}">
+        <div class="rt-talent-block__header">
+          <input type="text" data-jlist="traits" data-jindex="{{t.index}}" data-jfield="name" value="{{t.name}}" placeholder="{{localize "RT.Journal.TraitName"}}"/>
+          <div class="rt-view-buttons">
+            <button type="button" class="rt-button rt-button--small" data-action="toggleRowExpand" title="{{localize "RT.Talents.ShowDesc"}}"><i class="fa-solid fa-chevron-down"></i></button>
+            <button type="button" class="rt-button rt-button--small" data-action="sendRowToChat" data-index="{{t.index}}" title="{{localize "RT.Talents.SendToChat"}}"><i class="fa-solid fa-comment-dots"></i></button>
+          </div>
+          <div class="rt-row-edit rt-hidden">
+            <button type="button" class="rt-row-edit__btn" data-action="moveListRow" data-list="traits" data-index="{{t.index}}" data-delta="-1" title="{{localize "RT.Skills.MoveUp"}}"><i class="fa-solid fa-arrow-up"></i></button>
+            <button type="button" class="rt-row-edit__btn" data-action="moveListRow" data-list="traits" data-index="{{t.index}}" data-delta="1" title="{{localize "RT.Skills.MoveDown"}}"><i class="fa-solid fa-arrow-down"></i></button>
+            <button type="button" class="rt-row-edit__btn" data-action="deleteListRow" data-list="traits" data-index="{{t.index}}" title="{{localize "RT.Skills.Delete"}}"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </div>
+        <div class="rt-talent-block__body rt-hidden">
+          <textarea class="rt-description" data-jlist="traits" data-jindex="{{t.index}}" data-jfield="description" rows="4">{{t.description}}</textarea>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+    <div class="rt-skill-group-table__footer">
+      <button type="button" class="rt-button rt-button--small" data-action="addListRow" data-list="traits" title="{{localize "RT.Skills.Add"}}">+</button>
+      <button type="button" class="rt-button rt-button--small" data-action="toggleListEdit" data-list-shell="traits" title="{{localize "RT.Skills.EditRows"}}"><i class="fa-solid fa-gear"></i></button>
+    </div>
   </section>
 
   <section class="rt-sheet-section">

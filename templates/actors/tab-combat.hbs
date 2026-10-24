@@ -1,18 +1,178 @@
 <section class="tab {{#if (eq activeTab "combat")}}active{{/if}}" data-tab="combat" data-group="main">
-  <div class="rt-stat rt-stat--block">
-    <label>{{localize "RT.Sheet.Wounds"}}</label>
-    <div class="rt-stepper">
-      <input type="number" name="system.wounds.value" value="{{system.wounds.value}}" data-dtype="Number"/>
-      <div class="rt-stepper__buttons">
-        <button type="button" class="rt-stepper__btn" data-action="adjustValue" data-path="system.wounds.value" data-delta="1" title="+1"><i class="fa-solid fa-chevron-up"></i></button>
-        <button type="button" class="rt-stepper__btn" data-action="adjustValue" data-path="system.wounds.value" data-delta="-1" title="-1"><i class="fa-solid fa-chevron-down"></i></button>
+  <div class="rt-combat-top">
+    <div class="rt-stat rt-stat--block">
+      <label>{{localize "RT.Sheet.Wounds"}}</label>
+      <div class="rt-stepper">
+        <input type="number" name="system.wounds.value" value="{{system.wounds.value}}" data-dtype="Number"/>
+        <div class="rt-stepper__buttons">
+          <button type="button" class="rt-stepper__btn" data-action="adjustValue" data-path="system.wounds.value" data-delta="1" title="+1"><i class="fa-solid fa-chevron-up"></i></button>
+          <button type="button" class="rt-stepper__btn" data-action="adjustValue" data-path="system.wounds.value" data-delta="-1" title="-1"><i class="fa-solid fa-chevron-down"></i></button>
+        </div>
       </div>
+      <span class="rt-resource__sep">/</span>
+      <input class="rt-stat__max" type="number" name="system.wounds.max" value="{{system.wounds.max}}" data-dtype="Number"/>
     </div>
-    <span class="rt-resource__sep">/</span>
-    <input class="rt-stat__max" type="number" name="system.wounds.max" value="{{system.wounds.max}}" data-dtype="Number"/>
+
+    <div class="rt-encumbrance rt-encumbrance--compact" title="{{localize "RT.Encumbrance.Hint"}}">
+      <span class="rt-encumbrance__label">{{localize "RT.Encumbrance.Load"}}</span>
+      <span class="rt-encumbrance__value">{{system.encumbrance.carried}} / {{system.encumbrance.carry}}</span>
+      <span class="rt-encumbrance__level rt-encumbrance__level--{{system.encumbrance.level}}">{{localize encumbranceLevelLabel}}</span>
+    </div>
   </div>
 
-  <section class="rt-stub-note">
-    <p>{{localize "RT.Sheet.StubNote"}}</p>
+  <section class="rt-sheet-section">
+    <label class="rt-sheet-section__title">{{localize "RT.Combat.CriticalWounds"}}</label>
+    <div class="rt-talents-list" data-list-shell="criticalWounds">
+      {{#each criticalWounds as |w|}}
+      <div class="rt-talent-block" data-block-index="{{w.index}}">
+        <div class="rt-talent-block__header">
+          <input type="text" data-jlist="criticalWounds" data-jindex="{{w.index}}" data-jfield="name" value="{{w.name}}" placeholder="{{localize "RT.Combat.CriticalWoundName"}}"/>
+          <div class="rt-view-buttons">
+            <button type="button" class="rt-button rt-button--small" data-action="toggleRowExpand" title="{{localize "RT.Talents.ShowDesc"}}"><i class="fa-solid fa-chevron-down"></i></button>
+            <button type="button" class="rt-button rt-button--small" data-action="sendRowToChat" data-index="{{w.index}}" title="{{localize "RT.Talents.SendToChat"}}"><i class="fa-solid fa-comment-dots"></i></button>
+          </div>
+          <div class="rt-row-edit rt-hidden">
+            <button type="button" class="rt-row-edit__btn" data-action="moveListRow" data-list="criticalWounds" data-index="{{w.index}}" data-delta="-1" title="{{localize "RT.Skills.MoveUp"}}"><i class="fa-solid fa-arrow-up"></i></button>
+            <button type="button" class="rt-row-edit__btn" data-action="moveListRow" data-list="criticalWounds" data-index="{{w.index}}" data-delta="1" title="{{localize "RT.Skills.MoveDown"}}"><i class="fa-solid fa-arrow-down"></i></button>
+            <button type="button" class="rt-row-edit__btn" data-action="deleteListRow" data-list="criticalWounds" data-index="{{w.index}}" title="{{localize "RT.Skills.Delete"}}"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </div>
+        <div class="rt-talent-block__body rt-hidden">
+          <textarea class="rt-description" data-jlist="criticalWounds" data-jindex="{{w.index}}" data-jfield="description" rows="3">{{w.description}}</textarea>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+    <div class="rt-skill-group-table__footer">
+      <button type="button" class="rt-button rt-button--small" data-action="addListRow" data-list="criticalWounds" title="{{localize "RT.Skills.Add"}}">+</button>
+      <button type="button" class="rt-button rt-button--small" data-action="toggleListEdit" data-list-shell="criticalWounds" title="{{localize "RT.Skills.EditRows"}}"><i class="fa-solid fa-gear"></i></button>
+    </div>
+  </section>
+
+  <section class="rt-sheet-section">
+    <label class="rt-sheet-section__title">{{localize "RT.Combat.Movement"}}</label>
+    <div class="rt-identity-row">
+      <div class="rt-field">
+        <label>{{localize "RT.Combat.MovementMode"}}</label>
+        <select name="system.movementMode">
+          {{#each movementModes as |m|}}
+          <option value="{{m.id}}" {{#if m.selected}}selected{{/if}}>{{localize m.label}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="rt-field">
+        <label>{{localize "RT.Combat.Size"}}</label>
+        <select name="system.size">
+          {{#each sizeOptions as |s|}}
+          <option value="{{s.id}}" {{#if s.selected}}selected{{/if}}>{{localize s.label}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="rt-field">
+        <label>{{localize "RT.Combat.SizeHitMod"}}</label>
+        <input type="text" disabled value="{{system.sizeHitMod}}"/>
+      </div>
+    </div>
+    {{#if (eq system.movementMode "custom")}}
+    <div class="rt-identity-row">
+      <div class="rt-field">
+        <label>{{localize "RT.Combat.MoveHalf"}}</label>
+        <input type="number" name="system.movementCustom.half" value="{{system.movementCustom.half}}" data-dtype="Number"/>
+      </div>
+      <div class="rt-field">
+        <label>{{localize "RT.Combat.MoveFull"}}</label>
+        <input type="number" name="system.movementCustom.full" value="{{system.movementCustom.full}}" data-dtype="Number"/>
+      </div>
+      <div class="rt-field">
+        <label>{{localize "RT.Combat.MoveCharge"}}</label>
+        <input type="number" name="system.movementCustom.charge" value="{{system.movementCustom.charge}}" data-dtype="Number"/>
+      </div>
+      <div class="rt-field">
+        <label>{{localize "RT.Combat.MoveRun"}}</label>
+        <input type="number" name="system.movementCustom.run" value="{{system.movementCustom.run}}" data-dtype="Number"/>
+      </div>
+    </div>
+    {{/if}}
+    <div class="rt-movement">
+      <span>{{localize "RT.Combat.MoveHalf"}}: {{system.movement.half}}</span>
+      <span>{{localize "RT.Combat.MoveFull"}}: {{system.movement.full}}</span>
+      <span>{{localize "RT.Combat.MoveCharge"}}: {{system.movement.charge}}</span>
+      <span>{{localize "RT.Combat.MoveRun"}}: {{system.movement.run}}</span>
+    </div>
+  </section>
+
+  <section class="rt-sheet-section">
+    <label class="rt-sheet-section__title">{{localize "RT.Combat.Armour"}}</label>
+    {{#if combatArmour.length}}
+    <div class="rt-combat-armour">
+      {{#each combatArmour as |a|}}
+      <div class="rt-combat-armour__row">
+        <button type="button" class="rt-inventory-row__name" data-action="editInventoryItem" data-item-id="{{a.id}}">{{a.name}}</button>
+        <span>H {{a.head}}</span>
+        <span>B {{a.body}}</span>
+        <span>LA {{a.leftArm}}</span>
+        <span>RA {{a.rightArm}}</span>
+        <span>LL {{a.leftLeg}}</span>
+        <span>RL {{a.rightLeg}}</span>
+      </div>
+      {{/each}}
+    </div>
+    {{else}}
+    <p class="rt-inventory-empty">{{localize "RT.Combat.NoArmour"}}</p>
+    {{/if}}
+  </section>
+
+  <section class="rt-sheet-section">
+    <label class="rt-sheet-section__title">{{localize "RT.Combat.Weapons"}}</label>
+    {{#if combatWeapons.length}}
+    <div class="rt-combat-weapons">
+      {{#each combatWeapons as |w|}}
+      <div class="rt-combat-weapon" data-item-id="{{w.id}}">
+        <div class="rt-combat-weapon__header">
+          <button type="button" class="rt-inventory-row__name" data-action="editInventoryItem" data-item-id="{{w.id}}">{{w.name}}</button>
+          <span class="rt-combat-weapon__summary">{{w.summary}}</span>
+          <button type="button" class="rt-button rt-button--small" data-action="rollWeaponAttack" data-item-id="{{w.id}}">{{localize "RT.Combat.Attack"}}</button>
+        </div>
+        <div class="rt-combat-weapon__mods">
+          <label>{{localize "RT.Combat.Aim.Label"}}
+            <select data-combat-mod="aim" data-item-id="{{w.id}}">
+              {{#each w.aimOptions as |o|}}
+              <option value="{{o.id}}" {{#if o.selected}}selected{{/if}}>{{localize o.label}}</option>
+              {{/each}}
+            </select>
+          </label>
+          <label>{{localize "RT.Combat.FireMode.Label"}}
+            <select data-combat-mod="fireMode" data-item-id="{{w.id}}">
+              {{#each w.fireModes as |o|}}
+              <option value="{{o.id}}" {{#if o.selected}}selected{{/if}} {{#if o.disabled}}disabled{{/if}}>{{localize o.label}}</option>
+              {{/each}}
+            </select>
+          </label>
+          <label>{{localize "RT.Combat.Range.Label"}}
+            <select data-combat-mod="range" data-item-id="{{w.id}}">
+              {{#each w.rangeOptions as |o|}}
+              <option value="{{o.id}}" {{#if o.selected}}selected{{/if}}>{{localize o.label}}</option>
+              {{/each}}
+            </select>
+          </label>
+        </div>
+        {{#if w.specials}}
+        <div class="rt-combat-weapon__specials">{{w.specials}}</div>
+        {{/if}}
+      </div>
+      {{/each}}
+    </div>
+    {{else}}
+    <p class="rt-inventory-empty">{{localize "RT.Combat.NoWeapons"}}</p>
+    {{/if}}
+  </section>
+
+  <section class="rt-sheet-section rt-combat-macros">
+    <label class="rt-sheet-section__title">{{localize "RT.Combat.Macros"}}</label>
+    <div class="rt-combat-macros__row">
+      <button type="button" class="rt-button" data-action="rollScatter" title="{{localize "RT.Combat.ScatterHint"}}">{{localize "RT.Combat.Scatter"}}</button>
+      <button type="button" class="rt-button" data-action="rollDamageReceived" title="{{localize "RT.Combat.DamageReceivedHint"}}">{{localize "RT.Combat.DamageReceived"}}</button>
+      <button type="button" class="rt-button" data-action="sendCritWoundHint" title="{{localize "RT.Combat.CritHintTitle"}}">{{localize "RT.Combat.CritHint"}}</button>
+    </div>
   </section>
 </section>

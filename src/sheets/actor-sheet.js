@@ -13,7 +13,13 @@ import {
   PSY_SOURCES,
   PSY_LEVELS,
   PSYCHIC_PHENOMENA,
-  WARP_DANGERS
+  WARP_DANGERS,
+  skillHelpText,
+  SIZES,
+  AIM_OPTIONS,
+  RANGE_OPTIONS,
+  FIRE_MODES,
+  resolveWeaponSpecialDisplay
 } from "../config.js";
 import { normalizeGroupRows } from "../documents/actor.js";
 
@@ -27,10 +33,12 @@ const { Roll } = foundry.dice;
 // XP tab; lineage benefits, mutations, navigator powers and psyker powers on
 // the Psykana tab). The psykana lists live under system.psykana, hence the
 // path map.
-const AUX_LISTS = ["talents", "progression", "lineageBenefits", "mutations", "powers", "psyPowers"];
+const AUX_LISTS = ["talents", "progression", "traits", "criticalWounds", "lineageBenefits", "mutations", "powers", "psyPowers"];
 const AUX_LIST_PATHS = {
   talents: "talents",
   progression: "progression",
+  traits: "traits",
+  criticalWounds: "criticalWounds",
   lineageBenefits: "psykana.lineageBenefits",
   mutations: "psykana.mutations",
   powers: "psykana.powers",
@@ -155,7 +163,11 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       editInventoryItem: RTCharacterSheet.#onEditInventoryItem,
       deleteInventoryItem: RTCharacterSheet.#onDeleteInventoryItem,
       toggleItemEquipped: RTCharacterSheet.#onToggleItemEquipped,
-      adjustItemQuantity: RTCharacterSheet.#onAdjustItemQuantity
+      adjustItemQuantity: RTCharacterSheet.#onAdjustItemQuantity,
+      rollWeaponAttack: RTCharacterSheet.#onRollWeaponAttack,
+      rollScatter: RTCharacterSheet.#onRollScatter,
+      rollDamageReceived: RTCharacterSheet.#onRollDamageReceived,
+      sendCritWoundHint: RTCharacterSheet.#onSendCritWoundHint
     }
   };
 
@@ -166,10 +178,22 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   groupEdit = {};
 
   // Auxiliary lists (talents, progression, psykana lists) in row-editing mode.
-  listEdit = { talents: false, progression: false, lineageBenefits: false, mutations: false, powers: false, psyPowers: false };
+  listEdit = {
+    talents: false,
+    progression: false,
+    traits: false,
+    criticalWounds: false,
+    lineageBenefits: false,
+    mutations: false,
+    powers: false,
+    psyPowers: false
+  };
 
   // Expanded description windows, keyed "list:index" — re-applied after renders.
   expandedRows = {};
+
+  // Per-weapon combat modifiers (aim / fireMode / range), keyed by item id.
+  weaponCombatMods = {};
 
   static PARTS = {
     header: { template: "systems/rogue-trader/templates/actors/character-header.hbs" },
@@ -337,7 +361,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     if (!AUX_LISTS.includes(list)) return;
     const rows = RTCharacterSheet.#auxListRows(this.document, list);
     // Psykana lists carry no XP cost field.
-    rows.push(list === "lineageBenefits" || list === "mutations"
+    rows.push(list === "lineageBenefits" || list === "mutations" || list === "traits" || list === "criticalWounds"
       ? { name: "", description: "" }
       : list === "powers"
         ? {
@@ -817,6 +841,221 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     await item.update({ "system.quantity": Math.max(0, current + delta) });
   }
 
+  static async #onRollWeaponAttack(event, target) {
+    const item = this.document.items.get(target.dataset.itemId);
+    if (!item || item.type !== "weapon") return;
+    const localize = (key) => game.i18n.localize(key);
+    const mods = this.#weaponModsFor(item.id);
+    const aim = AIM_OPTIONS.find((o) => o.id === mods.aim) ?? AIM_OPTIONS[0];
+    const range = RANGE_OPTIONS.find((o) => o.id === mods.range) ?? RANGE_OPTIONS[2];
+    const fireMode = mods.fireMode || "single";
+
+    const isMelee = String(item.system.class || "").toLowerCase().includes("melee")
+      || String(item.system.weaponType || "").toLowerCase().includes("melee");
+    const charKey = isMelee ? "ws" : "bs";
+    const base = Number(this.document.system.characteristics?.[charKey]?.total) || 0;
+    let modifier = aim.mod + (isMelee ? 0 : range.mod);
+
+    // Accurate: extra +10 per DoS after the first when aiming (applied post-roll as notes;
+    // pre-roll Accurate bonus when Half/Full aim).
+    const specials = resolveWeaponSpecialDisplay(item.system.specialQualities, item.system.specialText);
+    const has = (id) => specials.some((s) => s.id === id);
+    if (has("accurate") && aim.id !== "none" && !isMelee) modifier += 10;
+
+    const mode = this.document.system.settings?.rollMode || null;
+    const raw = await rollRawD100({ mode });
+    const finalTarget = base + modifier;
+    const value = raw.value;
+    const criticalSuccess = value === 1;
+    const criticalFailure = value === 100;
+    const success = criticalSuccess || (!criticalFailure && value <= finalTarget);
+    const difference = Math.max(0, success ? finalTarget - value : value - finalTarget);
+    const degrees = Math.floor(difference / 10);
+
+    // Hits from RoF / DoS (semi: 1 + DoS up to burst; full: 1 + DoS up to full).
+    const rof = item.system.rateOfFire ?? {};
+    let hits = 0;
+    if (success) {
+      if (fireMode === "semi") {
+        const maxHits = Math.max(1, Number(rof.burst) || 1);
+        hits = Math.min(maxHits, 1 + degrees);
+      } else if (fireMode === "full") {
+        const maxHits = Math.max(1, Number(rof.full) || 1);
+        hits = Math.min(maxHits, 1 + degrees);
+      } else {
+        hits = 1;
+      }
+      if (has("storm") && hits > 0) hits = Math.min(hits * 2, (Number(rof.full) || Number(rof.burst) || hits) * 2);
+    }
+
+    // Jam / overheat: unreliable jams on 94+; overheats on 91+; reliable only on 100.
+    let jam = false;
+    let jamKey = "";
+    const flags = item.system.special ?? {};
+    if (!isMelee && !criticalSuccess) {
+      if (has("overheats") || flags.overheats) {
+        if (value >= 91) {
+          jam = true;
+          jamKey = "RT.Combat.Overheat";
+        }
+      } else if (has("unreliable") || flags.unreliable) {
+        if (value >= 94) {
+          jam = true;
+          jamKey = "RT.Combat.Jam";
+        }
+      } else if (has("reliable") || flags.reliable) {
+        if (value === 100) {
+          jam = true;
+          jamKey = "RT.Combat.Jam";
+        }
+      } else if (value >= 96) {
+        jam = true;
+        jamKey = "RT.Combat.Jam";
+      }
+    }
+
+    const specialNotes = [];
+    if (success && has("tearing")) specialNotes.push(localize("RT.Combat.SpecialNote.Tearing"));
+    if (success && has("force")) specialNotes.push(localize("RT.Combat.SpecialNote.Force"));
+    if (success && has("shocking")) specialNotes.push(localize("RT.Combat.SpecialNote.Shocking"));
+    if (success && degrees >= 2 && has("razorSharp")) specialNotes.push(localize("RT.Combat.SpecialNote.RazorSharp"));
+    if (success && has("accurate") && aim.id !== "none" && degrees >= 1) {
+      specialNotes.push(localize("RT.Combat.SpecialNote.Accurate"));
+    }
+
+    const modsSummary = [
+      `${localize(CHARACTERISTICS[charKey].abbrKey)} ${base}`,
+      localize(aim.label),
+      !isMelee ? localize(range.label) : null,
+      localize(FIRE_MODES.find((f) => f.id === fireMode)?.label || "RT.Combat.FireMode.Single")
+    ].filter(Boolean).join(" · ");
+
+    const content = await foundry.applications.handlebars.renderTemplate(
+      "systems/rogue-trader/templates/dice/weapon-attack-card.hbs",
+      {
+        label: item.name,
+        target: base,
+        modifier: modifier ? (modifier > 0 ? `+${modifier}` : `${modifier}`) : "",
+        finalTarget,
+        value,
+        success,
+        criticalSuccess,
+        criticalFailure,
+        degrees,
+        degreesKey: success ? "RT.Roll.DegreesOfSuccess" : "RT.Roll.DegreesOfFailure",
+        hits: success ? hits : 0,
+        jam,
+        jamKey,
+        specialNotes: specialNotes.join(" · "),
+        modsSummary
+      }
+    );
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      content,
+      rolls: [raw.roll],
+      flavor: item.name
+    });
+  }
+
+  static async #onRollScatter(event) {
+    const roll = await new Roll("1d10").evaluate();
+    const dir = roll.total;
+    const dirs = {
+      1: "RT.Combat.ScatterDir.N",
+      2: "RT.Combat.ScatterDir.NE",
+      3: "RT.Combat.ScatterDir.SE",
+      4: "RT.Combat.ScatterDir.S",
+      5: "RT.Combat.ScatterDir.SW",
+      6: "RT.Combat.ScatterDir.NW",
+      7: "RT.Combat.ScatterDir.N",
+      8: "RT.Combat.ScatterDir.NE",
+      9: "RT.Combat.ScatterDir.SE",
+      10: "RT.Combat.ScatterDir.S"
+    };
+    const content = `<div class="rt-roll-card"><div class="rt-roll-card__label">${game.i18n.localize("RT.Combat.Scatter")}</div><div class="rt-roll-card__row">1d10 = ${dir} → ${game.i18n.localize(dirs[dir] || "RT.Combat.ScatterDir.N")}</div><div class="rt-roll-card__muted">${game.i18n.localize("RT.Combat.ScatterHint")}</div></div>`;
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      content,
+      rolls: [roll]
+    });
+  }
+
+  static async #onRollDamageReceived(event) {
+    const localize = (key) => game.i18n.localize(key);
+    const content = await foundry.applications.handlebars.renderTemplate(
+      "systems/rogue-trader/templates/dialog/damage-received-dialog.hbs",
+      {}
+    );
+    const result = await DialogV2.wait({
+      window: { title: localize("RT.Combat.DamageReceived") },
+      content,
+      default: "ok",
+      buttons: [
+        {
+          action: "ok",
+          label: localize("RT.Dialog.Roll"),
+          icon: "fas fa-heart-pulse",
+          callback: (event, button, dialog) => {
+            const root = dialog.element;
+            return {
+              damage: Number(root.querySelector("[name='damage']")?.value || 0),
+              pen: Number(root.querySelector("[name='pen']")?.value || 0),
+              location: root.querySelector("[name='location']")?.value || "body"
+            };
+          }
+        },
+        { action: "cancel", label: localize("RT.Dialog.Cancel"), icon: "fas fa-xmark" }
+      ]
+    });
+    if (!result || typeof result !== "object") return;
+    const { damage, pen, location } = result;
+
+    const locKey = {
+      head: "RT.Items.Armour.Head",
+      body: "RT.Items.Armour.Body",
+      leftArm: "RT.Items.Armour.LeftArm",
+      rightArm: "RT.Items.Armour.RightArm",
+      leftLeg: "RT.Items.Armour.LeftLeg",
+      rightLeg: "RT.Items.Armour.RightLeg"
+    }[location] || "RT.Items.Armour.Body";
+
+    let armour = 0;
+    for (const item of this.document.items) {
+      if (item.type !== "armour" || !item.system.equipped) continue;
+      armour += Number(item.system.locations?.[location]) || 0;
+    }
+    const effectiveArmour = Math.max(0, armour - pen);
+    const tb = Number(this.document.system.characteristics?.t?.bonus) || 0;
+    const wounds = Math.max(0, damage - effectiveArmour - tb);
+
+    const card = await foundry.applications.handlebars.renderTemplate(
+      "systems/rogue-trader/templates/dice/damage-received-card.hbs",
+      {
+        locationLabel: localize(locKey),
+        damage,
+        pen,
+        armour,
+        effectiveArmour,
+        tb,
+        wounds
+      }
+    );
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      content: card
+    });
+  }
+
+  static async #onSendCritWoundHint(event) {
+    const localize = (key) => game.i18n.localize(key);
+    const content = `<div class="rt-roll-card"><div class="rt-roll-card__label">${localize("RT.Combat.CritHint")}</div><div class="rt-roll-card__row">${localize("RT.Combat.CritHintBody")}</div></div>`;
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      content
+    });
+  }
+
   #prepareInventorySections() {
     const items = this.document.items.contents.slice().sort((a, b) => a.name.localeCompare(b.name));
     return INVENTORY_SECTIONS.map((section) => {
@@ -842,6 +1081,11 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             const loc = item.system.locations ?? {};
             summary = `AP ${loc.body ?? 0}`;
           }
+          const description = String(item.system.description ?? "").trim();
+          const descriptionShort = description.length > 80 ? `${description.slice(0, 77)}…` : description;
+          const unitWeight = Number(item.system.weight) || 0;
+          const qty = showQuantity ? Math.max(1, Number(item.system.quantity) || 1) : 1;
+          const totalWeight = Math.round(unitWeight * qty * 100) / 100;
           return {
             id: item.id,
             name: item.name,
@@ -850,11 +1094,87 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             quantity: item.system.quantity ?? 0,
             showEquipped,
             showQuantity,
-            summary
+            summary,
+            description,
+            descriptionShort,
+            weightLabel: `${totalWeight}`
           };
         })
       };
     });
+  }
+
+  #weaponModsFor(itemId) {
+    if (!this.weaponCombatMods[itemId]) {
+      this.weaponCombatMods[itemId] = { aim: "none", fireMode: "single", range: "normal" };
+    }
+    return this.weaponCombatMods[itemId];
+  }
+
+  #prepareCombatContext() {
+    const size = this.document.system.size || "average";
+    const movementMode = this.document.system.movementMode || "normal";
+    const level = this.document.system.encumbrance?.level || "normal";
+    const encumbranceLevelLabel = {
+      normal: "RT.Encumbrance.Normal",
+      encumbered: "RT.Encumbrance.Encumbered",
+      overloaded: "RT.Encumbrance.Overloaded"
+    }[level] || "RT.Encumbrance.Normal";
+
+    const combatArmour = this.document.items
+      .filter((i) => i.type === "armour" && i.system.equipped)
+      .map((i) => {
+        const loc = i.system.locations ?? {};
+        return {
+          id: i.id,
+          name: i.name,
+          head: loc.head ?? 0,
+          body: loc.body ?? 0,
+          leftArm: loc.leftArm ?? 0,
+          rightArm: loc.rightArm ?? 0,
+          leftLeg: loc.leftLeg ?? 0,
+          rightLeg: loc.rightLeg ?? 0
+        };
+      });
+
+    const combatWeapons = this.document.items
+      .filter((i) => i.type === "weapon" && i.system.equipped)
+      .map((i) => {
+        const mods = this.#weaponModsFor(i.id);
+        const rof = i.system.rateOfFire ?? {};
+        const singleOk = (Number(rof.single) || 0) > 0 || (!rof.burst && !rof.full);
+        const semiOk = (Number(rof.burst) || 0) > 0;
+        const fullOk = (Number(rof.full) || 0) > 0;
+        const specials = resolveWeaponSpecialDisplay(i.system.specialQualities, i.system.specialText)
+          .map((s) => s.title)
+          .join(", ");
+        const bits = [i.system.damage, i.system.damageType, specials].filter(Boolean);
+        return {
+          id: i.id,
+          name: i.name,
+          summary: bits.join(" · "),
+          specials,
+          aimOptions: AIM_OPTIONS.map((o) => ({ ...o, selected: mods.aim === o.id })),
+          rangeOptions: RANGE_OPTIONS.map((o) => ({ ...o, selected: mods.range === o.id })),
+          fireModes: FIRE_MODES.map((o) => ({
+            ...o,
+            selected: mods.fireMode === o.id,
+            disabled: o.id === "single" ? !singleOk && (semiOk || fullOk) : o.id === "semi" ? !semiOk : !fullOk
+          }))
+        };
+      });
+
+    return {
+      encumbranceLevelLabel,
+      sizeOptions: SIZES.map((s) => ({ ...s, selected: size === s.id })),
+      movementModes: [
+        { id: "normal", label: "RT.Combat.MovementNormal", selected: movementMode === "normal" },
+        { id: "flyer", label: "RT.Combat.MovementFlyer", selected: movementMode === "flyer" },
+        { id: "custom", label: "RT.Combat.MovementCustom", selected: movementMode === "custom" }
+      ],
+      combatArmour,
+      combatWeapons
+    };
   }
 
   /**
@@ -878,6 +1198,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     context.activeTab = this.activeTabs.main;
     context.activeXpTab = this.activeTabs.xp;
     context.inventorySections = this.#prepareInventorySections();
+    Object.assign(context, this.#prepareCombatContext());
 
     const charAbbr = (key) => game.i18n.localize(CHARACTERISTICS[key]?.abbrKey ?? key);
 
@@ -921,7 +1242,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       const entry = {
         key: def.key,
         name: game.i18n.localize(def.name),
-        desc: game.i18n.localize(def.desc),
+        desc: skillHelpText(def.name, def.desc),
         charAbbr: charAbbr(currentChar),
         charOptions: allowedChars.map((cKey) => ({
           id: cKey,
@@ -943,7 +1264,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     context.skillGroups = SKILL_GROUPS.map((group) => ({
       key: group.key,
       name: game.i18n.localize(group.name),
-      desc: game.i18n.localize(group.desc),
+      desc: skillHelpText(group.name, group.desc),
       editing: !!this.groupEdit[group.key],
       chars: group.chars.map((c) => ({ id: c, abbr: charAbbr(c) })),
       rows: normalizeGroupRows(this.document.system.groupSkills)
@@ -954,6 +1275,10 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     context.talents = normalizeGroupRows(this.document.system.talents)
       .map((row, index) => ({ ...row, index }));
     context.progression = normalizeGroupRows(this.document.system.progression)
+      .map((row, index) => ({ ...row, index }));
+    context.traits = normalizeGroupRows(this.document.system.traits)
+      .map((row, index) => ({ ...row, index }));
+    context.criticalWounds = normalizeGroupRows(this.document.system.criticalWounds)
       .map((row, index) => ({ ...row, index }));
     context.lineageBenefits = normalizeGroupRows(this.document.system.psykana?.lineageBenefits)
       .map((row, index) => ({ ...row, index }));
@@ -1127,6 +1452,15 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       const item = this.document.items.get(el.dataset.itemId);
       if (!item || !["weapon", "armour"].includes(item.type)) return;
       await item.update({ "system.equipped": !!el.checked }).catch(() => {});
+    });
+    // Combat weapon modifier dropdowns (sheet-local; not persisted).
+    this.element.addEventListener("change", (event) => {
+      const el = event.target;
+      const field = el.dataset.combatMod;
+      const itemId = el.dataset.itemId;
+      if (!field || !itemId) return;
+      const mods = this.#weaponModsFor(itemId);
+      mods[field] = el.value;
     });
     // Repair actors whose groupSkills were saved as an object by older versions.
     if (this.document.system.groupSkills && !Array.isArray(this.document.system.groupSkills)) {
