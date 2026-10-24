@@ -454,6 +454,76 @@ export function parseWeaponSpecials(raw) {
   return { qualities, flags, specialText };
 }
 
+/** English label from the cached en.json pack (filled on ready). */
+export function localizeEn(key) {
+  const en = CONFIG.ROGUE_TRADER?.en;
+  if (en && Object.prototype.hasOwnProperty.call(en, key)) return en[key];
+  return game.i18n.localize(key);
+}
+
+/**
+ * Skill / skill-group help tooltip. When the UI language is Russian, prepend
+ * the English catalog name so players can match rulebook terminology.
+ */
+export function skillHelpText(nameKey, descKey) {
+  const desc = game.i18n.localize(descKey);
+  if (!String(game.i18n.lang || "").startsWith("ru")) return desc;
+  const enName = localizeEn(nameKey);
+  return enName ? `${enName}\n${desc}` : desc;
+}
+
+// Carrying capacity (kg) by Strength Bonus — RT Core mechanical table.
+export const ENCUMBRANCE_BY_SB = [
+  { sb: 0, carry: 0.9, lift: 1.8, push: 3.6 },
+  { sb: 1, carry: 2.25, lift: 4.5, push: 9 },
+  { sb: 2, carry: 4.5, lift: 9, push: 18 },
+  { sb: 3, carry: 9, lift: 18, push: 36 },
+  { sb: 4, carry: 18, lift: 36, push: 72 },
+  { sb: 5, carry: 27, lift: 54, push: 108 },
+  { sb: 6, carry: 36, lift: 72, push: 144 },
+  { sb: 7, carry: 45, lift: 90, push: 180 },
+  { sb: 8, carry: 56, lift: 112, push: 224 },
+  { sb: 9, carry: 67, lift: 134, push: 268 },
+  { sb: 10, carry: 78, lift: 156, push: 312 }
+];
+
+export function encumbranceForBonus(sb) {
+  const n = Math.max(0, Math.min(10, Math.floor(Number(sb) || 0)));
+  return ENCUMBRANCE_BY_SB[n] ?? ENCUMBRANCE_BY_SB[0];
+}
+
+// Creature size catalog (hit modifier when targeting this size).
+export const SIZES = [
+  { id: "minuscule", label: "RT.Size.Minuscule", hitMod: -30 },
+  { id: "puny", label: "RT.Size.Puny", hitMod: -20 },
+  { id: "scrawny", label: "RT.Size.Scrawny", hitMod: -10 },
+  { id: "average", label: "RT.Size.Average", hitMod: 0 },
+  { id: "hulking", label: "RT.Size.Hulking", hitMod: 10 },
+  { id: "enormous", label: "RT.Size.Enormous", hitMod: 20 },
+  { id: "massive", label: "RT.Size.Massive", hitMod: 30 }
+];
+
+// Weapon attack modifier dropdowns (combat tab).
+export const AIM_OPTIONS = [
+  { id: "none", mod: 0, label: "RT.Combat.Aim.None" },
+  { id: "half", mod: 10, label: "RT.Combat.Aim.Half" },
+  { id: "full", mod: 20, label: "RT.Combat.Aim.Full" }
+];
+
+export const RANGE_OPTIONS = [
+  { id: "pointBlank", mod: 30, label: "RT.Combat.Range.PointBlank" },
+  { id: "short", mod: 10, label: "RT.Combat.Range.Short" },
+  { id: "normal", mod: 0, label: "RT.Combat.Range.Normal" },
+  { id: "long", mod: -10, label: "RT.Combat.Range.Long" },
+  { id: "extreme", mod: -30, label: "RT.Combat.Range.Extreme" }
+];
+
+export const FIRE_MODES = [
+  { id: "single", label: "RT.Combat.FireMode.Single" },
+  { id: "semi", label: "RT.Combat.FireMode.Semi" },
+  { id: "full", label: "RT.Combat.FireMode.Full" }
+];
+
 export function registerConfig() {
   CONFIG.ROGUE_TRADER = {
     SYSTEM_ID,
@@ -463,7 +533,10 @@ export function registerConfig() {
     itemTypes: ITEM_TYPES,
     itemFields: ITEM_FIELDS,
     gearCategories: GEAR_CATEGORIES,
-    weaponSpecials: WEAPON_SPECIALS
+    weaponSpecials: WEAPON_SPECIALS,
+    sizes: SIZES,
+    encumbranceBySb: ENCUMBRANCE_BY_SB,
+    en: null
   };
 
   CONFIG.Actor.typeLabels = {

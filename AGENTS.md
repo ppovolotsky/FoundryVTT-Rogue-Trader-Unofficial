@@ -40,7 +40,8 @@ Foundry VTT **game system** `rogue-trader`. This file is the map. Do not re-scan
 - `system.json` — manifest: id, v14 compat, esmodules/styles/langs, pack declarations.
 - `template.json` — actor (`character`/`npc`/`ship`/`colony`) + item (`weapon`/`armour`/`gear`/`ammo`) schema.
 - `src/rogue-trader.js` — `init`/`ready` hooks, document + sheet registration, `game.rogueTrader` API.
-- `src/config.js` — `CHARACTERISTICS`, `SKILLS`, `SKILL_GROUPS`, `ACQUISITION`, `ROLL_MODES`, `ITEM_FIELDS`, `WEAPON_SPECIALS`, `registerConfig`.
+- `src/config.js` — `CHARACTERISTICS`, `SKILLS`, `SKILL_GROUPS`, `ACQUISITION`, `ROLL_MODES`, `ITEM_FIELDS`, `WEAPON_SPECIALS`, `SIZES`, encumbrance/combat catalogs, `skillHelpText`, `registerConfig`.
+- `docs/npc-sheet-plan.md` — planned GM-simplified NPC sheet (not implemented yet).
 - `src/settings.js` — world settings `defaultRollMode`, `edition`.
 - `src/dice.js` — `rollTest` / `showRollDialog`: d100 (`1d100` or `2d10`), degrees, crits, chat card.
 - `src/documents/actor.js` — `RTActor.prepareDerivedData`, `normalizeGroupRows` (array<->object repair).

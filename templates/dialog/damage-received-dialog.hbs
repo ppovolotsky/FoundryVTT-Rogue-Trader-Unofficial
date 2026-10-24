@@ -1,0 +1,21 @@
+<form class="rt-dialog">
+  <div class="rt-field">
+    <label>{{localize "RT.Combat.DamageAmount"}}</label>
+    <input type="number" name="damage" value="0" data-dtype="Number"/>
+  </div>
+  <div class="rt-field">
+    <label>{{localize "RT.Combat.Penetration"}}</label>
+    <input type="number" name="pen" value="0" data-dtype="Number"/>
+  </div>
+  <div class="rt-field">
+    <label>{{localize "RT.Combat.Location"}}</label>
+    <select name="location">
+      <option value="head">{{localize "RT.Items.Armour.Head"}}</option>
+      <option value="body" selected>{{localize "RT.Items.Armour.Body"}}</option>
+      <option value="leftArm">{{localize "RT.Items.Armour.LeftArm"}}</option>
+      <option value="rightArm">{{localize "RT.Items.Armour.RightArm"}}</option>
+      <option value="leftLeg">{{localize "RT.Items.Armour.LeftLeg"}}</option>
+      <option value="rightLeg">{{localize "RT.Items.Armour.RightLeg"}}</option>
+    </select>
+  </div>
+</form>

@@ -1,4 +1,11 @@
 <section class="tab {{#if (eq activeTab "inventory")}}active{{/if}}" data-tab="inventory" data-group="main">
+  <div class="rt-encumbrance" title="{{localize "RT.Encumbrance.Hint"}}">
+    <span class="rt-encumbrance__label">{{localize "RT.Encumbrance.Load"}}</span>
+    <span class="rt-encumbrance__value">{{system.encumbrance.carried}} / {{system.encumbrance.carry}} {{localize "RT.Encumbrance.Kg"}}</span>
+    <span class="rt-encumbrance__level rt-encumbrance__level--{{system.encumbrance.level}}">{{localize encumbranceLevelLabel}}</span>
+    <span class="rt-encumbrance__limits">{{localize "RT.Encumbrance.Lift"}} {{system.encumbrance.lift}} · {{localize "RT.Encumbrance.Push"}} {{system.encumbrance.push}}</span>
+  </div>
+
   <p class="rt-inventory__hint">{{localize "RT.Inventory.DropHint"}}</p>
 
   {{#each inventorySections as |section|}}
@@ -17,7 +24,12 @@
       {{#each section.items as |item|}}
       <div class="rt-inventory-row" data-item-id="{{item.id}}">
         <img class="rt-inventory-row__img" src="{{item.img}}" alt=""/>
-        <button type="button" class="rt-inventory-row__name" data-action="editInventoryItem" data-item-id="{{item.id}}">{{item.name}}</button>
+        <div class="rt-inventory-row__main">
+          <button type="button" class="rt-inventory-row__name" data-action="editInventoryItem" data-item-id="{{item.id}}">{{item.name}}</button>
+          {{#if item.description}}
+          <span class="rt-inventory-row__desc" title="{{item.description}}">{{item.descriptionShort}}</span>
+          {{/if}}
+        </div>
 
         {{#if item.showEquipped}}
         <label class="rt-inventory-row__equip" title="{{localize "RT.Inventory.Equipped"}}">
@@ -39,8 +51,12 @@
         <span></span>
         {{/if}}
 
+        <span class="rt-inventory-row__weight" title="{{localize "RT.Items.Weight"}}">{{item.weightLabel}}</span>
+
         {{#if item.summary}}
         <span class="rt-inventory-row__summary">{{item.summary}}</span>
+        {{else}}
+        <span></span>
         {{/if}}
 
         <button type="button" class="rt-button rt-button--small rt-inventory-row__delete" data-action="deleteInventoryItem" data-item-id="{{item.id}}" title="{{localize "RT.Inventory.Delete"}}">

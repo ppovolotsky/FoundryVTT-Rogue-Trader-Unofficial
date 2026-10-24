@@ -39,9 +39,17 @@ Hooks.once("init", () => {
   });
 });
 
-Hooks.once("ready", () => {
+Hooks.once("ready", async () => {
   // Public macro API: game.rogueTrader.roll({target, modifier, mode}) and game.rogueTrader.rollDialog({...}).
   game.rogueTrader = { roll: rollTest, rollDialog: showRollDialog };
+
+  // Cache English strings for RU skill tooltips (English catalog names).
+  try {
+    const en = await foundry.utils.fetchJsonWithTimeout("systems/rogue-trader/lang/en.json");
+    if (CONFIG.ROGUE_TRADER) CONFIG.ROGUE_TRADER.en = en;
+  } catch (err) {
+    console.warn("Rogue Trader (Unofficial) | Failed to load en.json for bilingual tooltips", err);
+  }
 
   // Diagnostics: warn in the console if any actor type has no default sheet.
   for (const type of Object.keys(ACTOR_TYPES)) {

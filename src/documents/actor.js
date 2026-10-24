@@ -1,6 +1,10 @@
-import { SKILLS, SKILL_GROUPS, ACQUISITION, acquisitionModifier } from "../config.js";
+import {
+  SKILLS,
+  SKILL_GROUPS,
+  encumbranceForBonus,
+  SIZES
+} from "../config.js";
 
-const SKILLS_BY_KEY = Object.fromEntries(SKILLS.map((skill) => [skill.key, skill]));
 const GROUPS_BY_KEY = Object.fromEntries(SKILL_GROUPS.map((group) => [group.key, group]));
 
 // Form expansion can turn groupSkills into an object (checkbox omissions leave
@@ -11,6 +15,12 @@ export function normalizeGroupRows(value) {
     return Object.values(value).filter((row) => row && typeof row === "object");
   }
   return [];
+}
+
+function itemCarryWeight(item) {
+  const w = Number(item.system?.weight) || 0;
+  const qty = ["gear", "ammo"].includes(item.type) ? Math.max(1, Number(item.system?.quantity) || 1) : 1;
+  return w * qty;
 }
 
 export class RTActor extends Actor {
@@ -100,6 +110,9 @@ export class RTActor extends Actor {
       xpMisc += entry.xp ?? 0;
     }
 
+    system.traits = normalizeGroupRows(system.traits);
+    system.criticalWounds = normalizeGroupRows(system.criticalWounds);
+
     system.xp.spent = xpSpent;
     // Free XP is intentionally allowed to go negative so overspending stays visible.
     system.xp.free = (system.xp.total ?? 0) - xpSpent;
@@ -112,19 +125,63 @@ export class RTActor extends Actor {
     // Rank grows with the total spent XP and caps at 8 (RT progression table).
     const RANK_THRESHOLDS = [5000, 7000, 10000, 13000, 17000, 21000, 25000, 30000];
     system.xp.rank = RANK_THRESHOLDS.filter((threshold) => xpSpent >= threshold).length;
-    // Per-source breakdown shown in the Progression tab.
-    system.xp.characteristics = xpChars;
-    system.xp.skills = xpSkills;
-    system.xp.talents = xpTalents;
-    system.xp.misc = xpMisc;
+
+    // Encumbrance from owned item weights × quantity.
+    const sb = system.characteristics?.s?.bonus ?? 0;
+    const limits = encumbranceForBonus(sb);
+    let carried = 0;
+    for (const item of this.items) {
+      carried += itemCarryWeight(item);
+    }
+    carried = Math.round(carried * 100) / 100;
+    let level = "normal";
+    if (carried > limits.lift) level = "overloaded";
+    else if (carried > limits.carry) level = "encumbered";
+    system.encumbrance = {
+      carried,
+      carry: limits.carry,
+      lift: limits.lift,
+      push: limits.push,
+      level
+    };
 
     // Movement in meters from the Agility bonus (Ag/10): half / full / charge / run.
     const ab = system.characteristics?.ag?.bonus ?? 0;
-    system.movement = {
-      half: Math.floor(ab / 2),
-      full: ab,
-      charge: ab * 2,
-      run: ab * 4
-    };
+    let half = Math.floor(ab / 2);
+    let full = ab;
+    let charge = ab * 2;
+    let run = ab * 4;
+
+    const mode = system.movementMode || "normal";
+    if (mode === "custom") {
+      const custom = system.movementCustom ?? {};
+      half = Number(custom.half) || 0;
+      full = Number(custom.full) || 0;
+      charge = Number(custom.charge) || 0;
+      run = Number(custom.run) || 0;
+    } else if (mode === "flyer") {
+      // Flyer: double base Agility movement rates (mechanical summary).
+      half *= 2;
+      full *= 2;
+      charge *= 2;
+      run *= 2;
+    }
+
+    if (level === "encumbered") {
+      half = Math.floor(half / 2);
+      full = Math.floor(full / 2);
+      charge = Math.floor(charge / 2);
+      run = Math.floor(run / 2);
+    } else if (level === "overloaded") {
+      half = 0;
+      full = 0;
+      charge = 0;
+      run = 0;
+    }
+
+    system.movement = { half, full, charge, run, mode };
+
+    const sizeDef = SIZES.find((s) => s.id === (system.size || "average")) ?? SIZES[3];
+    system.sizeHitMod = sizeDef.hitMod;
   }
 }
