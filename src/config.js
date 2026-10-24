@@ -294,25 +294,29 @@ export function weaponCombatKind(item) {
   return weaponClassDef(item?.system?.class, item?.system?.range).kind;
 }
 
+// Weapon sheet field visibility by class id. Omit `showFor` = always shown.
+const WEAPON_HAS_RANGE = ["thrown", "pistol", "basic", "heavy"];
+const WEAPON_FIREARM = ["pistol", "basic", "heavy"];
+
 // Fields shown on the item sheet (nested paths use dotted system.* keys).
 export const ITEM_FIELDS = {
   weapon: [
     { path: "class", label: "RT.Items.Weapon.Class", input: "select", options: WEAPON_CLASSES },
     { path: "weaponType", label: "RT.Items.Weapon.WeaponType", input: "text" },
-    { path: "range", label: "RT.Items.Weapon.Range", input: "number" },
+    { path: "range", label: "RT.Items.Weapon.Range", input: "number", showFor: WEAPON_HAS_RANGE },
     { path: "damage", label: "RT.Items.Weapon.Damage", input: "text" },
     { path: "damageType", label: "RT.Items.Weapon.DamageType", input: "text" },
     { path: "penetration", label: "RT.Items.Weapon.Penetration", input: "number" },
-    { path: "rateOfFire.single", label: "RT.Items.Weapon.RoFSingle", input: "number" },
-    { path: "rateOfFire.burst", label: "RT.Items.Weapon.RoFBurst", input: "number" },
-    { path: "rateOfFire.full", label: "RT.Items.Weapon.RoFFull", input: "number" },
-    { path: "clip.value", label: "RT.Items.Weapon.ClipValue", input: "number" },
-    { path: "clip.max", label: "RT.Items.Weapon.ClipMax", input: "number" },
-    { path: "reload", label: "RT.Items.Weapon.Reload", input: "text" },
+    { path: "rateOfFire.single", label: "RT.Items.Weapon.RoFSingle", input: "number", showFor: WEAPON_FIREARM },
+    { path: "rateOfFire.burst", label: "RT.Items.Weapon.RoFBurst", input: "number", showFor: WEAPON_FIREARM },
+    { path: "rateOfFire.full", label: "RT.Items.Weapon.RoFFull", input: "number", showFor: WEAPON_FIREARM },
+    { path: "clip.value", label: "RT.Items.Weapon.ClipValue", input: "number", showFor: WEAPON_FIREARM },
+    { path: "clip.max", label: "RT.Items.Weapon.ClipMax", input: "number", showFor: WEAPON_FIREARM },
+    { path: "reload", label: "RT.Items.Weapon.Reload", input: "text", showFor: WEAPON_FIREARM },
     { path: "special.tearing", label: "RT.Items.Weapon.Special.Tearing", input: "checkbox" },
-    { path: "special.accurate", label: "RT.Items.Weapon.Special.Accurate", input: "checkbox" },
-    { path: "special.reliable", label: "RT.Items.Weapon.Special.Reliable", input: "checkbox" },
-    { path: "special.unreliable", label: "RT.Items.Weapon.Special.Unreliable", input: "checkbox" },
+    { path: "special.accurate", label: "RT.Items.Weapon.Special.Accurate", input: "checkbox", showFor: WEAPON_HAS_RANGE },
+    { path: "special.reliable", label: "RT.Items.Weapon.Special.Reliable", input: "checkbox", showFor: WEAPON_FIREARM },
+    { path: "special.unreliable", label: "RT.Items.Weapon.Special.Unreliable", input: "checkbox", showFor: WEAPON_FIREARM },
     { path: "specialText", label: "RT.Items.Weapon.SpecialText", input: "text" },
     { path: "craftsmanship", label: "RT.Items.Craftsmanship", input: "text" },
     { path: "equipped", label: "RT.Items.Equipped", input: "checkbox" },

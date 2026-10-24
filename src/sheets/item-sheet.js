@@ -49,31 +49,41 @@ export class RTItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     context.item = item;
     context.system = item.system;
     context.typeLabel = game.i18n.localize(ITEM_TYPES[item.type] ?? item.type);
-    context.fields = (ITEM_FIELDS[item.type] ?? []).map((field) => {
-      const raw = foundry.utils.getProperty(item, `system.${field.path}`);
-      if (field.input === "select") {
-        const value = field.path === "class"
-          ? normalizeWeaponClass(raw, item.system.range)
-          : String(raw ?? "");
+
+    const weaponClass = item.type === "weapon"
+      ? normalizeWeaponClass(item.system.class, item.system.range)
+      : null;
+
+    context.fields = (ITEM_FIELDS[item.type] ?? [])
+      .filter((field) => {
+        if (!field.showFor) return true;
+        return weaponClass !== null && field.showFor.includes(weaponClass);
+      })
+      .map((field) => {
+        const raw = foundry.utils.getProperty(item, `system.${field.path}`);
+        if (field.input === "select") {
+          const value = field.path === "class"
+            ? (weaponClass ?? normalizeWeaponClass(raw, item.system.range))
+            : String(raw ?? "");
+          return {
+            name: `system.${field.path}`,
+            label: field.label,
+            input: "select",
+            value,
+            options: (field.options ?? []).map((opt) => ({
+              id: opt.id,
+              label: opt.label,
+              selected: value === opt.id
+            }))
+          };
+        }
         return {
           name: `system.${field.path}`,
           label: field.label,
-          input: "select",
-          value,
-          options: (field.options ?? []).map((opt) => ({
-            id: opt.id,
-            label: opt.label,
-            selected: value === opt.id
-          }))
+          input: field.input,
+          value: field.input === "checkbox" ? !!raw : (raw ?? "")
         };
-      }
-      return {
-        name: `system.${field.path}`,
-        label: field.label,
-        input: field.input,
-        value: field.input === "checkbox" ? !!raw : (raw ?? "")
-      };
-    });
+      });
     context.specialRows = item.type === "weapon"
       ? resolveWeaponSpecialDisplay(item.system.specialQualities, item.system.specialText)
       : [];
