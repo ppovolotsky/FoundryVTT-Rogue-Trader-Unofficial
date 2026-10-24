@@ -98,7 +98,9 @@ body.theme-dark,
 
 /* Equal-width chips; the em chain is re-anchored to the sheet scale with
    !important (Foundry's larger global <button> font-size had inflated every
-   em inside the chip past its borders), so 1 1 0 no longer clips text. */
+   em inside the chip past its borders), so 1 1 0 no longer clips text.
+   Height must be auto with !important too: Foundry clamps buttons to a
+   fixed global height, which cut the two-line chip content vertically. */
 .rogue-trader.sheet .rt-char-chip {
   flex: 1 1 0;
   min-width: 0;
@@ -112,6 +114,8 @@ body.theme-dark,
   padding: 6px 4px;
   cursor: pointer;
   font-size: 0.85em !important;
+  height: auto !important;
+  min-height: 0 !important;
 }
 
 .rogue-trader.sheet .rt-char-chip:hover {
