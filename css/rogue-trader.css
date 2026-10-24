@@ -96,13 +96,12 @@ body.theme-dark,
   gap: 3px;
 }
 
-/* Chips keep Foundry's font scaling (em) but never shrink below their text.
-   The chip's own font-size re-anchors the em chain to the sheet scale:
-   Foundry styles <button> with a larger global font-size (beating a plain
-   author rule), which inflated every em inside the chip past its borders. */
+/* Equal-width chips; the em chain is re-anchored to the sheet scale with
+   !important (Foundry's larger global <button> font-size had inflated every
+   em inside the chip past its borders), so 1 1 0 no longer clips text. */
 .rogue-trader.sheet .rt-char-chip {
-  flex: 1 1 auto;
-  min-width: auto;
+  flex: 1 1 0;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -110,7 +109,7 @@ body.theme-dark,
   background: var(--rt-panel);
   border: 1px solid var(--rt-border);
   border-radius: 4px;
-  padding: 6px 2px;
+  padding: 6px 4px;
   cursor: pointer;
   font-size: 0.85em !important;
 }
