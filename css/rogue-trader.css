@@ -120,7 +120,7 @@ body.theme-dark,
 }
 
 .rogue-trader.sheet .rt-char-chip__abbr {
-  font-size: 0.95em;
+  font-size: 1.2em;
   font-weight: bold;
   color: var(--rt-muted);
   white-space: nowrap;
@@ -133,14 +133,14 @@ body.theme-dark,
 }
 
 .rogue-trader.sheet .rt-char-chip__bonus {
-  font-size: 1.8em;
+  font-size: 2.1em;
   font-weight: bold;
   color: var(--rt-accent);
   line-height: 1.15;
 }
 
 .rogue-trader.sheet .rt-char-chip__total {
-  font-size: 1.8em;
+  font-size: 2.1em;
   font-weight: bold;
   color: var(--rt-text);
   line-height: 1.15;
@@ -1950,10 +1950,6 @@ body.theme-dark,
 .rogue-trader.sheet .rt-settings-toggle label {
   margin: 0;
   cursor: pointer;
-}
-
-.rogue-trader.sheet .rt-char-chip__abbr {
-  font-size: 0.85em;
 }
 
 /* ---------- All selects: compact custom chevron ----------
