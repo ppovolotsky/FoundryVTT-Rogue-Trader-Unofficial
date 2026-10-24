@@ -72,7 +72,8 @@ export async function rollTest({
     criticalSuccess,
     criticalFailure,
     degrees,
-    degreesKey: success ? "RT.Roll.DegreesOfSuccess" : "RT.Roll.DegreesOfFailure"
+    degreesKey: success ? "RT.Roll.DegreesOfSuccess" : "RT.Roll.DegreesOfFailure",
+    roll
   };
 
   if (createMessage) {
@@ -98,7 +99,8 @@ export async function showRollDialog({
   label = "",
   speaker = null,
   showTarget = true,
-  actor = null
+  actor = null,
+  createMessage = true
 } = {}) {
   const mode = actor?.system?.settings?.rollMode || game.settings.get(SYSTEM_ID, "defaultRollMode");
   // When the target field is hidden the target is passed programmatically,
@@ -128,7 +130,8 @@ export async function showRollDialog({
             modifier: Number(data.modifier || 0),
             mode,
             label,
-            speaker
+            speaker,
+            createMessage
           });
         }
       },

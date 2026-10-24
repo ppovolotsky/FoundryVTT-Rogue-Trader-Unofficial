@@ -1465,14 +1465,32 @@ body.theme-dark,
 }
 
 .rogue-trader.sheet .rt-inventory-row {
-  display: grid;
-  grid-template-columns: 28px minmax(0, 1.4fr) auto auto auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
   padding: 3px 4px;
   background: var(--rt-panel);
   border: 1px solid var(--rt-border);
   border-radius: 3px;
+}
+
+.rogue-trader.sheet .rt-inventory-row__header {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1.4fr) auto auto auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.rogue-trader.sheet .rt-inventory-row .rt-talent-block__body {
+  padding: 4px 2px 2px;
+}
+
+.rogue-trader.sheet .rt-inventory-row__desc-full {
+  color: var(--rt-muted);
+  font-size: 0.85em;
+  white-space: pre-wrap;
+  margin-bottom: 4px;
 }
 
 .rogue-trader.sheet .rt-inventory-row__main {
@@ -1628,6 +1646,35 @@ body.theme-dark,
 .rogue-trader.sheet .rt-combat-weapon__specials {
   color: var(--rt-muted);
   font-size: 0.85em;
+}
+
+.rogue-trader.sheet .rt-combat-weapon__clip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.85em;
+}
+
+.rogue-trader.sheet .rt-combat-weapon__clip .rt-stepper input {
+  width: 2.5em;
+  text-align: center;
+}
+
+.rogue-trader.sheet .rt-combat-weapon__clip-label {
+  color: var(--rt-muted);
+}
+
+.rogue-trader.sheet .rt-combat-weapon__desc {
+  color: var(--rt-muted);
+  font-size: 0.85em;
+  white-space: pre-wrap;
+}
+
+.rogue-trader.sheet .rt-field--check label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 1.2em;
 }
 
 .rogue-trader.sheet .rt-combat-weapon__mods {

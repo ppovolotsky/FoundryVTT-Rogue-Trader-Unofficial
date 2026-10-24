@@ -3,7 +3,11 @@ import {
   ITEM_TYPES,
   parseWeaponSpecials,
   resolveWeaponSpecialDisplay,
-  normalizeWeaponClass
+  normalizeWeaponClass,
+  normalizeWeaponKind,
+  normalizeCraftsmanship,
+  weaponClassesForKind,
+  WEAPON_KINDS
 } from "../config.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
@@ -31,14 +35,30 @@ export class RTItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
 
   static async #onFormSubmit(event, form, formData) {
     const data = foundry.utils.expandObject(formData.object);
-    if (this.document.type === "weapon" && data.system?.specialText !== undefined) {
-      const parsed = parseWeaponSpecials(data.system.specialText);
-      foundry.utils.setProperty(data, "system.special", parsed.flags);
-      foundry.utils.setProperty(data, "system.specialQualities", parsed.qualities);
-      foundry.utils.setProperty(data, "system.specialText", parsed.specialText);
-    }
-    if (this.document.type === "weapon" && data.system?.class !== undefined) {
-      data.system.class = normalizeWeaponClass(data.system.class, data.system.range ?? this.document.system.range);
+    if (this.document.type === "weapon") {
+      if (data.system?.specialText !== undefined) {
+        const parsed = parseWeaponSpecials(data.system.specialText);
+        foundry.utils.setProperty(data, "system.special", parsed.flags);
+        foundry.utils.setProperty(data, "system.specialQualities", parsed.qualities);
+        foundry.utils.setProperty(data, "system.specialText", parsed.specialText);
+      }
+      const kind = normalizeWeaponKind(
+        data.system?.kind,
+        data.system?.class ?? this.document.system.class,
+        data.system?.range ?? this.document.system.range
+      );
+      data.system.kind = kind;
+      let cls = normalizeWeaponClass(
+        data.system?.class ?? this.document.system.class,
+        data.system?.range ?? this.document.system.range
+      );
+      const allowed = weaponClassesForKind(kind).map((c) => c.id);
+      if (!allowed.includes(cls)) cls = allowed[0];
+      data.system.class = cls;
+      if (data.system?.craftsmanship !== undefined) {
+        data.system.craftsmanship = normalizeCraftsmanship(data.system.craftsmanship);
+      }
+      if (data.system?.exotic !== undefined) data.system.exotic = !!data.system.exotic;
     }
     await this.document.update(data);
   }
@@ -53,6 +73,27 @@ export class RTItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     const weaponClass = item.type === "weapon"
       ? normalizeWeaponClass(item.system.class, item.system.range)
       : null;
+    const weaponKind = item.type === "weapon" ? normalizeWeaponKind(item) : null;
+
+    if (item.type === "weapon") {
+      context.weaponKind = {
+        value: weaponKind,
+        options: WEAPON_KINDS.map((k) => ({
+          id: k.id,
+          label: k.label,
+          selected: weaponKind === k.id
+        }))
+      };
+      context.weaponClass = {
+        value: weaponClass,
+        options: weaponClassesForKind(weaponKind).map((c) => ({
+          id: c.id,
+          label: c.label,
+          selected: weaponClass === c.id
+        }))
+      };
+      context.weaponExotic = !!item.system.exotic;
+    }
 
     context.fields = (ITEM_FIELDS[item.type] ?? [])
       .filter((field) => {
@@ -62,9 +103,8 @@ export class RTItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       .map((field) => {
         const raw = foundry.utils.getProperty(item, `system.${field.path}`);
         if (field.input === "select") {
-          const value = field.path === "class"
-            ? (weaponClass ?? normalizeWeaponClass(raw, item.system.range))
-            : String(raw ?? "");
+          let value = String(raw ?? "");
+          if (field.path === "craftsmanship") value = normalizeCraftsmanship(raw);
           return {
             name: `system.${field.path}`,
             label: field.label,

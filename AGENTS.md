@@ -13,8 +13,8 @@ Foundry VTT **game system** `rogue-trader`. This file is the map. Do not re-scan
 
 ## Status (what exists vs stub)
 
-- Done: d100 test engine, character/NPC sheet, Inventory tab, XP/skills/acquisition, dual i18n; pack YAML drafts under `packs/` (source of truth for inventory item drafts).
-- Stubs — do NOT flesh out unless the task explicitly asks: `combat`, `psykana`, `ship`, `colony` tabs/sheets; compendium `.db` packs (yml drafts under `packs/` only).
+- Done: d100 test engine, character/NPC sheet, Inventory/Combat tabs (weapons attack+damage, force field, movement), XP/skills/acquisition, dual i18n; pack YAML drafts under `packs/` (source of truth for inventory item drafts).
+- Stubs — do NOT flesh out unless the task explicitly asks: `psykana`, `ship`, `colony` tabs/sheets; full multi-attack chains; compendium `.db` packs (yml drafts under `packs/` only).
 
 ## Hard rules (always)
 
@@ -32,6 +32,7 @@ Foundry VTT **game system** `rogue-trader`. This file is the map. Do not re-scan
 | Add tab / button / field on a sheet | `src/sheets/actor-sheet.js` | `extend-foundry-sheet` |
 | New actor/item field | `template.json`, `src/documents/actor.js` | `change-document-schema` |
 | Roll / test mechanics | `src/dice.js` | — |
+| Weapon attack / jam / damage / RF | `src/combat.js` | — |
 | Rules catalogs (skills, acquisition, item fields) | `src/config.js` | — |
 | Unfamiliar Foundry v14 API | `docs/agent/foundry-v14.md` | — |
 
@@ -44,6 +45,7 @@ Foundry VTT **game system** `rogue-trader`. This file is the map. Do not re-scan
 - `docs/npc-sheet-plan.md` — planned GM-simplified NPC sheet (not implemented yet).
 - `src/settings.js` — world settings `defaultRollMode`, `edition`.
 - `src/dice.js` — `rollTest` / `showRollDialog`: d100 (`1d100` or `2d10`), degrees, crits, chat card.
+- `src/combat.js` — weapon jam/hits, damage (RF, Tearing, Proven, Vengeful, Accurate, Force), attack mod helpers.
 - `src/documents/actor.js` — `RTActor.prepareDerivedData`, `normalizeGroupRows` (array<->object repair).
 - `src/documents/item.js` — `RTItem` (empty subclass).
 - `src/sheets/actor-sheet.js` — `RTCharacterSheet` (+ `RTShipSheet`/`RTColonySheet` stubs): PARTS, `actions`, tabs (incl. Inventory).
