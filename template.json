@@ -619,7 +619,8 @@
                                                   "rightLeg":  0
                                               },
                                 "maxAgilityPenalty":  0,
-                                "equipped":  false
+                                "equipped":  false,
+                                "powered":  false
                             },
                  "gear":  {
                               "templates":  [

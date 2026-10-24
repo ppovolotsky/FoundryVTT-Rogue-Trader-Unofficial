@@ -18,6 +18,8 @@ export function normalizeGroupRows(value) {
 }
 
 function itemCarryWeight(item) {
+  // Powered armour worn does not count against carrying capacity.
+  if (item.type === "armour" && item.system?.powered && item.system?.equipped) return 0;
   const w = Number(item.system?.weight) || 0;
   const qty = ["gear", "ammo"].includes(item.type) ? Math.max(1, Number(item.system?.quantity) || 1) : 1;
   return w * qty;
@@ -126,9 +128,10 @@ export class RTActor extends Actor {
     const RANK_THRESHOLDS = [5000, 7000, 10000, 13000, 17000, 21000, 25000, 30000];
     system.xp.rank = RANK_THRESHOLDS.filter((threshold) => xpSpent >= threshold).length;
 
-    // Encumbrance from owned item weights × quantity.
-    const sb = system.characteristics?.s?.bonus ?? 0;
-    const limits = encumbranceForBonus(sb);
+    // Encumbrance: capacity from SB+TB; carried = item weights × quantity.
+    const totalBonus = (system.characteristics?.s?.bonus ?? 0)
+      + (system.characteristics?.t?.bonus ?? 0);
+    const limits = encumbranceForBonus(totalBonus);
     let carried = 0;
     for (const item of this.items) {
       carried += itemCarryWeight(item);
@@ -142,6 +145,7 @@ export class RTActor extends Actor {
       carry: limits.carry,
       lift: limits.lift,
       push: limits.push,
+      bonus: totalBonus,
       level
     };
 

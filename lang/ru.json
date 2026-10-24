@@ -414,6 +414,7 @@
   "RT.Items.Weapon.Special.Reliable": "Надёжное",
   "RT.Items.Weapon.Special.Unreliable": "Ненадёжное",
   "RT.Items.Armour.ArmourType": "Тип брони",
+  "RT.Items.Armour.Powered": "Силовая",
   "RT.Items.Armour.MaxAgilityPenalty": "Макс. штраф к Ловкости",
   "RT.Items.Armour.Head": "БР голова",
   "RT.Items.Armour.Body": "БР корпус",
@@ -448,7 +449,7 @@
 
   "RT.Encumbrance.Load": "Нагрузка",
   "RT.Encumbrance.Kg": "кг",
-  "RT.Encumbrance.Hint": "Суммарный вес предметов против грузоподъёмности по бонусу Силы. Перегрузка снижает движение вдвое; сверх подъёма — движение 0.",
+  "RT.Encumbrance.Hint": "Суммарный вес предметов против грузоподъёмности по бонусам Силы + Выносливости. Перегрузка снижает движение вдвое; сверх подъёма — движение 0. Вес надетой силовой брони не учитывается.",
   "RT.Encumbrance.Lift": "Подъём",
   "RT.Encumbrance.Push": "Толкание",
   "RT.Encumbrance.Normal": "Норма",
