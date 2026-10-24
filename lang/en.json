@@ -414,6 +414,7 @@
   "RT.Items.Weapon.Special.Reliable": "Reliable",
   "RT.Items.Weapon.Special.Unreliable": "Unreliable",
   "RT.Items.Armour.ArmourType": "Armour Type",
+  "RT.Items.Armour.Powered": "Powered",
   "RT.Items.Armour.MaxAgilityPenalty": "Max. Agility Penalty",
   "RT.Items.Armour.Head": "Head AP",
   "RT.Items.Armour.Body": "Body AP",
@@ -448,7 +449,7 @@
 
   "RT.Encumbrance.Load": "Load",
   "RT.Encumbrance.Kg": "kg",
-  "RT.Encumbrance.Hint": "Carried weight vs Strength Bonus capacity. Encumbered halves movement; Overloaded stops movement.",
+  "RT.Encumbrance.Hint": "Carried weight vs capacity from Strength + Toughness bonuses. Encumbered halves movement; Overloaded stops movement. Equipped powered armour weight is ignored.",
   "RT.Encumbrance.Lift": "Lift",
   "RT.Encumbrance.Push": "Push",
   "RT.Encumbrance.Normal": "Normal",
