@@ -149,12 +149,16 @@ export class RTActor extends Actor {
       level
     };
 
-    // Movement in meters from the Agility bonus (Ag/10): half / full / charge / run.
-    const ab = system.characteristics?.ag?.bonus ?? 0;
-    let half = Math.floor(ab / 2);
-    let full = ab;
-    let charge = ab * 2;
-    let run = ab * 4;
+    // Movement (RT Core table): natural Agility Bonus only (ignore Unnatural
+    // Characteristic bonusMod). Half/Full/Charge/Run = AB / 2AB / 3AB / 6AB.
+    // Unnatural Speed doubles AB for movement; Flyer doubles the resulting rates.
+    let ab = Math.floor((system.characteristics?.ag?.unpenalized ?? 0) / 10);
+    if (system.unnaturalSpeed) ab *= 2;
+
+    let half = ab;
+    let full = ab * 2;
+    let charge = ab * 3;
+    let run = ab * 6;
 
     const mode = system.movementMode || "normal";
     if (mode === "custom") {
@@ -164,7 +168,6 @@ export class RTActor extends Actor {
       charge = Number(custom.charge) || 0;
       run = Number(custom.run) || 0;
     } else if (mode === "flyer") {
-      // Flyer: double base Agility movement rates (mechanical summary).
       half *= 2;
       full *= 2;
       charge *= 2;
@@ -183,7 +186,7 @@ export class RTActor extends Actor {
       run = 0;
     }
 
-    system.movement = { half, full, charge, run, mode };
+    system.movement = { half, full, charge, run, mode, naturalAb: Math.floor((system.characteristics?.ag?.unpenalized ?? 0) / 10) };
 
     const sizeDef = SIZES.find((s) => s.id === (system.size || "average")) ?? SIZES[3];
     system.sizeHitMod = sizeDef.hitMod;

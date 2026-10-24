@@ -250,6 +250,12 @@ export const ITEM_TYPES = {
   ammo: "RT.ItemTypes.Ammo"
 };
 
+/** Top-level weapon kind (melee vs ranged). */
+export const WEAPON_KINDS = [
+  { id: "melee", label: "RT.Items.Weapon.KindMelee" },
+  { id: "ranged", label: "RT.Items.Weapon.KindRanged" }
+];
+
 /** RT weapon class catalog. `kind` drives Combat tab melee vs ranged UI. */
 export const WEAPON_CLASSES = [
   { id: "melee", label: "RT.Items.Weapon.ClassMelee", kind: "melee" },
@@ -289,19 +295,66 @@ export function weaponClassDef(raw, range = 0) {
   return WEAPON_CLASSES.find((c) => c.id === id) ?? WEAPON_CLASSES[0];
 }
 
+/** Resolve kind from explicit system.kind or from class. */
+export function normalizeWeaponKind(itemOrKind, classRaw, range = 0) {
+  if (itemOrKind && typeof itemOrKind === "object") {
+    const kind = String(itemOrKind.system?.kind ?? "").toLowerCase();
+    if (kind === "melee" || kind === "ranged") return kind;
+    return weaponClassDef(itemOrKind.system?.class, itemOrKind.system?.range).kind;
+  }
+  const kind = String(itemOrKind ?? "").toLowerCase();
+  if (kind === "melee" || kind === "ranged") return kind;
+  return weaponClassDef(classRaw, range).kind;
+}
+
 /** @returns {"melee"|"ranged"} */
 export function weaponCombatKind(item) {
-  return weaponClassDef(item?.system?.class, item?.system?.range).kind;
+  return normalizeWeaponKind(item);
 }
+
+export function weaponClassesForKind(kind) {
+  return WEAPON_CLASSES.filter((c) => c.kind === kind);
+}
+
+export const CRAFTSMANSHIP = [
+  { id: "poor", label: "RT.Craftsmanship.Poor", testMod: -10 },
+  { id: "common", label: "RT.Craftsmanship.Common", testMod: 0 },
+  { id: "good", label: "RT.Craftsmanship.Good", testMod: 5 },
+  { id: "best", label: "RT.Craftsmanship.Best", testMod: 10 }
+];
+
+export function normalizeCraftsmanship(raw) {
+  const key = String(raw ?? "").trim().toLowerCase();
+  if (CRAFTSMANSHIP.some((c) => c.id === key)) return key;
+  if (key.includes("best") || key.includes("лучш") || key.includes("мастер")) return "best";
+  if (key.includes("good") || key.includes("хорош")) return "good";
+  if (key.includes("poor") || key.includes("плох") || key.includes("груб")) return "poor";
+  return "common";
+}
+
+export function craftsmanshipDef(raw) {
+  const id = normalizeCraftsmanship(raw);
+  return CRAFTSMANSHIP.find((c) => c.id === id) ?? CRAFTSMANSHIP[1];
+}
+
+/** Melee attack actions (RT Core) — test modifier applied to WS. */
+export const MELEE_ATTACK_TYPES = [
+  { id: "standard", label: "RT.Combat.MeleeAttack.Standard", mod: 0 },
+  { id: "allOut", label: "RT.Combat.MeleeAttack.AllOut", mod: 20 },
+  { id: "charge", label: "RT.Combat.MeleeAttack.Charge", mod: 10 },
+  { id: "guarded", label: "RT.Combat.MeleeAttack.Guarded", mod: -10 },
+  { id: "swift", label: "RT.Combat.MeleeAttack.Swift", mod: 0 },
+  { id: "lightning", label: "RT.Combat.MeleeAttack.Lightning", mod: 0 }
+];
 
 // Weapon sheet field visibility by class id. Omit `showFor` = always shown.
 const WEAPON_HAS_RANGE = ["thrown", "pistol", "basic", "heavy"];
 const WEAPON_FIREARM = ["pistol", "basic", "heavy"];
 
 // Fields shown on the item sheet (nested paths use dotted system.* keys).
+// Weapon kind/class/exotic are rendered specially (cascading) in the item sheet.
 export const ITEM_FIELDS = {
   weapon: [
-    { path: "class", label: "RT.Items.Weapon.Class", input: "select", options: WEAPON_CLASSES },
     { path: "weaponType", label: "RT.Items.Weapon.WeaponType", input: "text" },
     { path: "range", label: "RT.Items.Weapon.Range", input: "number", showFor: WEAPON_HAS_RANGE },
     { path: "damage", label: "RT.Items.Weapon.Damage", input: "text" },
@@ -318,7 +371,7 @@ export const ITEM_FIELDS = {
     { path: "special.reliable", label: "RT.Items.Weapon.Special.Reliable", input: "checkbox", showFor: WEAPON_FIREARM },
     { path: "special.unreliable", label: "RT.Items.Weapon.Special.Unreliable", input: "checkbox", showFor: WEAPON_FIREARM },
     { path: "specialText", label: "RT.Items.Weapon.SpecialText", input: "text" },
-    { path: "craftsmanship", label: "RT.Items.Craftsmanship", input: "text" },
+    { path: "craftsmanship", label: "RT.Items.Craftsmanship", input: "select", options: CRAFTSMANSHIP },
     { path: "equipped", label: "RT.Items.Equipped", input: "checkbox" },
     { path: "availability", label: "RT.Items.Availability", input: "text" },
     { path: "weight", label: "RT.Items.Weight", input: "number" },
@@ -333,7 +386,6 @@ export const ITEM_FIELDS = {
     { path: "locations.rightArm", label: "RT.Items.Armour.RightArm", input: "number" },
     { path: "locations.leftLeg", label: "RT.Items.Armour.LeftLeg", input: "number" },
     { path: "locations.rightLeg", label: "RT.Items.Armour.RightLeg", input: "number" },
-    { path: "maxAgilityPenalty", label: "RT.Items.Armour.MaxAgilityPenalty", input: "number" },
     { path: "equipped", label: "RT.Items.Equipped", input: "checkbox" },
     { path: "powered", label: "RT.Items.Armour.Powered", input: "checkbox" },
     { path: "availability", label: "RT.Items.Availability", input: "text" },
@@ -588,6 +640,9 @@ export function registerConfig() {
     gearCategories: GEAR_CATEGORIES,
     weaponSpecials: WEAPON_SPECIALS,
     weaponClasses: WEAPON_CLASSES,
+    weaponKinds: WEAPON_KINDS,
+    craftsmanship: CRAFTSMANSHIP,
+    meleeAttackTypes: MELEE_ATTACK_TYPES,
     sizes: SIZES,
     encumbranceByBonus: ENCUMBRANCE_BY_BONUS,
     encumbranceBySb: ENCUMBRANCE_BY_BONUS,

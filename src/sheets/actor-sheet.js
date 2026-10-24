@@ -19,10 +19,23 @@ import {
   AIM_OPTIONS,
   RANGE_OPTIONS,
   FIRE_MODES,
+  MELEE_ATTACK_TYPES,
+  CRAFTSMANSHIP,
   resolveWeaponSpecialDisplay,
   weaponCombatKind,
-  weaponClassDef
+  weaponClassDef,
+  craftsmanshipDef,
+  normalizeCraftsmanship
 } from "../config.js";
+import {
+  rangedJamResult,
+  rangedHitCount,
+  rollWeaponDamage,
+  weaponHasSpecial,
+  aimMod,
+  rangeMod,
+  meleeAttackMod
+} from "../combat.js";
 import { normalizeGroupRows } from "../documents/actor.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
@@ -167,9 +180,12 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       toggleItemEquipped: RTCharacterSheet.#onToggleItemEquipped,
       adjustItemQuantity: RTCharacterSheet.#onAdjustItemQuantity,
       rollWeaponAttack: RTCharacterSheet.#onRollWeaponAttack,
+      rollWeaponDamage: RTCharacterSheet.#onRollWeaponDamage,
+      adjustWeaponClip: RTCharacterSheet.#onAdjustWeaponClip,
       rollScatter: RTCharacterSheet.#onRollScatter,
       rollDamageReceived: RTCharacterSheet.#onRollDamageReceived,
-      sendCritWoundHint: RTCharacterSheet.#onSendCritWoundHint
+      sendCritWoundHint: RTCharacterSheet.#onSendCritWoundHint,
+      testForceField: RTCharacterSheet.#onTestForceField
     }
   };
 
@@ -194,7 +210,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   // Expanded description windows, keyed "list:index" — re-applied after renders.
   expandedRows = {};
 
-  // Per-weapon combat modifiers (aim / fireMode / range), keyed by item id.
+  // Per-weapon combat modifiers (aim / fireMode / range / attackType), keyed by item id.
   weaponCombatMods = {};
 
   static PARTS = {
@@ -849,88 +865,63 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const localize = (key) => game.i18n.localize(key);
     const isMelee = weaponCombatKind(item) === "melee";
     const mods = this.#weaponModsFor(item.id);
-    const aim = isMelee ? AIM_OPTIONS[0] : (AIM_OPTIONS.find((o) => o.id === mods.aim) ?? AIM_OPTIONS[0]);
-    const range = isMelee ? null : (RANGE_OPTIONS.find((o) => o.id === mods.range) ?? RANGE_OPTIONS[2]);
+    const aimId = mods.aim || "none";
+    const rangeId = mods.range || "normal";
     const fireMode = isMelee ? "single" : (mods.fireMode || "single");
+    const attackType = mods.attackType || "standard";
+    const craft = craftsmanshipDef(item.system.craftsmanship);
 
     const charKey = isMelee ? "ws" : "bs";
     const base = Number(this.document.system.characteristics?.[charKey]?.total) || 0;
-    let modifier = isMelee ? 0 : (aim.mod + (range?.mod ?? 0));
+    let builtIn = craft.testMod;
+    builtIn += aimMod(aimId);
+    if (isMelee) builtIn += meleeAttackMod(attackType);
+    else builtIn += rangeMod(rangeId);
+    if (!isMelee && weaponHasSpecial(item, "accurate") && aimId !== "none") builtIn += 10;
 
-    // Accurate: pre-roll +10 when aiming (ranged only).
-    const specials = resolveWeaponSpecialDisplay(item.system.specialQualities, item.system.specialText);
-    const has = (id) => specials.some((s) => s.id === id);
-    if (!isMelee && has("accurate") && aim.id !== "none") modifier += 10;
+    const test = await showRollDialog({
+      target: base + builtIn,
+      modifier: 0,
+      label: item.name,
+      speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      showTarget: false,
+      actor: this.document,
+      createMessage: false
+    });
+    if (!test || typeof test !== "object" || test.value === undefined) return;
 
-    const mode = this.document.system.settings?.rollMode || null;
-    const raw = await rollRawD100({ mode });
-    const finalTarget = base + modifier;
-    const value = raw.value;
-    const criticalSuccess = value === 1;
-    const criticalFailure = value === 100;
-    const success = criticalSuccess || (!criticalFailure && value <= finalTarget);
-    const difference = Math.max(0, success ? finalTarget - value : value - finalTarget);
-    const degrees = Math.floor(difference / 10);
-
-    // Hits from RoF / DoS (ranged only).
-    const rof = item.system.rateOfFire ?? {};
-    let hits = 0;
-    if (success) {
-      if (!isMelee && fireMode === "semi") {
-        const maxHits = Math.max(1, Number(rof.burst) || 1);
-        hits = Math.min(maxHits, 1 + degrees);
-      } else if (!isMelee && fireMode === "full") {
-        const maxHits = Math.max(1, Number(rof.full) || 1);
-        hits = Math.min(maxHits, 1 + degrees);
-      } else {
-        hits = 1;
-      }
-      if (!isMelee && has("storm") && hits > 0) {
-        hits = Math.min(hits * 2, (Number(rof.full) || Number(rof.burst) || hits) * 2);
-      }
-    }
-
-    // Jam / overheat: ranged only.
-    let jam = false;
-    let jamKey = "";
-    const flags = item.system.special ?? {};
-    if (!isMelee && !criticalSuccess) {
-      if (has("overheats") || flags.overheats) {
-        if (value >= 91) {
-          jam = true;
-          jamKey = "RT.Combat.Overheat";
-        }
-      } else if (has("unreliable") || flags.unreliable) {
-        if (value >= 94) {
-          jam = true;
-          jamKey = "RT.Combat.Jam";
-        }
-      } else if (has("reliable") || flags.reliable) {
-        if (value === 100) {
-          jam = true;
-          jamKey = "RT.Combat.Jam";
-        }
-      } else if (value >= 96) {
-        jam = true;
-        jamKey = "RT.Combat.Jam";
-      }
-    }
+    const hits = isMelee
+      ? (test.success ? 1 : 0)
+      : rangedHitCount(item, fireMode, test.degrees, test.success);
+    const jamInfo = isMelee
+      ? { jam: false, jamKey: "" }
+      : rangedJamResult(item, test.value, { criticalSuccess: test.criticalSuccess });
+    mods.lastDegrees = test.success ? test.degrees : 0;
 
     const specialNotes = [];
-    if (success && has("tearing")) specialNotes.push(localize("RT.Combat.SpecialNote.Tearing"));
-    if (success && has("force")) specialNotes.push(localize("RT.Combat.SpecialNote.Force"));
-    if (success && has("shocking")) specialNotes.push(localize("RT.Combat.SpecialNote.Shocking"));
-    if (success && degrees >= 2 && has("razorSharp")) specialNotes.push(localize("RT.Combat.SpecialNote.RazorSharp"));
-    if (!isMelee && success && has("accurate") && aim.id !== "none" && degrees >= 1) {
+    if (test.success && weaponHasSpecial(item, "tearing")) specialNotes.push(localize("RT.Combat.SpecialNote.Tearing"));
+    if (test.success && weaponHasSpecial(item, "force")) specialNotes.push(localize("RT.Combat.SpecialNote.Force"));
+    if (test.success && weaponHasSpecial(item, "shocking")) specialNotes.push(localize("RT.Combat.SpecialNote.Shocking"));
+    if (test.success && test.degrees >= 2 && weaponHasSpecial(item, "razorSharp")) {
+      specialNotes.push(localize("RT.Combat.SpecialNote.RazorSharp"));
+    }
+    if (!isMelee && test.success && weaponHasSpecial(item, "accurate") && aimId !== "none" && test.degrees >= 1) {
       specialNotes.push(localize("RT.Combat.SpecialNote.Accurate"));
     }
+    if (isMelee && attackType === "swift") specialNotes.push(localize("RT.Combat.MeleeAttack.SwiftNote"));
+    if (isMelee && attackType === "lightning") specialNotes.push(localize("RT.Combat.MeleeAttack.LightningNote"));
 
     const classLabel = localize(weaponClassDef(item.system.class, item.system.range).label);
     const modsSummary = [
       classLabel,
+      localize(craft.label),
       `${localize(CHARACTERISTICS[charKey].abbrKey)} ${base}`,
-      !isMelee ? localize(aim.label) : null,
-      !isMelee && range ? localize(range.label) : null,
+      builtIn ? `${builtIn > 0 ? "+" : ""}${builtIn}` : null,
+      localize(AIM_OPTIONS.find((o) => o.id === aimId)?.label || "RT.Combat.Aim.None"),
+      isMelee
+        ? localize(MELEE_ATTACK_TYPES.find((o) => o.id === attackType)?.label || "RT.Combat.MeleeAttack.Standard")
+        : null,
+      !isMelee ? localize(RANGE_OPTIONS.find((o) => o.id === rangeId)?.label || "RT.Combat.Range.Normal") : null,
       !isMelee ? localize(FIRE_MODES.find((f) => f.id === fireMode)?.label || "RT.Combat.FireMode.Single") : null
     ].filter(Boolean).join(" · ");
 
@@ -938,18 +929,18 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       "systems/rogue-trader/templates/dice/weapon-attack-card.hbs",
       {
         label: item.name,
-        target: base,
-        modifier: modifier ? (modifier > 0 ? `+${modifier}` : `${modifier}`) : "",
-        finalTarget,
-        value,
-        success,
-        criticalSuccess,
-        criticalFailure,
-        degrees,
-        degreesKey: success ? "RT.Roll.DegreesOfSuccess" : "RT.Roll.DegreesOfFailure",
-        hits: success ? hits : 0,
-        jam,
-        jamKey,
+        target: test.target,
+        modifier: test.modifier ? (test.modifier > 0 ? `+${test.modifier}` : `${test.modifier}`) : "",
+        finalTarget: test.finalTarget,
+        value: test.value,
+        success: test.success,
+        criticalSuccess: test.criticalSuccess,
+        criticalFailure: test.criticalFailure,
+        degrees: test.degrees,
+        degreesKey: test.degreesKey,
+        hits,
+        jam: jamInfo.jam,
+        jamKey: jamInfo.jamKey,
         specialNotes: specialNotes.join(" · "),
         modsSummary
       }
@@ -957,8 +948,91 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.document }),
       content,
-      rolls: [raw.roll],
-      flavor: item.name
+      rolls: test.roll ? [test.roll] : [],
+      flavor: item.name,
+      flags: {
+        [SYSTEM_ID]: {
+          weaponAttack: {
+            itemId: item.id,
+            degrees: test.degrees,
+            success: test.success,
+            aimId,
+            hits
+          }
+        }
+      }
+    });
+  }
+
+  static async #onRollWeaponDamage(event, target) {
+    const item = this.document.items.get(target.dataset.itemId);
+    if (!item || item.type !== "weapon") return;
+    const mods = this.#weaponModsFor(item.id);
+    const degrees = Number(target.dataset.degrees ?? mods.lastDegrees ?? 0);
+    const result = await rollWeaponDamage(item, {
+      degrees,
+      aimId: mods.aim || "none",
+      psyRating: Number(this.document.system.psykana?.pr) || 0
+    });
+    if (!result) {
+      ui.notifications.error(game.i18n.localize("RT.Combat.DamageFormulaInvalid"));
+      return;
+    }
+    const shocking = weaponHasSpecial(item, "shocking")
+      ? game.i18n.localize("RT.Combat.SpecialNote.Shocking")
+      : "";
+    const content = await foundry.applications.handlebars.renderTemplate(
+      "systems/rogue-trader/templates/dice/weapon-damage-card.hbs",
+      {
+        label: item.name,
+        formula: result.formula,
+        total: result.total,
+        pen: result.pen,
+        detail: result.diceDetail,
+        shocking
+      }
+    );
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      content,
+      flavor: `${item.name} — ${game.i18n.localize("RT.Combat.Damage")}`
+    });
+  }
+
+  static async #onAdjustWeaponClip(event, target) {
+    const item = this.document.items.get(target.dataset.itemId);
+    if (!item || item.type !== "weapon") return;
+    const delta = Number(target.dataset.delta || 0);
+    const max = Number(item.system.clip?.max) || 0;
+    const current = Number(item.system.clip?.value) || 0;
+    const next = Math.max(0, max > 0 ? Math.min(max, current + delta) : current + delta);
+    await item.update({ "system.clip.value": next });
+  }
+
+  static async #onTestForceField(event) {
+    const ff = this.document.system.forceField ?? {};
+    if (!ff.active) {
+      ui.notifications.warn(game.i18n.localize("RT.Combat.ForceFieldInactive"));
+      return;
+    }
+    const overload = Number(ff.overload) || 0;
+    const rating = Number(ff.rating) || 0;
+    const roll = await new Roll("1d100").evaluate();
+    const overloaded = roll.total <= overload;
+    const craft = craftsmanshipDef(ff.craftsmanship);
+    const content = `<div class="rt-roll-card">
+      <div class="rt-roll-card__label">${game.i18n.localize("RT.Combat.ForceField")}</div>
+      <div class="rt-roll-card__row">${game.i18n.localize("RT.Combat.ForceFieldRating")}: ${rating} · ${game.i18n.localize(craft.label)}</div>
+      <div class="rt-roll-card__row">1d100 = ${roll.total} vs ${game.i18n.localize("RT.Combat.ForceFieldOverload")} ${overload}</div>
+      <div class="rt-roll-card__result ${overloaded ? "rt-roll-card__result--fail" : "rt-roll-card__result--ok"}">
+        ${overloaded ? game.i18n.localize("RT.Combat.ForceFieldOverloaded") : game.i18n.localize("RT.Combat.ForceFieldHolds")}
+      </div>
+      ${!overloaded ? `<div class="rt-roll-card__row">${game.i18n.localize("RT.Combat.ForceFieldSoak")}: ${rating}</div>` : ""}
+    </div>`;
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      content,
+      rolls: [roll]
     });
   }
 
@@ -1111,7 +1185,12 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   #weaponModsFor(itemId) {
     if (!this.weaponCombatMods[itemId]) {
-      this.weaponCombatMods[itemId] = { aim: "none", fireMode: "single", range: "normal" };
+      this.weaponCombatMods[itemId] = {
+        aim: "none",
+        fireMode: "single",
+        range: "normal",
+        attackType: "standard"
+      };
     }
     return this.weaponCombatMods[itemId];
   }
@@ -1142,33 +1221,51 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         };
       });
 
-    const mapWeapon = (i, withRangedMods) => {
+    const mapWeapon = (i, isRanged) => {
       const classDef = weaponClassDef(i.system.class, i.system.range);
+      const classId = classDef.id;
       const specials = resolveWeaponSpecialDisplay(i.system.specialQualities, i.system.specialText)
         .map((s) => s.title)
         .join(", ");
+      const craft = craftsmanshipDef(i.system.craftsmanship);
+      const pen = Number(i.system.penetration) || 0;
       const bits = [
         game.i18n.localize(classDef.label),
         i.system.damage,
         i.system.damageType,
-        specials
+        pen ? `Pen ${pen}` : null,
+        game.i18n.localize(craft.label)
       ].filter(Boolean);
+      const showClip = isRanged && ["pistol", "basic", "heavy"].includes(classId);
+      const mods = this.#weaponModsFor(i.id);
+      const description = String(i.system.description ?? "").trim();
       const row = {
         id: i.id,
         name: i.name,
         summary: bits.join(" · "),
         specials,
-        classLabel: classDef.label
+        classLabel: classDef.label,
+        description,
+        showClip,
+        clipValue: Number(i.system.clip?.value) || 0,
+        clipMax: Number(i.system.clip?.max) || 0,
+        aimOptions: AIM_OPTIONS.map((o) => ({ ...o, selected: mods.aim === o.id }))
       };
-      if (!withRangedMods) return row;
-      const mods = this.#weaponModsFor(i.id);
+      if (!isRanged) {
+        return {
+          ...row,
+          attackTypes: MELEE_ATTACK_TYPES.map((o) => ({
+            ...o,
+            selected: mods.attackType === o.id
+          }))
+        };
+      }
       const rof = i.system.rateOfFire ?? {};
       const singleOk = (Number(rof.single) || 0) > 0 || (!rof.burst && !rof.full);
       const semiOk = (Number(rof.burst) || 0) > 0;
       const fullOk = (Number(rof.full) || 0) > 0;
       return {
         ...row,
-        aimOptions: AIM_OPTIONS.map((o) => ({ ...o, selected: mods.aim === o.id })),
         rangeOptions: RANGE_OPTIONS.map((o) => ({ ...o, selected: mods.range === o.id })),
         fireModes: FIRE_MODES.map((o) => ({
           ...o,
@@ -1186,6 +1283,8 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       .filter((i) => weaponCombatKind(i) === "ranged")
       .map((i) => mapWeapon(i, true));
 
+    const ff = this.document.system.forceField ?? {};
+    const ffCraft = normalizeCraftsmanship(ff.craftsmanship);
     return {
       encumbranceLevelLabel,
       sizeOptions: SIZES.map((s) => ({ ...s, selected: size === s.id })),
@@ -1196,7 +1295,11 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       ],
       combatArmour,
       combatMelee,
-      combatRanged
+      combatRanged,
+      forceFieldCraftOptions: CRAFTSMANSHIP.map((c) => ({
+        ...c,
+        selected: ffCraft === c.id
+      }))
     };
   }
 
@@ -1484,6 +1587,18 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       if (!field || !itemId) return;
       const mods = this.#weaponModsFor(itemId);
       mods[field] = el.value;
+    });
+    // Combat clip value (firearms): direct edit of clip.value.
+    this.element.addEventListener("change", async (event) => {
+      const el = event.target;
+      if (!el.dataset.itemClip) return;
+      const item = this.document.items.get(el.dataset.itemId);
+      if (!item || item.type !== "weapon") return;
+      const max = Number(item.system.clip?.max) || 0;
+      let next = Number(el.value) || 0;
+      if (max > 0) next = Math.min(max, Math.max(0, next));
+      else next = Math.max(0, next);
+      await item.update({ "system.clip.value": next }).catch(() => {});
     });
     // Repair actors whose groupSkills were saved as an object by older versions.
     if (this.document.system.groupSkills && !Array.isArray(this.document.system.groupSkills)) {

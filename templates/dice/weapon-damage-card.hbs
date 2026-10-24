@@ -1,0 +1,11 @@
+<div class="rt-roll-card">
+  <div class="rt-roll-card__label">{{label}}</div>
+  <div class="rt-roll-card__row">{{localize "RT.Combat.Damage"}}: {{formula}} → {{total}}</div>
+  <div class="rt-roll-card__row">{{localize "RT.Combat.Penetration"}}: {{pen}}</div>
+  {{#if detail}}
+  <div class="rt-roll-card__row rt-roll-card__muted">{{detail}}</div>
+  {{/if}}
+  {{#if shocking}}
+  <div class="rt-roll-card__row">{{shocking}}</div>
+  {{/if}}
+</div>

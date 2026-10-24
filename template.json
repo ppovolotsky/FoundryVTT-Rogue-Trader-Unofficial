@@ -99,6 +99,7 @@
 
                                                                       ],
                                                    "size":  "average",
+                                                   "unnaturalSpeed":  false,
                                                    "movementMode":  "normal",
                                                    "movementCustom":  {
                                                                           "half":  0,
@@ -106,6 +107,12 @@
                                                                           "charge":  0,
                                                                           "run":  0
                                                                       },
+                                                   "forceField":  {
+                                                                      "active":  false,
+                                                                      "rating":  0,
+                                                                      "overload":  0,
+                                                                      "craftsmanship":  "common"
+                                                                  },
                                                    "talents":  [
 
                                                                ],
@@ -578,9 +585,11 @@
                                 "templates":  [
                                                   "common"
                                               ],
+                                "kind":  "",
                                 "class":  "",
+                                "exotic":  false,
                                 "weaponType":  "",
-                                "craftsmanship":  "",
+                                "craftsmanship":  "common",
                                 "equipped":  false,
                                 "range":  0,
                                 "damage":  "",

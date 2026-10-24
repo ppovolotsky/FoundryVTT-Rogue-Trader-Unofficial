@@ -72,6 +72,12 @@
         <label>{{localize "RT.Combat.SizeHitMod"}}</label>
         <input type="text" disabled value="{{system.sizeHitMod}}"/>
       </div>
+      <div class="rt-field rt-field--check">
+        <label>
+          <input type="checkbox" name="system.unnaturalSpeed" {{checked system.unnaturalSpeed}}/>
+          {{localize "RT.Combat.UnnaturalSpeed"}}
+        </label>
+      </div>
     </div>
     {{#if (eq system.movementMode "custom")}}
     <div class="rt-identity-row">
@@ -102,6 +108,37 @@
   </section>
 
   <section class="rt-sheet-section">
+    <label class="rt-sheet-section__title">{{localize "RT.Combat.ForceField"}}</label>
+    <div class="rt-identity-row">
+      <div class="rt-field rt-field--check">
+        <label>
+          <input type="checkbox" name="system.forceField.active" {{checked system.forceField.active}}/>
+          {{localize "RT.Combat.ForceFieldActive"}}
+        </label>
+      </div>
+      <div class="rt-field">
+        <label>{{localize "RT.Combat.ForceFieldRating"}}</label>
+        <input type="number" name="system.forceField.rating" value="{{system.forceField.rating}}" data-dtype="Number"/>
+      </div>
+      <div class="rt-field">
+        <label>{{localize "RT.Combat.ForceFieldOverload"}}</label>
+        <input type="number" name="system.forceField.overload" value="{{system.forceField.overload}}" data-dtype="Number"/>
+      </div>
+      <div class="rt-field">
+        <label>{{localize "RT.Items.Craftsmanship"}}</label>
+        <select name="system.forceField.craftsmanship">
+          {{#each forceFieldCraftOptions as |c|}}
+          <option value="{{c.id}}" {{#if c.selected}}selected{{/if}}>{{localize c.label}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+    <div class="rt-combat-macros__row">
+      <button type="button" class="rt-button rt-button--small" data-action="testForceField" title="{{localize "RT.Combat.ForceFieldTestHint"}}">{{localize "RT.Combat.ForceFieldTest"}}</button>
+    </div>
+  </section>
+
+  <section class="rt-sheet-section">
     <label class="rt-sheet-section__title">{{localize "RT.Combat.Armour"}}</label>
     {{#if combatArmour.length}}
     <div class="rt-combat-armour">
@@ -125,17 +162,38 @@
   <section class="rt-sheet-section">
     <label class="rt-sheet-section__title">{{localize "RT.Combat.MeleeWeapons"}}</label>
     {{#if combatMelee.length}}
-    <div class="rt-combat-weapons">
+    <div class="rt-combat-weapons" data-list-shell="combatMelee">
       {{#each combatMelee as |w|}}
-      <div class="rt-combat-weapon" data-item-id="{{w.id}}">
-        <div class="rt-combat-weapon__header">
+      <div class="rt-combat-weapon rt-talent-block" data-item-id="{{w.id}}" data-block-index="{{w.id}}">
+        <div class="rt-combat-weapon__header rt-talent-block__header">
           <button type="button" class="rt-inventory-row__name" data-action="editInventoryItem" data-item-id="{{w.id}}">{{w.name}}</button>
           <span class="rt-combat-weapon__summary">{{w.summary}}</span>
           <button type="button" class="rt-button rt-button--small" data-action="rollWeaponAttack" data-item-id="{{w.id}}">{{localize "RT.Combat.Attack"}}</button>
+          <button type="button" class="rt-button rt-button--small" data-action="rollWeaponDamage" data-item-id="{{w.id}}">{{localize "RT.Combat.Damage"}}</button>
+          <button type="button" class="rt-button rt-button--small" data-action="toggleRowExpand" title="{{localize "RT.Talents.ShowDesc"}}"><i class="fa-solid fa-chevron-down"></i></button>
+        </div>
+        <div class="rt-combat-weapon__mods">
+          <label>{{localize "RT.Combat.Aim.Label"}}
+            <select data-combat-mod="aim" data-item-id="{{w.id}}">
+              {{#each w.aimOptions as |o|}}
+              <option value="{{o.id}}" {{#if o.selected}}selected{{/if}}>{{localize o.label}}</option>
+              {{/each}}
+            </select>
+          </label>
+          <label>{{localize "RT.Combat.MeleeAttack.Label"}}
+            <select data-combat-mod="attackType" data-item-id="{{w.id}}">
+              {{#each w.attackTypes as |o|}}
+              <option value="{{o.id}}" {{#if o.selected}}selected{{/if}}>{{localize o.label}}</option>
+              {{/each}}
+            </select>
+          </label>
         </div>
         {{#if w.specials}}
         <div class="rt-combat-weapon__specials">{{w.specials}}</div>
         {{/if}}
+        <div class="rt-talent-block__body rt-hidden">
+          <div class="rt-combat-weapon__desc">{{#if w.description}}{{w.description}}{{else}}{{localize "RT.Combat.NoDescription"}}{{/if}}</div>
+        </div>
       </div>
       {{/each}}
     </div>
@@ -147,13 +205,29 @@
   <section class="rt-sheet-section">
     <label class="rt-sheet-section__title">{{localize "RT.Combat.RangedWeapons"}}</label>
     {{#if combatRanged.length}}
-    <div class="rt-combat-weapons">
+    <div class="rt-combat-weapons" data-list-shell="combatRanged">
       {{#each combatRanged as |w|}}
-      <div class="rt-combat-weapon" data-item-id="{{w.id}}">
-        <div class="rt-combat-weapon__header">
+      <div class="rt-combat-weapon rt-talent-block" data-item-id="{{w.id}}" data-block-index="{{w.id}}">
+        <div class="rt-combat-weapon__header rt-talent-block__header">
           <button type="button" class="rt-inventory-row__name" data-action="editInventoryItem" data-item-id="{{w.id}}">{{w.name}}</button>
           <span class="rt-combat-weapon__summary">{{w.summary}}</span>
+          {{#if w.showClip}}
+          <div class="rt-combat-weapon__clip" title="{{localize "RT.Items.Weapon.ClipValue"}}">
+            <span class="rt-combat-weapon__clip-label">{{localize "RT.Combat.Clip"}}</span>
+            <div class="rt-stepper">
+              <input type="number" value="{{w.clipValue}}" data-dtype="Number" data-item-clip="1" data-item-id="{{w.id}}"/>
+              <div class="rt-stepper__buttons">
+                <button type="button" class="rt-stepper__btn" data-action="adjustWeaponClip" data-item-id="{{w.id}}" data-delta="1" title="+1"><i class="fa-solid fa-chevron-up"></i></button>
+                <button type="button" class="rt-stepper__btn" data-action="adjustWeaponClip" data-item-id="{{w.id}}" data-delta="-1" title="-1"><i class="fa-solid fa-chevron-down"></i></button>
+              </div>
+            </div>
+            <span class="rt-resource__sep">/</span>
+            <span>{{w.clipMax}}</span>
+          </div>
+          {{/if}}
           <button type="button" class="rt-button rt-button--small" data-action="rollWeaponAttack" data-item-id="{{w.id}}">{{localize "RT.Combat.Attack"}}</button>
+          <button type="button" class="rt-button rt-button--small" data-action="rollWeaponDamage" data-item-id="{{w.id}}">{{localize "RT.Combat.Damage"}}</button>
+          <button type="button" class="rt-button rt-button--small" data-action="toggleRowExpand" title="{{localize "RT.Talents.ShowDesc"}}"><i class="fa-solid fa-chevron-down"></i></button>
         </div>
         <div class="rt-combat-weapon__mods">
           <label>{{localize "RT.Combat.Aim.Label"}}
@@ -181,6 +255,9 @@
         {{#if w.specials}}
         <div class="rt-combat-weapon__specials">{{w.specials}}</div>
         {{/if}}
+        <div class="rt-talent-block__body rt-hidden">
+          <div class="rt-combat-weapon__desc">{{#if w.description}}{{w.description}}{{else}}{{localize "RT.Combat.NoDescription"}}{{/if}}</div>
+        </div>
       </div>
       {{/each}}
     </div>
