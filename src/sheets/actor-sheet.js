@@ -19,7 +19,9 @@ import {
   AIM_OPTIONS,
   RANGE_OPTIONS,
   FIRE_MODES,
-  resolveWeaponSpecialDisplay
+  resolveWeaponSpecialDisplay,
+  weaponCombatKind,
+  weaponClassDef
 } from "../config.js";
 import { normalizeGroupRows } from "../documents/actor.js";
 
@@ -845,22 +847,20 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const item = this.document.items.get(target.dataset.itemId);
     if (!item || item.type !== "weapon") return;
     const localize = (key) => game.i18n.localize(key);
+    const isMelee = weaponCombatKind(item) === "melee";
     const mods = this.#weaponModsFor(item.id);
-    const aim = AIM_OPTIONS.find((o) => o.id === mods.aim) ?? AIM_OPTIONS[0];
-    const range = RANGE_OPTIONS.find((o) => o.id === mods.range) ?? RANGE_OPTIONS[2];
-    const fireMode = mods.fireMode || "single";
+    const aim = isMelee ? AIM_OPTIONS[0] : (AIM_OPTIONS.find((o) => o.id === mods.aim) ?? AIM_OPTIONS[0]);
+    const range = isMelee ? null : (RANGE_OPTIONS.find((o) => o.id === mods.range) ?? RANGE_OPTIONS[2]);
+    const fireMode = isMelee ? "single" : (mods.fireMode || "single");
 
-    const isMelee = String(item.system.class || "").toLowerCase().includes("melee")
-      || String(item.system.weaponType || "").toLowerCase().includes("melee");
     const charKey = isMelee ? "ws" : "bs";
     const base = Number(this.document.system.characteristics?.[charKey]?.total) || 0;
-    let modifier = aim.mod + (isMelee ? 0 : range.mod);
+    let modifier = isMelee ? 0 : (aim.mod + (range?.mod ?? 0));
 
-    // Accurate: extra +10 per DoS after the first when aiming (applied post-roll as notes;
-    // pre-roll Accurate bonus when Half/Full aim).
+    // Accurate: pre-roll +10 when aiming (ranged only).
     const specials = resolveWeaponSpecialDisplay(item.system.specialQualities, item.system.specialText);
     const has = (id) => specials.some((s) => s.id === id);
-    if (has("accurate") && aim.id !== "none" && !isMelee) modifier += 10;
+    if (!isMelee && has("accurate") && aim.id !== "none") modifier += 10;
 
     const mode = this.document.system.settings?.rollMode || null;
     const raw = await rollRawD100({ mode });
@@ -872,23 +872,25 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const difference = Math.max(0, success ? finalTarget - value : value - finalTarget);
     const degrees = Math.floor(difference / 10);
 
-    // Hits from RoF / DoS (semi: 1 + DoS up to burst; full: 1 + DoS up to full).
+    // Hits from RoF / DoS (ranged only).
     const rof = item.system.rateOfFire ?? {};
     let hits = 0;
     if (success) {
-      if (fireMode === "semi") {
+      if (!isMelee && fireMode === "semi") {
         const maxHits = Math.max(1, Number(rof.burst) || 1);
         hits = Math.min(maxHits, 1 + degrees);
-      } else if (fireMode === "full") {
+      } else if (!isMelee && fireMode === "full") {
         const maxHits = Math.max(1, Number(rof.full) || 1);
         hits = Math.min(maxHits, 1 + degrees);
       } else {
         hits = 1;
       }
-      if (has("storm") && hits > 0) hits = Math.min(hits * 2, (Number(rof.full) || Number(rof.burst) || hits) * 2);
+      if (!isMelee && has("storm") && hits > 0) {
+        hits = Math.min(hits * 2, (Number(rof.full) || Number(rof.burst) || hits) * 2);
+      }
     }
 
-    // Jam / overheat: unreliable jams on 94+; overheats on 91+; reliable only on 100.
+    // Jam / overheat: ranged only.
     let jam = false;
     let jamKey = "";
     const flags = item.system.special ?? {};
@@ -919,15 +921,17 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     if (success && has("force")) specialNotes.push(localize("RT.Combat.SpecialNote.Force"));
     if (success && has("shocking")) specialNotes.push(localize("RT.Combat.SpecialNote.Shocking"));
     if (success && degrees >= 2 && has("razorSharp")) specialNotes.push(localize("RT.Combat.SpecialNote.RazorSharp"));
-    if (success && has("accurate") && aim.id !== "none" && degrees >= 1) {
+    if (!isMelee && success && has("accurate") && aim.id !== "none" && degrees >= 1) {
       specialNotes.push(localize("RT.Combat.SpecialNote.Accurate"));
     }
 
+    const classLabel = localize(weaponClassDef(item.system.class, item.system.range).label);
     const modsSummary = [
+      classLabel,
       `${localize(CHARACTERISTICS[charKey].abbrKey)} ${base}`,
-      localize(aim.label),
-      !isMelee ? localize(range.label) : null,
-      localize(FIRE_MODES.find((f) => f.id === fireMode)?.label || "RT.Combat.FireMode.Single")
+      !isMelee ? localize(aim.label) : null,
+      !isMelee && range ? localize(range.label) : null,
+      !isMelee ? localize(FIRE_MODES.find((f) => f.id === fireMode)?.label || "RT.Combat.FireMode.Single") : null
     ].filter(Boolean).join(" · ");
 
     const content = await foundry.applications.handlebars.renderTemplate(
@@ -1075,7 +1079,8 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
           const showQuantity = item.type === "gear" || item.type === "ammo";
           let summary = "";
           if (item.type === "weapon") {
-            const bits = [item.system.damage, item.system.specialText].filter(Boolean);
+            const classLabel = game.i18n.localize(weaponClassDef(item.system.class, item.system.range).label);
+            const bits = [classLabel, item.system.damage, item.system.specialText].filter(Boolean);
             summary = bits.join(" · ");
           } else if (item.type === "armour") {
             const loc = item.system.locations ?? {};
@@ -1137,32 +1142,49 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         };
       });
 
-    const combatWeapons = this.document.items
-      .filter((i) => i.type === "weapon" && i.system.equipped)
-      .map((i) => {
-        const mods = this.#weaponModsFor(i.id);
-        const rof = i.system.rateOfFire ?? {};
-        const singleOk = (Number(rof.single) || 0) > 0 || (!rof.burst && !rof.full);
-        const semiOk = (Number(rof.burst) || 0) > 0;
-        const fullOk = (Number(rof.full) || 0) > 0;
-        const specials = resolveWeaponSpecialDisplay(i.system.specialQualities, i.system.specialText)
-          .map((s) => s.title)
-          .join(", ");
-        const bits = [i.system.damage, i.system.damageType, specials].filter(Boolean);
-        return {
-          id: i.id,
-          name: i.name,
-          summary: bits.join(" · "),
-          specials,
-          aimOptions: AIM_OPTIONS.map((o) => ({ ...o, selected: mods.aim === o.id })),
-          rangeOptions: RANGE_OPTIONS.map((o) => ({ ...o, selected: mods.range === o.id })),
-          fireModes: FIRE_MODES.map((o) => ({
-            ...o,
-            selected: mods.fireMode === o.id,
-            disabled: o.id === "single" ? !singleOk && (semiOk || fullOk) : o.id === "semi" ? !semiOk : !fullOk
-          }))
-        };
-      });
+    const mapWeapon = (i, withRangedMods) => {
+      const classDef = weaponClassDef(i.system.class, i.system.range);
+      const specials = resolveWeaponSpecialDisplay(i.system.specialQualities, i.system.specialText)
+        .map((s) => s.title)
+        .join(", ");
+      const bits = [
+        game.i18n.localize(classDef.label),
+        i.system.damage,
+        i.system.damageType,
+        specials
+      ].filter(Boolean);
+      const row = {
+        id: i.id,
+        name: i.name,
+        summary: bits.join(" · "),
+        specials,
+        classLabel: classDef.label
+      };
+      if (!withRangedMods) return row;
+      const mods = this.#weaponModsFor(i.id);
+      const rof = i.system.rateOfFire ?? {};
+      const singleOk = (Number(rof.single) || 0) > 0 || (!rof.burst && !rof.full);
+      const semiOk = (Number(rof.burst) || 0) > 0;
+      const fullOk = (Number(rof.full) || 0) > 0;
+      return {
+        ...row,
+        aimOptions: AIM_OPTIONS.map((o) => ({ ...o, selected: mods.aim === o.id })),
+        rangeOptions: RANGE_OPTIONS.map((o) => ({ ...o, selected: mods.range === o.id })),
+        fireModes: FIRE_MODES.map((o) => ({
+          ...o,
+          selected: mods.fireMode === o.id,
+          disabled: o.id === "single" ? !singleOk && (semiOk || fullOk) : o.id === "semi" ? !semiOk : !fullOk
+        }))
+      };
+    };
+
+    const equippedWeapons = this.document.items.filter((i) => i.type === "weapon" && i.system.equipped);
+    const combatMelee = equippedWeapons
+      .filter((i) => weaponCombatKind(i) === "melee")
+      .map((i) => mapWeapon(i, false));
+    const combatRanged = equippedWeapons
+      .filter((i) => weaponCombatKind(i) === "ranged")
+      .map((i) => mapWeapon(i, true));
 
     return {
       encumbranceLevelLabel,
@@ -1173,7 +1195,8 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         { id: "custom", label: "RT.Combat.MovementCustom", selected: movementMode === "custom" }
       ],
       combatArmour,
-      combatWeapons
+      combatMelee,
+      combatRanged
     };
   }
 
