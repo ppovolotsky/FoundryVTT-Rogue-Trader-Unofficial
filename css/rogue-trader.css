@@ -1345,16 +1345,23 @@ body.theme-dark,
   font-weight: bold;
 }
 
-/* Psychic powers fill the left column first, then the right one.
-   Must beat .rt-talents-list's display:flex, which ignores columns. */
+/* Psychic powers alternate left/right in document order: CSS multi-columns
+   balance by height (1st card left, the rest right), so a wrapped flex row
+   with half-width blocks is used instead. */
 .rogue-trader.sheet .rt-talents-list[data-list-shell="psyPowers"] {
-  display: block;
-  columns: 2;
-  column-gap: 10px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: flex-start;
 }
 
 .rogue-trader.sheet [data-list-shell="psyPowers"] .rt-talent-block {
-  break-inside: avoid;
+  flex: 0 0 calc(50% - 3px);
+  min-width: 0;
+  /* border-box keeps padding+border inside the half width, so the pair
+     fits the row exactly; content-box made each block 14px wider and the
+     second one always wrapped onto its own line. */
+  box-sizing: border-box;
 }
 
 /* ---------- Misc sheet styles ---------- */
