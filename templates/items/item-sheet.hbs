@@ -12,6 +12,12 @@
       <div class="form-fields">
         {{#if (eq field.input "checkbox")}}
         <input type="checkbox" name="{{field.name}}" {{checked field.value}}/>
+        {{else if (eq field.input "select")}}
+        <select name="{{field.name}}">
+          {{#each field.options as |opt|}}
+          <option value="{{opt.id}}" {{#if opt.selected}}selected{{/if}}>{{localize opt.label}}</option>
+          {{/each}}
+        </select>
         {{else}}
         <input type="{{field.input}}" name="{{field.name}}" value="{{field.value}}" data-dtype="{{#if (eq field.input "number")}}Number{{else}}String{{/if}}"/>
         {{/if}}

@@ -250,10 +250,54 @@ export const ITEM_TYPES = {
   ammo: "RT.ItemTypes.Ammo"
 };
 
+/** RT weapon class catalog. `kind` drives Combat tab melee vs ranged UI. */
+export const WEAPON_CLASSES = [
+  { id: "melee", label: "RT.Items.Weapon.ClassMelee", kind: "melee" },
+  { id: "thrown", label: "RT.Items.Weapon.ClassThrown", kind: "ranged" },
+  { id: "pistol", label: "RT.Items.Weapon.ClassPistol", kind: "ranged" },
+  { id: "basic", label: "RT.Items.Weapon.ClassBasic", kind: "ranged" },
+  { id: "heavy", label: "RT.Items.Weapon.ClassHeavy", kind: "ranged" }
+];
+
+const WEAPON_CLASS_ALIASES = {
+  melee: "melee",
+  "melee/thr": "melee",
+  "melee/thrown": "melee",
+  thrown: "thrown",
+  pistol: "pistol",
+  basic: "basic",
+  heavy: "heavy"
+};
+
+/**
+ * Map pack/legacy class strings to a catalog id.
+ * Unknown: ranged if range > 0, otherwise melee.
+ */
+export function normalizeWeaponClass(raw, range = 0) {
+  const key = String(raw ?? "").trim().toLowerCase().replace(/\s+/g, "");
+  if (WEAPON_CLASS_ALIASES[key]) return WEAPON_CLASS_ALIASES[key];
+  if (key.includes("melee")) return "melee";
+  if (key.includes("thrown") || key === "thr") return "thrown";
+  if (key.includes("pistol")) return "pistol";
+  if (key.includes("heavy")) return "heavy";
+  if (key.includes("basic")) return "basic";
+  return Number(range) > 0 ? "basic" : "melee";
+}
+
+export function weaponClassDef(raw, range = 0) {
+  const id = normalizeWeaponClass(raw, range);
+  return WEAPON_CLASSES.find((c) => c.id === id) ?? WEAPON_CLASSES[0];
+}
+
+/** @returns {"melee"|"ranged"} */
+export function weaponCombatKind(item) {
+  return weaponClassDef(item?.system?.class, item?.system?.range).kind;
+}
+
 // Fields shown on the item sheet (nested paths use dotted system.* keys).
 export const ITEM_FIELDS = {
   weapon: [
-    { path: "class", label: "RT.Items.Weapon.Class", input: "text" },
+    { path: "class", label: "RT.Items.Weapon.Class", input: "select", options: WEAPON_CLASSES },
     { path: "weaponType", label: "RT.Items.Weapon.WeaponType", input: "text" },
     { path: "range", label: "RT.Items.Weapon.Range", input: "number" },
     { path: "damage", label: "RT.Items.Weapon.Damage", input: "text" },
@@ -534,6 +578,7 @@ export function registerConfig() {
     itemFields: ITEM_FIELDS,
     gearCategories: GEAR_CATEGORIES,
     weaponSpecials: WEAPON_SPECIALS,
+    weaponClasses: WEAPON_CLASSES,
     sizes: SIZES,
     encumbranceBySb: ENCUMBRANCE_BY_SB,
     en: null

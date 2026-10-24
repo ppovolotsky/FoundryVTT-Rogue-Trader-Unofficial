@@ -1,4 +1,10 @@
-import { ITEM_FIELDS, ITEM_TYPES, parseWeaponSpecials, resolveWeaponSpecialDisplay } from "../config.js";
+import {
+  ITEM_FIELDS,
+  ITEM_TYPES,
+  parseWeaponSpecials,
+  resolveWeaponSpecialDisplay,
+  normalizeWeaponClass
+} from "../config.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ItemSheetV2 } = foundry.applications.sheets;
@@ -31,6 +37,9 @@ export class RTItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       foundry.utils.setProperty(data, "system.specialQualities", parsed.qualities);
       foundry.utils.setProperty(data, "system.specialText", parsed.specialText);
     }
+    if (this.document.type === "weapon" && data.system?.class !== undefined) {
+      data.system.class = normalizeWeaponClass(data.system.class, data.system.range ?? this.document.system.range);
+    }
     await this.document.update(data);
   }
 
@@ -42,6 +51,22 @@ export class RTItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     context.typeLabel = game.i18n.localize(ITEM_TYPES[item.type] ?? item.type);
     context.fields = (ITEM_FIELDS[item.type] ?? []).map((field) => {
       const raw = foundry.utils.getProperty(item, `system.${field.path}`);
+      if (field.input === "select") {
+        const value = field.path === "class"
+          ? normalizeWeaponClass(raw, item.system.range)
+          : String(raw ?? "");
+        return {
+          name: `system.${field.path}`,
+          label: field.label,
+          input: "select",
+          value,
+          options: (field.options ?? []).map((opt) => ({
+            id: opt.id,
+            label: opt.label,
+            selected: value === opt.id
+          }))
+        };
+      }
       return {
         name: `system.${field.path}`,
         label: field.label,

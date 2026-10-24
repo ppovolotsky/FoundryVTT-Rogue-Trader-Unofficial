@@ -123,10 +123,32 @@
   </section>
 
   <section class="rt-sheet-section">
-    <label class="rt-sheet-section__title">{{localize "RT.Combat.Weapons"}}</label>
-    {{#if combatWeapons.length}}
+    <label class="rt-sheet-section__title">{{localize "RT.Combat.MeleeWeapons"}}</label>
+    {{#if combatMelee.length}}
     <div class="rt-combat-weapons">
-      {{#each combatWeapons as |w|}}
+      {{#each combatMelee as |w|}}
+      <div class="rt-combat-weapon" data-item-id="{{w.id}}">
+        <div class="rt-combat-weapon__header">
+          <button type="button" class="rt-inventory-row__name" data-action="editInventoryItem" data-item-id="{{w.id}}">{{w.name}}</button>
+          <span class="rt-combat-weapon__summary">{{w.summary}}</span>
+          <button type="button" class="rt-button rt-button--small" data-action="rollWeaponAttack" data-item-id="{{w.id}}">{{localize "RT.Combat.Attack"}}</button>
+        </div>
+        {{#if w.specials}}
+        <div class="rt-combat-weapon__specials">{{w.specials}}</div>
+        {{/if}}
+      </div>
+      {{/each}}
+    </div>
+    {{else}}
+    <p class="rt-inventory-empty">{{localize "RT.Combat.NoMelee"}}</p>
+    {{/if}}
+  </section>
+
+  <section class="rt-sheet-section">
+    <label class="rt-sheet-section__title">{{localize "RT.Combat.RangedWeapons"}}</label>
+    {{#if combatRanged.length}}
+    <div class="rt-combat-weapons">
+      {{#each combatRanged as |w|}}
       <div class="rt-combat-weapon" data-item-id="{{w.id}}">
         <div class="rt-combat-weapon__header">
           <button type="button" class="rt-inventory-row__name" data-action="editInventoryItem" data-item-id="{{w.id}}">{{w.name}}</button>
@@ -163,7 +185,7 @@
       {{/each}}
     </div>
     {{else}}
-    <p class="rt-inventory-empty">{{localize "RT.Combat.NoWeapons"}}</p>
+    <p class="rt-inventory-empty">{{localize "RT.Combat.NoRanged"}}</p>
     {{/if}}
   </section>
 
