@@ -619,6 +619,7 @@
                                                   "common"
                                               ],
                                 "armourType":  "",
+                                "craftsmanship":  "common",
                                 "locations":  {
                                                   "head":  0,
                                                   "body":  0,

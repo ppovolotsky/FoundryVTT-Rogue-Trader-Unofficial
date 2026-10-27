@@ -24,9 +24,11 @@
       {{#each section.items as |item|}}
       <div class="rt-inventory-row rt-talent-block" data-item-id="{{item.id}}" data-block-index="{{item.id}}">
         <div class="rt-inventory-row__header rt-talent-block__header">
-          <img class="rt-inventory-row__img" src="{{item.img}}" alt=""/>
+          <button type="button" class="rt-inventory-row__img-btn" data-action="editInventoryItem" data-item-id="{{item.id}}" title="{{localize "RT.Inventory.OpenItem"}}">
+            <img class="rt-inventory-row__img" src="{{item.img}}" alt=""/>
+          </button>
           <div class="rt-inventory-row__main">
-            <button type="button" class="rt-inventory-row__name" data-action="editInventoryItem" data-item-id="{{item.id}}">{{item.name}}</button>
+            <input type="text" class="rt-inventory-row__name-input" data-item-id="{{item.id}}" data-item-field="name" value="{{item.name}}" placeholder="{{localize "RT.Items.Name"}}"/>
           </div>
 
           {{#if item.showEquipped}}
@@ -39,7 +41,7 @@
 
           {{#if item.showQuantity}}
           <div class="rt-stepper rt-inventory-row__qty">
-            <input type="number" value="{{item.quantity}}" data-dtype="Number" disabled/>
+            <input type="number" value="{{item.quantity}}" data-dtype="Number" data-item-id="{{item.id}}" data-item-field="system.quantity"/>
             <div class="rt-stepper__buttons">
               <button type="button" class="rt-stepper__btn" data-action="adjustItemQuantity" data-item-id="{{item.id}}" data-delta="1" title="+1"><i class="fa-solid fa-chevron-up"></i></button>
               <button type="button" class="rt-stepper__btn" data-action="adjustItemQuantity" data-item-id="{{item.id}}" data-delta="-1" title="-1"><i class="fa-solid fa-chevron-down"></i></button>
@@ -57,14 +59,212 @@
           <span></span>
           {{/if}}
 
-          <button type="button" class="rt-button rt-button--small" data-action="toggleRowExpand" title="{{localize "RT.Talents.ShowDesc"}}"><i class="fa-solid fa-chevron-down"></i></button>
+          <button type="button" class="rt-button rt-button--small" data-action="toggleRowExpand" title="{{localize "RT.Inventory.ExpandEdit"}}"><i class="fa-solid fa-chevron-down"></i></button>
           <button type="button" class="rt-button rt-button--small rt-inventory-row__delete" data-action="deleteInventoryItem" data-item-id="{{item.id}}" title="{{localize "RT.Inventory.Delete"}}">
             <i class="fa-solid fa-trash"></i>
           </button>
         </div>
-        <div class="rt-talent-block__body rt-hidden">
-          <div class="rt-inventory-row__desc-full">{{#if item.description}}{{item.description}}{{else}}{{localize "RT.Combat.NoDescription"}}{{/if}}</div>
-          <button type="button" class="rt-button rt-button--small" data-action="editInventoryItem" data-item-id="{{item.id}}">{{localize "RT.Inventory.OpenItem"}}</button>
+
+        <div class="rt-talent-block__body rt-hidden rt-inventory-row__body">
+          {{#if (eq item.type "weapon")}}
+          <div class="rt-inv-edit rt-inv-edit--weapon">
+            <div class="rt-inv-edit__row">
+              <label>{{localize "RT.Items.Weapon.Kind"}}
+                <select data-item-id="{{item.id}}" data-item-field="system.kind">
+                  {{#each item.kindOptions as |opt|}}
+                  <option value="{{opt.id}}" {{#if opt.selected}}selected{{/if}}>{{localize opt.label}}</option>
+                  {{/each}}
+                </select>
+              </label>
+              <label>{{localize "RT.Items.Weapon.Class"}}
+                <select data-item-id="{{item.id}}" data-item-field="system.class">
+                  {{#each item.classOptions as |opt|}}
+                  <option value="{{opt.id}}" {{#if opt.selected}}selected{{/if}}>{{localize opt.label}}</option>
+                  {{/each}}
+                </select>
+              </label>
+              <label class="rt-inv-edit__check">
+                <input type="checkbox" data-item-id="{{item.id}}" data-item-field="system.exotic" {{checked item.exotic}}/>
+                {{localize "RT.Items.Weapon.Exotic"}}
+              </label>
+              <label>{{localize "RT.Items.Craftsmanship"}}
+                <select data-item-id="{{item.id}}" data-item-field="system.craftsmanship">
+                  {{#each item.craftOptions as |opt|}}
+                  <option value="{{opt.id}}" {{#if opt.selected}}selected{{/if}}>{{localize opt.label}}</option>
+                  {{/each}}
+                </select>
+              </label>
+            </div>
+
+            <div class="rt-inv-edit__row">
+              <label>{{localize "RT.Items.Weapon.WeaponType"}}
+                <input type="text" data-item-id="{{item.id}}" data-item-field="system.weaponType" value="{{item.weaponType}}"/>
+              </label>
+              {{#if item.showRange}}
+              <label>{{localize "RT.Items.Weapon.Range"}}
+                <input type="number" data-dtype="Number" data-item-id="{{item.id}}" data-item-field="system.range" value="{{item.range}}"/>
+              </label>
+              {{/if}}
+              <label>{{localize "RT.Items.Weapon.Damage"}}
+                <input type="text" data-item-id="{{item.id}}" data-item-field="system.damage" value="{{item.damage}}" placeholder="1d10+3"/>
+              </label>
+              <label>{{localize "RT.Items.Weapon.DamageType"}}
+                <input type="text" data-item-id="{{item.id}}" data-item-field="system.damageType" value="{{item.damageType}}"/>
+              </label>
+              <label>{{localize "RT.Items.Weapon.Penetration"}}
+                <input type="number" data-dtype="Number" data-item-id="{{item.id}}" data-item-field="system.penetration" value="{{item.penetration}}"/>
+              </label>
+            </div>
+
+            {{#if item.showFirearm}}
+            <div class="rt-inv-edit__row">
+              <label>{{localize "RT.Items.Weapon.RoFSingle"}}
+                <input type="number" data-dtype="Number" data-item-id="{{item.id}}" data-item-field="system.rateOfFire.single" value="{{item.rofSingle}}"/>
+              </label>
+              <label>{{localize "RT.Items.Weapon.RoFBurst"}}
+                <input type="number" data-dtype="Number" data-item-id="{{item.id}}" data-item-field="system.rateOfFire.burst" value="{{item.rofBurst}}"/>
+              </label>
+              <label>{{localize "RT.Items.Weapon.RoFFull"}}
+                <input type="number" data-dtype="Number" data-item-id="{{item.id}}" data-item-field="system.rateOfFire.full" value="{{item.rofFull}}"/>
+              </label>
+              <label>{{localize "RT.Items.Weapon.ClipValue"}}
+                <input type="number" data-dtype="Number" data-item-id="{{item.id}}" data-item-field="system.clip.value" value="{{item.clipValue}}"/>
+              </label>
+              <label>{{localize "RT.Items.Weapon.ClipMax"}}
+                <input type="number" data-dtype="Number" data-item-id="{{item.id}}" data-item-field="system.clip.max" value="{{item.clipMax}}"/>
+              </label>
+              <label>{{localize "RT.Items.Weapon.Reload"}}
+                <input type="text" data-item-id="{{item.id}}" data-item-field="system.reload" value="{{item.reload}}"/>
+              </label>
+            </div>
+            {{/if}}
+
+            <div class="rt-inv-edit__specials">
+              <div class="rt-inv-edit__specials-head">
+                <span class="rt-inv-edit__label">{{localize "RT.Items.Weapon.SpecialQualities"}}</span>
+                <button type="button" class="rt-button rt-button--small" data-action="editWeaponSpecials" data-item-id="{{item.id}}">{{localize "RT.Inventory.EditSpecials"}}</button>
+              </div>
+              {{#if item.specials.length}}
+              <div class="rt-inv-edit__chips">
+                {{#each item.specials as |sp|}}
+                <span class="rt-inv-chip" title="{{sp.summary}}">
+                  {{sp.title}}
+                  {{#if sp.id}}
+                  <button type="button" class="rt-inv-chip__remove" data-action="removeWeaponSpecial" data-item-id="{{item.id}}" data-special-id="{{sp.id}}" title="{{localize "RT.Inventory.RemoveSpecial"}}">&times;</button>
+                  {{/if}}
+                </span>
+                {{/each}}
+              </div>
+              {{else}}
+              <span class="rt-inv-edit__muted">{{localize "RT.Inventory.NoSpecials"}}</span>
+              {{/if}}
+            </div>
+
+            <div class="rt-inv-edit__row">
+              <label>{{localize "RT.Items.Weight"}}
+                <input type="number" data-dtype="Number" data-item-id="{{item.id}}" data-item-field="system.weight" value="{{item.weight}}"/>
+              </label>
+              <label>{{localize "RT.Items.Availability"}}
+                <input type="text" data-item-id="{{item.id}}" data-item-field="system.availability" value="{{item.availability}}"/>
+              </label>
+              <label>{{localize "RT.Items.Cost"}}
+                <input type="text" data-item-id="{{item.id}}" data-item-field="system.cost" value="{{item.cost}}"/>
+              </label>
+              <label>{{localize "RT.Items.Source"}}
+                <input type="text" data-item-id="{{item.id}}" data-item-field="system.source" value="{{item.source}}"/>
+              </label>
+            </div>
+          </div>
+          {{else if (eq item.type "armour")}}
+          <div class="rt-inv-edit rt-inv-edit--armour">
+            <div class="rt-inv-edit__row">
+              <label>{{localize "RT.Items.Armour.ArmourType"}}
+                <input type="text" data-item-id="{{item.id}}" data-item-field="system.armourType" value="{{item.armourType}}"/>
+              </label>
+              <label class="rt-inv-edit__check">
+                <input type="checkbox" data-item-id="{{item.id}}" data-item-field="system.powered" {{checked item.powered}}/>
+                {{localize "RT.Items.Armour.Powered"}}
+              </label>
+              <label>{{localize "RT.Items.Craftsmanship"}}
+                <select data-item-id="{{item.id}}" data-item-field="system.craftsmanship">
+                  {{#each item.craftOptions as |opt|}}
+                  <option value="{{opt.id}}" {{#if opt.selected}}selected{{/if}}>{{localize opt.label}}</option>
+                  {{/each}}
+                </select>
+              </label>
+            </div>
+            <div class="rt-inv-edit__row rt-inv-edit__ap">
+              <label>{{localize "RT.Items.Armour.Head"}}
+                <input type="number" data-dtype="Number" data-item-id="{{item.id}}" data-item-field="system.locations.head" value="{{item.locHead}}"/>
+              </label>
+              <label>{{localize "RT.Items.Armour.Body"}}
+                <input type="number" data-dtype="Number" data-item-id="{{item.id}}" data-item-field="system.locations.body" value="{{item.locBody}}"/>
+              </label>
+              <label>{{localize "RT.Items.Armour.LeftArm"}}
+                <input type="number" data-dtype="Number" data-item-id="{{item.id}}" data-item-field="system.locations.leftArm" value="{{item.locLeftArm}}"/>
+              </label>
+              <label>{{localize "RT.Items.Armour.RightArm"}}
+                <input type="number" data-dtype="Number" data-item-id="{{item.id}}" data-item-field="system.locations.rightArm" value="{{item.locRightArm}}"/>
+              </label>
+              <label>{{localize "RT.Items.Armour.LeftLeg"}}
+                <input type="number" data-dtype="Number" data-item-id="{{item.id}}" data-item-field="system.locations.leftLeg" value="{{item.locLeftLeg}}"/>
+              </label>
+              <label>{{localize "RT.Items.Armour.RightLeg"}}
+                <input type="number" data-dtype="Number" data-item-id="{{item.id}}" data-item-field="system.locations.rightLeg" value="{{item.locRightLeg}}"/>
+              </label>
+            </div>
+            <div class="rt-inv-edit__row">
+              <label>{{localize "RT.Items.Weight"}}
+                <input type="number" data-dtype="Number" data-item-id="{{item.id}}" data-item-field="system.weight" value="{{item.weight}}"/>
+              </label>
+              <label>{{localize "RT.Items.Availability"}}
+                <input type="text" data-item-id="{{item.id}}" data-item-field="system.availability" value="{{item.availability}}"/>
+              </label>
+              <label>{{localize "RT.Items.Cost"}}
+                <input type="text" data-item-id="{{item.id}}" data-item-field="system.cost" value="{{item.cost}}"/>
+              </label>
+              <label>{{localize "RT.Items.Source"}}
+                <input type="text" data-item-id="{{item.id}}" data-item-field="system.source" value="{{item.source}}"/>
+              </label>
+            </div>
+          </div>
+          {{else}}
+          <div class="rt-inv-edit rt-inv-edit--gear">
+            <div class="rt-inv-edit__row">
+              {{#if (eq item.type "ammo")}}
+              <label>{{localize "RT.Items.Weapon.WeaponType"}}
+                <input type="text" data-item-id="{{item.id}}" data-item-field="system.weaponType" value="{{item.weaponType}}"/>
+              </label>
+              {{else}}
+              <label>{{localize "RT.Items.Category"}}
+                <input type="text" data-item-id="{{item.id}}" data-item-field="system.category" value="{{item.category}}"/>
+              </label>
+              {{/if}}
+              <label>{{localize "RT.Items.UsedFor"}}
+                <input type="text" data-item-id="{{item.id}}" data-item-field="system.usedFor" value="{{item.usedFor}}"/>
+              </label>
+              <label>{{localize "RT.Items.Quantity"}}
+                <input type="number" data-dtype="Number" data-item-id="{{item.id}}" data-item-field="system.quantity" value="{{item.quantity}}"/>
+              </label>
+              <label>{{localize "RT.Items.Weight"}}
+                <input type="number" data-dtype="Number" data-item-id="{{item.id}}" data-item-field="system.weight" value="{{item.weight}}"/>
+              </label>
+            </div>
+            <div class="rt-inv-edit__row">
+              <label>{{localize "RT.Items.Availability"}}
+                <input type="text" data-item-id="{{item.id}}" data-item-field="system.availability" value="{{item.availability}}"/>
+              </label>
+              <label>{{localize "RT.Items.Cost"}}
+                <input type="text" data-item-id="{{item.id}}" data-item-field="system.cost" value="{{item.cost}}"/>
+              </label>
+              <label>{{localize "RT.Items.Source"}}
+                <input type="text" data-item-id="{{item.id}}" data-item-field="system.source" value="{{item.source}}"/>
+              </label>
+            </div>
+          </div>
+          {{/if}}
+
+          <textarea class="rt-description rt-inventory-row__desc-edit" rows="3" data-item-id="{{item.id}}" data-item-field="system.description" placeholder="{{localize "RT.Items.Description"}}">{{item.description}}</textarea>
         </div>
       </div>
       {{/each}}

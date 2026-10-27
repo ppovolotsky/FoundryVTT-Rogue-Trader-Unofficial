@@ -21,9 +21,16 @@ import {
   FIRE_MODES,
   MELEE_ATTACK_TYPES,
   CRAFTSMANSHIP,
+  WEAPON_KINDS,
+  WEAPON_SPECIALS,
   resolveWeaponSpecialDisplay,
+  serializeWeaponSpecials,
+  parseWeaponSpecials,
   weaponCombatKind,
   weaponClassDef,
+  weaponClassesForKind,
+  normalizeWeaponClass,
+  normalizeWeaponKind,
   craftsmanshipDef,
   normalizeCraftsmanship
 } from "../config.js";
@@ -179,6 +186,8 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       deleteInventoryItem: RTCharacterSheet.#onDeleteInventoryItem,
       toggleItemEquipped: RTCharacterSheet.#onToggleItemEquipped,
       adjustItemQuantity: RTCharacterSheet.#onAdjustItemQuantity,
+      editWeaponSpecials: RTCharacterSheet.#onEditWeaponSpecials,
+      removeWeaponSpecial: RTCharacterSheet.#onRemoveWeaponSpecial,
       rollWeaponAttack: RTCharacterSheet.#onRollWeaponAttack,
       rollWeaponDamage: RTCharacterSheet.#onRollWeaponDamage,
       adjustWeaponClip: RTCharacterSheet.#onAdjustWeaponClip,
@@ -859,6 +868,142 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     await item.update({ "system.quantity": Math.max(0, current + delta) });
   }
 
+  /**
+   * Persist a single inventory field from an expanded row (not actor form-bound).
+   * Paths: "name" or "system.*" (dotted).
+   */
+  static async #applyInventoryItemField(item, field, el) {
+    if (!item || !field) return;
+    let value;
+    if (el.type === "checkbox") value = !!el.checked;
+    else if (el.type === "number" || el.dataset.dtype === "Number") value = Number(el.value || 0);
+    else value = el.value;
+
+    if (field === "name") {
+      await item.update({ name: String(value || item.name) });
+      return;
+    }
+
+    if (field === "system.kind") {
+      const kind = normalizeWeaponKind(value, item.system.class, item.system.range);
+      let cls = normalizeWeaponClass(item.system.class, item.system.range);
+      const allowed = weaponClassesForKind(kind).map((c) => c.id);
+      if (!allowed.includes(cls)) cls = allowed[0];
+      await item.update({ "system.kind": kind, "system.class": cls });
+      return;
+    }
+
+    if (field === "system.class") {
+      const kind = normalizeWeaponKind(item);
+      const cls = normalizeWeaponClass(value, item.system.range);
+      const allowed = weaponClassesForKind(kind).map((c) => c.id);
+      await item.update({ "system.class": allowed.includes(cls) ? cls : allowed[0] });
+      return;
+    }
+
+    if (field === "system.craftsmanship") {
+      await item.update({ "system.craftsmanship": normalizeCraftsmanship(value) });
+      return;
+    }
+
+    if (field === "system.exotic") {
+      await item.update({ "system.exotic": !!value });
+      return;
+    }
+
+    await item.update({ [field]: value });
+  }
+
+  static async #onEditWeaponSpecials(event, target) {
+    const item = this.document.items.get(target.dataset.itemId);
+    if (!item || item.type !== "weapon") return;
+
+    let qualities = Array.isArray(item.system.specialQualities) ? item.system.specialQualities : [];
+    if (!qualities.length && item.system.specialText) {
+      qualities = parseWeaponSpecials(item.system.specialText).qualities;
+    }
+    const selected = new Map(qualities.filter((q) => q.id).map((q) => [q.id, q]));
+
+    const rowsHtml = WEAPON_SPECIALS.map((s) => {
+      const cur = selected.get(s.id);
+      const checked = cur ? "checked" : "";
+      const paramVal = cur?.param ?? "";
+      const paramInput = s.param
+        ? `<input type="number" class="rt-special-picker__param" data-special-param="${s.id}" value="${paramVal}" placeholder="X"/>`
+        : "";
+      const summary = s.summaryKey ? game.i18n.localize(s.summaryKey) : "";
+      const esc = (t) => String(t ?? "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+      return `<label class="rt-special-picker__row" title="${esc(summary)}">
+        <input type="checkbox" data-special-id="${s.id}" ${checked}/>
+        <span class="rt-special-picker__label">${esc(s.label)}</span>
+        ${paramInput}
+      </label>`;
+    }).join("");
+
+    const content = `<form class="rt-special-picker"><div class="rt-special-picker__list">${rowsHtml}</div></form>`;
+    const confirmed = await DialogV2.wait({
+      window: { title: `${item.name} — ${game.i18n.localize("RT.Inventory.EditSpecials")}` },
+      content,
+      modal: true,
+      buttons: [
+        {
+          action: "ok",
+          label: game.i18n.localize("RT.Dialog.Ok"),
+          icon: "fas fa-check",
+          default: true,
+          callback: (event, button, dialog) => {
+            const form = dialog.element.querySelector("form");
+            const next = [];
+            for (const def of WEAPON_SPECIALS) {
+              const box = form.querySelector(`input[data-special-id="${def.id}"]`);
+              if (!box?.checked) continue;
+              let param = null;
+              if (def.param) {
+                const pEl = form.querySelector(`input[data-special-param="${def.id}"]`);
+                const raw = pEl?.value;
+                if (raw !== "" && raw !== undefined) {
+                  const n = Number(raw);
+                  param = Number.isFinite(n) ? n : raw;
+                }
+              }
+              next.push({ id: def.id, label: def.label, param });
+            }
+            return next;
+          }
+        },
+        {
+          action: "cancel",
+          label: game.i18n.localize("RT.Dialog.Cancel"),
+          icon: "fas fa-xmark"
+        }
+      ]
+    });
+    if (!Array.isArray(confirmed)) return;
+    const packed = serializeWeaponSpecials(confirmed);
+    await item.update({
+      "system.specialQualities": packed.qualities,
+      "system.special": packed.flags,
+      "system.specialText": packed.specialText
+    });
+  }
+
+  static async #onRemoveWeaponSpecial(event, target) {
+    const item = this.document.items.get(target.dataset.itemId);
+    if (!item || item.type !== "weapon") return;
+    const removeId = target.dataset.specialId;
+    let qualities = Array.isArray(item.system.specialQualities) ? [...item.system.specialQualities] : [];
+    if (!qualities.length && item.system.specialText) {
+      qualities = parseWeaponSpecials(item.system.specialText).qualities;
+    }
+    qualities = qualities.filter((q) => q.id !== removeId);
+    const packed = serializeWeaponSpecials(qualities);
+    await item.update({
+      "system.specialQualities": packed.qualities,
+      "system.special": packed.flags,
+      "system.specialText": packed.specialText
+    });
+  }
+
   static async #onRollWeaponAttack(event, target) {
     const item = this.document.items.get(target.dataset.itemId);
     if (!item || item.type !== "weapon") return;
@@ -1136,6 +1281,9 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   #prepareInventorySections() {
     const items = this.document.items.contents.slice().sort((a, b) => a.name.localeCompare(b.name));
+    const firearmClasses = new Set(["pistol", "basic", "heavy"]);
+    const rangedClasses = new Set(["thrown", "pistol", "basic", "heavy"]);
+
     return INVENTORY_SECTIONS.map((section) => {
       const filtered = items.filter((item) => {
         if (item.type !== section.type) return false;
@@ -1151,33 +1299,94 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         items: filtered.map((item) => {
           const showEquipped = item.type === "weapon" || item.type === "armour";
           const showQuantity = item.type === "gear" || item.type === "ammo";
-          let summary = "";
-          if (item.type === "weapon") {
-            const classLabel = game.i18n.localize(weaponClassDef(item.system.class, item.system.range).label);
-            const bits = [classLabel, item.system.damage, item.system.specialText].filter(Boolean);
-            summary = bits.join(" · ");
-          } else if (item.type === "armour") {
-            const loc = item.system.locations ?? {};
-            summary = `AP ${loc.body ?? 0}`;
-          }
           const description = String(item.system.description ?? "").trim();
-          const descriptionShort = description.length > 80 ? `${description.slice(0, 77)}…` : description;
           const unitWeight = Number(item.system.weight) || 0;
           const qty = showQuantity ? Math.max(1, Number(item.system.quantity) || 1) : 1;
           const totalWeight = Math.round(unitWeight * qty * 100) / 100;
-          return {
+          const sys = item.system;
+
+          const row = {
             id: item.id,
+            type: item.type,
             name: item.name,
             img: item.img,
-            equipped: !!item.system.equipped,
-            quantity: item.system.quantity ?? 0,
+            equipped: !!sys.equipped,
+            quantity: sys.quantity ?? 0,
             showEquipped,
             showQuantity,
-            summary,
             description,
-            descriptionShort,
-            weightLabel: `${totalWeight}`
+            weight: unitWeight,
+            weightLabel: `${totalWeight}`,
+            availability: sys.availability ?? "",
+            cost: sys.cost ?? "",
+            source: sys.source ?? "",
+            craftsmanship: normalizeCraftsmanship(sys.craftsmanship),
+            craftOptions: CRAFTSMANSHIP.map((c) => ({
+              ...c,
+              selected: normalizeCraftsmanship(sys.craftsmanship) === c.id
+            }))
           };
+
+          if (item.type === "weapon") {
+            const classDef = weaponClassDef(sys.class, sys.range);
+            const kind = normalizeWeaponKind(item);
+            const specials = resolveWeaponSpecialDisplay(sys.specialQualities, sys.specialText);
+            const bits = [
+              game.i18n.localize(classDef.label),
+              sys.damage,
+              specials.map((s) => s.title).join(", ")
+            ].filter(Boolean);
+            Object.assign(row, {
+              summary: bits.join(" · "),
+              kind,
+              kindOptions: WEAPON_KINDS.map((k) => ({ ...k, selected: kind === k.id })),
+              classId: classDef.id,
+              classOptions: weaponClassesForKind(kind).map((c) => ({
+                ...c,
+                selected: classDef.id === c.id
+              })),
+              exotic: !!sys.exotic,
+              weaponType: sys.weaponType ?? "",
+              range: sys.range ?? 0,
+              damage: sys.damage ?? "",
+              damageType: sys.damageType ?? "",
+              penetration: sys.penetration ?? 0,
+              reload: sys.reload ?? "",
+              rofSingle: sys.rateOfFire?.single ?? 0,
+              rofBurst: sys.rateOfFire?.burst ?? 0,
+              rofFull: sys.rateOfFire?.full ?? 0,
+              clipValue: sys.clip?.value ?? 0,
+              clipMax: sys.clip?.max ?? 0,
+              showRange: rangedClasses.has(classDef.id),
+              showFirearm: firearmClasses.has(classDef.id),
+              specials,
+              specialText: sys.specialText ?? ""
+            });
+          } else if (item.type === "armour") {
+            const loc = sys.locations ?? {};
+            Object.assign(row, {
+              summary: `AP ${loc.body ?? 0}`,
+              armourType: sys.armourType ?? "",
+              powered: !!sys.powered,
+              locHead: loc.head ?? 0,
+              locBody: loc.body ?? 0,
+              locLeftArm: loc.leftArm ?? 0,
+              locRightArm: loc.rightArm ?? 0,
+              locLeftLeg: loc.leftLeg ?? 0,
+              locRightLeg: loc.rightLeg ?? 0
+            });
+          } else if (item.type === "gear" || item.type === "ammo") {
+            Object.assign(row, {
+              summary: sys.usedFor || sys.weaponType || sys.category || "",
+              category: sys.category ?? "",
+              usedFor: sys.usedFor ?? "",
+              weaponType: sys.weaponType ?? ""
+            });
+          } else {
+            row.summary = "";
+          }
+
+          return row;
         })
       };
     });
@@ -1578,6 +1787,16 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       const item = this.document.items.get(el.dataset.itemId);
       if (!item || !["weapon", "armour"].includes(item.type)) return;
       await item.update({ "system.equipped": !!el.checked }).catch(() => {});
+    });
+    // Expanded inventory editors: data-item-field + data-item-id → embedded Item.update.
+    this.element.addEventListener("change", async (event) => {
+      const el = event.target;
+      const field = el.dataset.itemField;
+      const itemId = el.dataset.itemId;
+      if (!field || !itemId) return;
+      const item = this.document.items.get(itemId);
+      if (!item) return;
+      await RTCharacterSheet.#applyInventoryItemField(item, field, el).catch(() => {});
     });
     // Combat weapon modifier dropdowns (sheet-local; not persisted).
     this.element.addEventListener("change", (event) => {
