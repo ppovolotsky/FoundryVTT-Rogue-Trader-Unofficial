@@ -380,6 +380,7 @@ export const ITEM_FIELDS = {
   ],
   armour: [
     { path: "armourType", label: "RT.Items.Armour.ArmourType", input: "text" },
+    { path: "craftsmanship", label: "RT.Items.Craftsmanship", input: "select", options: CRAFTSMANSHIP },
     { path: "locations.head", label: "RT.Items.Armour.Head", input: "number" },
     { path: "locations.body", label: "RT.Items.Armour.Body", input: "number" },
     { path: "locations.leftArm", label: "RT.Items.Armour.LeftArm", input: "number" },
@@ -513,6 +514,26 @@ export function resolveWeaponSpecialDisplay(specialQualities, specialText) {
     const summary = def?.summaryKey ? game.i18n.localize(def.summaryKey) : "";
     return { id: def?.id || "", title, summary };
   });
+}
+
+/**
+ * Rebuild specialText + flags from a qualities array [{id, label?, param?}].
+ */
+export function serializeWeaponSpecials(qualities) {
+  const flags = { tearing: false, accurate: false, reliable: false, unreliable: false };
+  const list = [];
+  for (const q of Array.isArray(qualities) ? qualities : []) {
+    const def = q.id ? WEAPON_SPECIALS.find((s) => s.id === q.id) : null;
+    const label = def?.label || q.label || "";
+    if (!label) continue;
+    const param = def?.param ? (q.param ?? null) : null;
+    list.push({ id: def?.id || q.id || "", label, param });
+    if (def?.flag) flags[def.flag] = true;
+  }
+  const specialText = list
+    .map((q) => (q.param !== null && q.param !== undefined && q.param !== "" ? `${q.label} (${q.param})` : q.label))
+    .join(", ");
+  return { qualities: list, flags, specialText };
 }
 
 /**
