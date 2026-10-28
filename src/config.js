@@ -339,13 +339,29 @@ export function craftsmanshipDef(raw) {
 
 /** Melee attack actions (RT Core) — test modifier applied to WS. */
 export const MELEE_ATTACK_TYPES = [
-  { id: "standard", label: "RT.Combat.MeleeAttack.Standard", mod: 0 },
-  { id: "allOut", label: "RT.Combat.MeleeAttack.AllOut", mod: 20 },
-  { id: "charge", label: "RT.Combat.MeleeAttack.Charge", mod: 10 },
-  { id: "guarded", label: "RT.Combat.MeleeAttack.Guarded", mod: -10 },
-  { id: "swift", label: "RT.Combat.MeleeAttack.Swift", mod: 0 },
-  { id: "lightning", label: "RT.Combat.MeleeAttack.Lightning", mod: 0 }
+  { id: "standard", label: "RT.Combat.MeleeAttack.Standard", mod: 0, attacks: 1 },
+  {
+    id: "allOut",
+    label: "RT.Combat.MeleeAttack.AllOut",
+    mod: 20,
+    attacks: 1,
+    noteKey: "RT.Combat.MeleeAttack.AllOutNote"
+  },
+  { id: "charge", label: "RT.Combat.MeleeAttack.Charge", mod: 10, attacks: 1 },
+  {
+    id: "guarded",
+    label: "RT.Combat.MeleeAttack.Guarded",
+    mod: -10,
+    attacks: 1,
+    noteKey: "RT.Combat.MeleeAttack.GuardedNote"
+  },
+  { id: "swift", label: "RT.Combat.MeleeAttack.Swift", mod: 0, attacks: 2 },
+  { id: "lightning", label: "RT.Combat.MeleeAttack.Lightning", mod: 0, attacks: 3 }
 ];
+
+export function meleeAttackDef(id) {
+  return MELEE_ATTACK_TYPES.find((o) => o.id === id) ?? MELEE_ATTACK_TYPES[0];
+}
 
 // Weapon sheet field visibility by class id. Omit `showFor` = always shown.
 const WEAPON_HAS_RANGE = ["thrown", "pistol", "basic", "heavy"];
@@ -644,11 +660,34 @@ export const RANGE_OPTIONS = [
   { id: "extreme", mod: -30, label: "RT.Combat.Range.Extreme" }
 ];
 
+/**
+ * Ranged attack types (RT Core). `hitRule`: single | semi | full.
+ * Semi: 1 + floor(DoS/2); Full/Suppressing: 1 + DoS; Called Shot: single hit, -20.
+ */
 export const FIRE_MODES = [
-  { id: "single", label: "RT.Combat.FireMode.Single" },
-  { id: "semi", label: "RT.Combat.FireMode.Semi" },
-  { id: "full", label: "RT.Combat.FireMode.Full" }
+  { id: "single", label: "RT.Combat.FireMode.Single", mod: 0, hitRule: "single" },
+  { id: "semi", label: "RT.Combat.FireMode.Semi", mod: 0, hitRule: "semi", needsBurst: true },
+  { id: "full", label: "RT.Combat.FireMode.Full", mod: -10, hitRule: "full", needsFull: true },
+  {
+    id: "calledShot",
+    label: "RT.Combat.FireMode.CalledShot",
+    mod: -20,
+    hitRule: "single",
+    noteKey: "RT.Combat.FireMode.CalledShotNote"
+  },
+  {
+    id: "suppressing",
+    label: "RT.Combat.FireMode.Suppressing",
+    mod: -10,
+    hitRule: "full",
+    needsFull: true,
+    noteKey: "RT.Combat.FireMode.SuppressingNote"
+  }
 ];
+
+export function rangedAttackDef(id) {
+  return FIRE_MODES.find((o) => o.id === id) ?? FIRE_MODES[0];
+}
 
 export function registerConfig() {
   CONFIG.ROGUE_TRADER = {

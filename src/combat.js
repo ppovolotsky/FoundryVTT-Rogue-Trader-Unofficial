@@ -55,21 +55,31 @@ export function rangedJamResult(item, rollValue, { criticalSuccess = false } = {
 }
 
 /**
- * Hits from RoF / DoS (semi/full). Storm doubles.
+ * Hits from RoF / DoS (RT Core). Semi: 1 + floor(DoS/2). Full/Suppressing: 1 + DoS.
+ * Storm doubles (capped).
  */
 export function rangedHitCount(item, fireMode, degrees, success) {
   if (!success) return 0;
+  const def = FIRE_MODES.find((o) => o.id === fireMode) ?? FIRE_MODES[0];
+  const rule = def.hitRule || fireMode;
   const rof = item.system?.rateOfFire ?? {};
   let hits = 1;
-  if (fireMode === "semi") {
-    hits = Math.min(Math.max(1, Number(rof.burst) || 1), 1 + degrees);
-  } else if (fireMode === "full") {
-    hits = Math.min(Math.max(1, Number(rof.full) || 1), 1 + degrees);
+  if (rule === "semi") {
+    const maxHits = Math.max(1, Number(rof.burst) || 1);
+    hits = Math.min(maxHits, 1 + Math.floor(degrees / 2));
+  } else if (rule === "full") {
+    const maxHits = Math.max(1, Number(rof.full) || 1);
+    hits = Math.min(maxHits, 1 + degrees);
   }
-  if (weaponHasSpecial(item, "storm") && hits > 0) {
-    hits = Math.min(hits * 2, (Number(rof.full) || Number(rof.burst) || hits) * 2);
+  if (weaponHasSpecial(item, "storm") && hits > 0 && (rule === "semi" || rule === "full")) {
+    const cap = rule === "semi" ? Number(rof.burst) || hits : Number(rof.full) || hits;
+    hits = Math.min(hits * 2, Math.max(cap, hits) * 2);
   }
   return hits;
+}
+
+export function rangedAttackMod(fireModeId) {
+  return FIRE_MODES.find((o) => o.id === fireModeId)?.mod ?? 0;
 }
 
 /**
@@ -188,6 +198,10 @@ export function rangeMod(rangeId) {
 
 export function meleeAttackMod(attackId) {
   return MELEE_ATTACK_TYPES.find((o) => o.id === attackId)?.mod ?? 0;
+}
+
+export function meleeAttackCount(attackId) {
+  return MELEE_ATTACK_TYPES.find((o) => o.id === attackId)?.attacks ?? 1;
 }
 
 export { AIM_OPTIONS, RANGE_OPTIONS, FIRE_MODES, MELEE_ATTACK_TYPES };

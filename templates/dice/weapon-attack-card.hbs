@@ -1,21 +1,50 @@
-<div class="rt-roll-card">
-  <div class="rt-roll-card__label">{{label}}</div>
-  <div class="rt-roll-card__row">{{localize "RT.Roll.Target"}}: {{finalTarget}} ({{target}}{{#if modifier}} {{modifier}}{{/if}})</div>
-  <div class="rt-roll-card__row">{{localize "RT.Roll.Result"}}: {{value}}</div>
-  <div class="rt-roll-card__result {{#if success}}rt-roll-card__result--ok{{else}}rt-roll-card__result--fail{{/if}}">
-    {{#if criticalSuccess}}{{localize "RT.Roll.CriticalSuccess"}}{{else if criticalFailure}}{{localize "RT.Roll.CriticalFailure"}}{{else if success}}{{localize "RT.Roll.Success"}}{{else}}{{localize "RT.Roll.Failure"}}{{/if}}
-    {{#if degrees}} — {{localize degreesKey}} {{degrees}}{{/if}}
+<details class="rt-roll-card {{#if success}}rt-roll-card--success{{else}}rt-roll-card--failure{{/if}}">
+  <summary class="rt-roll-card__summary">
+    <div class="rt-roll-card__summary-top">
+      <span class="rt-roll-card__label">{{label}}</span>
+      {{#if modeLabel}}<span class="rt-roll-card__mode">{{localize modeLabel}}</span>{{/if}}
+    </div>
+    <div class="rt-roll-card__summary-line">
+      <span>{{localize "RT.Roll.Target"}} {{finalTarget}} · {{localize "RT.Roll.Result"}} {{value}}</span>
+      <span class="rt-roll-card__result {{#if success}}rt-roll-card__result--ok{{else}}rt-roll-card__result--fail{{/if}}">
+        {{#if criticalSuccess}}{{localize "RT.Roll.CriticalSuccess"}}{{else if criticalFailure}}{{localize "RT.Roll.CriticalFailure"}}{{else if success}}{{localize "RT.Roll.Success"}}{{else}}{{localize "RT.Roll.Failure"}}{{/if}}{{#if degrees}} — {{localize degreesKey}} {{degrees}}{{/if}}
+      </span>
+    </div>
+    {{#if hits}}
+    <div class="rt-roll-card__summary-extra">{{localize "RT.Combat.Hits"}}: {{hits}}</div>
+    {{/if}}
+    {{#if jam}}
+    <div class="rt-roll-card__summary-extra rt-roll-card__jam">{{localize jamKey}}</div>
+    {{/if}}
+    <span class="rt-roll-card__expand-hint">{{localize "RT.Roll.ShowDetails"}}</span>
+  </summary>
+
+  <div class="rt-roll-card__details">
+    {{#if (eq mode "2d10")}}
+    <div class="rt-roll-card__dice">
+      <div class="rt-roll-card__die">
+        <span class="rt-roll-card__die-caption">{{localize "RT.Roll.Tens"}}</span>
+        <span class="rt-roll-card__die-value">{{tens}}</span>
+      </div>
+      <span class="rt-roll-card__operator">+</span>
+      <div class="rt-roll-card__die">
+        <span class="rt-roll-card__die-caption">{{localize "RT.Roll.Units"}}</span>
+        <span class="rt-roll-card__die-value">{{units}}</span>
+      </div>
+      <span class="rt-roll-card__operator">=</span>
+      <span class="rt-roll-card__value">{{value}}</span>
+    </div>
+    {{else if modeLabel}}
+    <div class="rt-roll-card__row">{{localize modeLabel}}: {{value}}</div>
+    {{/if}}
+    <div class="rt-roll-card__row">
+      {{localize "RT.Roll.Target"}}: {{target}}{{#if modifier}} {{modifier}} → {{finalTarget}}{{else}} → {{finalTarget}}{{/if}}
+    </div>
+    {{#if modsSummary}}
+    <div class="rt-roll-card__row rt-roll-card__muted">{{modsSummary}}</div>
+    {{/if}}
+    {{#if specialNotes}}
+    <div class="rt-roll-card__row">{{specialNotes}}</div>
+    {{/if}}
   </div>
-  {{#if hits}}
-  <div class="rt-roll-card__row">{{localize "RT.Combat.Hits"}}: {{hits}}</div>
-  {{/if}}
-  {{#if jam}}
-  <div class="rt-roll-card__row rt-roll-card__jam">{{localize jamKey}}</div>
-  {{/if}}
-  {{#if specialNotes}}
-  <div class="rt-roll-card__row">{{specialNotes}}</div>
-  {{/if}}
-  {{#if modsSummary}}
-  <div class="rt-roll-card__row rt-roll-card__muted">{{modsSummary}}</div>
-  {{/if}}
-</div>
+</details>

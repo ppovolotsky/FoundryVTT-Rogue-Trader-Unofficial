@@ -237,7 +237,7 @@
               {{/each}}
             </select>
           </label>
-          <label>{{localize "RT.Combat.FireMode.Label"}}
+          <label>{{localize "RT.Combat.RangedAttack.Label"}}
             <select data-combat-mod="fireMode" data-item-id="{{w.id}}">
               {{#each w.fireModes as |o|}}
               <option value="{{o.id}}" {{#if o.selected}}selected{{/if}} {{#if o.disabled}}disabled{{/if}}>{{localize o.label}}</option>

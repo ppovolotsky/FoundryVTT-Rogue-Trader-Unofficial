@@ -1,11 +1,24 @@
-<div class="rt-roll-card">
-  <div class="rt-roll-card__label">{{label}}</div>
-  <div class="rt-roll-card__row">{{localize "RT.Combat.Damage"}}: {{formula}} → {{total}}</div>
-  <div class="rt-roll-card__row">{{localize "RT.Combat.Penetration"}}: {{pen}}</div>
-  {{#if detail}}
-  <div class="rt-roll-card__row rt-roll-card__muted">{{detail}}</div>
-  {{/if}}
-  {{#if shocking}}
-  <div class="rt-roll-card__row">{{shocking}}</div>
-  {{/if}}
-</div>
+<details class="rt-roll-card">
+  <summary class="rt-roll-card__summary">
+    <div class="rt-roll-card__summary-top">
+      <span class="rt-roll-card__label">{{label}}</span>
+      <span class="rt-roll-card__mode">{{localize "RT.Combat.Damage"}}</span>
+    </div>
+    <div class="rt-roll-card__summary-line">
+      <span>{{formula}} → <strong>{{total}}</strong></span>
+      <span>{{localize "RT.Combat.Penetration"}}: {{pen}}</span>
+    </div>
+    {{#if shocking}}
+    <div class="rt-roll-card__summary-extra">{{shocking}}</div>
+    {{/if}}
+    <span class="rt-roll-card__expand-hint">{{localize "RT.Roll.ShowDetails"}}</span>
+  </summary>
+
+  <div class="rt-roll-card__details">
+    <div class="rt-roll-card__row">{{localize "RT.Combat.Damage"}}: {{formula}} → {{total}}</div>
+    <div class="rt-roll-card__row">{{localize "RT.Combat.Penetration"}}: {{pen}}</div>
+    {{#if detail}}
+    <div class="rt-roll-card__row rt-roll-card__muted">{{detail}}</div>
+    {{/if}}
+  </div>
+</details>

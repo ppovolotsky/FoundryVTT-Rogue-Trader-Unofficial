@@ -1928,6 +1928,71 @@ body.theme-dark,
   color: var(--rt-text);
 }
 
+.rt-roll-card > .rt-roll-card__summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rt-roll-card > .rt-roll-card__summary::-webkit-details-marker {
+  display: none;
+}
+
+.rt-roll-card__summary-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.rt-roll-card__summary-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  font-size: 0.95em;
+}
+
+.rt-roll-card__summary-line .rt-roll-card__result {
+  margin-top: 0;
+  padding: 2px 6px;
+  font-size: 0.85em;
+}
+
+.rt-roll-card__summary-extra {
+  font-size: 0.9em;
+}
+
+.rt-roll-card__expand-hint {
+  font-size: 0.75em;
+  color: var(--rt-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.rt-roll-card__expand-hint::before {
+  content: "▸ ";
+}
+
+.rt-roll-card[open] > .rt-roll-card__summary .rt-roll-card__expand-hint::before {
+  content: "▾ ";
+}
+
+.rt-roll-card__details {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--rt-border);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rt-roll-card__row {
+  font-size: 0.9em;
+}
+
 /* Table draw card (navigator mutations): result text below the dice */
 .rt-table-result {
   border-top: 1px solid var(--rt-border);

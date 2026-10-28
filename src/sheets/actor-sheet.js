@@ -20,6 +20,8 @@ import {
   RANGE_OPTIONS,
   FIRE_MODES,
   MELEE_ATTACK_TYPES,
+  meleeAttackDef,
+  rangedAttackDef,
   CRAFTSMANSHIP,
   WEAPON_KINDS,
   WEAPON_SPECIALS,
@@ -41,7 +43,9 @@ import {
   weaponHasSpecial,
   aimMod,
   rangeMod,
-  meleeAttackMod
+  meleeAttackMod,
+  meleeAttackCount,
+  rangedAttackMod
 } from "../combat.js";
 import { normalizeGroupRows } from "../documents/actor.js";
 
@@ -1014,47 +1018,47 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const rangeId = mods.range || "normal";
     const fireMode = isMelee ? "single" : (mods.fireMode || "single");
     const attackType = mods.attackType || "standard";
+    const meleeDef = meleeAttackDef(attackType);
+    const rangedDef = rangedAttackDef(fireMode);
     const craft = craftsmanshipDef(item.system.craftsmanship);
+    const attackCount = isMelee ? meleeAttackCount(attackType) : 1;
 
     const charKey = isMelee ? "ws" : "bs";
     const base = Number(this.document.system.characteristics?.[charKey]?.total) || 0;
     let builtIn = craft.testMod;
     builtIn += aimMod(aimId);
     if (isMelee) builtIn += meleeAttackMod(attackType);
-    else builtIn += rangeMod(rangeId);
+    else {
+      builtIn += rangeMod(rangeId);
+      builtIn += rangedAttackMod(fireMode);
+    }
     if (!isMelee && weaponHasSpecial(item, "accurate") && aimId !== "none") builtIn += 10;
 
-    const test = await showRollDialog({
+    const speaker = ChatMessage.getSpeaker({ actor: this.document });
+    const first = await showRollDialog({
       target: base + builtIn,
       modifier: 0,
       label: item.name,
-      speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      speaker,
       showTarget: false,
       actor: this.document,
       createMessage: false
     });
-    if (!test || typeof test !== "object" || test.value === undefined) return;
+    if (!first || typeof first !== "object" || first.value === undefined) return;
 
-    const hits = isMelee
-      ? (test.success ? 1 : 0)
-      : rangedHitCount(item, fireMode, test.degrees, test.success);
-    const jamInfo = isMelee
-      ? { jam: false, jamKey: "" }
-      : rangedJamResult(item, test.value, { criticalSuccess: test.criticalSuccess });
-    mods.lastDegrees = test.success ? test.degrees : 0;
-
-    const specialNotes = [];
-    if (test.success && weaponHasSpecial(item, "tearing")) specialNotes.push(localize("RT.Combat.SpecialNote.Tearing"));
-    if (test.success && weaponHasSpecial(item, "force")) specialNotes.push(localize("RT.Combat.SpecialNote.Force"));
-    if (test.success && weaponHasSpecial(item, "shocking")) specialNotes.push(localize("RT.Combat.SpecialNote.Shocking"));
-    if (test.success && test.degrees >= 2 && weaponHasSpecial(item, "razorSharp")) {
-      specialNotes.push(localize("RT.Combat.SpecialNote.RazorSharp"));
+    const tests = [first];
+    const mode = first.mode || this.document.system.settings?.rollMode || null;
+    for (let i = 1; i < attackCount; i++) {
+      const next = await rollTest({
+        target: first.target,
+        modifier: first.modifier,
+        mode,
+        label: item.name,
+        speaker,
+        createMessage: false
+      });
+      if (next) tests.push(next);
     }
-    if (!isMelee && test.success && weaponHasSpecial(item, "accurate") && aimId !== "none" && test.degrees >= 1) {
-      specialNotes.push(localize("RT.Combat.SpecialNote.Accurate"));
-    }
-    if (isMelee && attackType === "swift") specialNotes.push(localize("RT.Combat.MeleeAttack.SwiftNote"));
-    if (isMelee && attackType === "lightning") specialNotes.push(localize("RT.Combat.MeleeAttack.LightningNote"));
 
     const classLabel = localize(weaponClassDef(item.system.class, item.system.range).label);
     const modsSummary = [
@@ -1063,50 +1067,86 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       `${localize(CHARACTERISTICS[charKey].abbrKey)} ${base}`,
       builtIn ? `${builtIn > 0 ? "+" : ""}${builtIn}` : null,
       localize(AIM_OPTIONS.find((o) => o.id === aimId)?.label || "RT.Combat.Aim.None"),
-      isMelee
-        ? localize(MELEE_ATTACK_TYPES.find((o) => o.id === attackType)?.label || "RT.Combat.MeleeAttack.Standard")
-        : null,
+      isMelee ? localize(meleeDef.label) : null,
       !isMelee ? localize(RANGE_OPTIONS.find((o) => o.id === rangeId)?.label || "RT.Combat.Range.Normal") : null,
-      !isMelee ? localize(FIRE_MODES.find((f) => f.id === fireMode)?.label || "RT.Combat.FireMode.Single") : null
+      !isMelee ? localize(rangedDef.label) : null
     ].filter(Boolean).join(" · ");
 
-    const content = await foundry.applications.handlebars.renderTemplate(
-      "systems/rogue-trader/templates/dice/weapon-attack-card.hbs",
-      {
-        label: item.name,
-        target: test.target,
-        modifier: test.modifier ? (test.modifier > 0 ? `+${test.modifier}` : `${test.modifier}`) : "",
-        finalTarget: test.finalTarget,
-        value: test.value,
-        success: test.success,
-        criticalSuccess: test.criticalSuccess,
-        criticalFailure: test.criticalFailure,
-        degrees: test.degrees,
-        degreesKey: test.degreesKey,
-        hits,
-        jam: jamInfo.jam,
-        jamKey: jamInfo.jamKey,
-        specialNotes: specialNotes.join(" · "),
-        modsSummary
+    let lastSuccess = null;
+    for (let i = 0; i < tests.length; i++) {
+      const test = tests[i];
+      const hits = isMelee
+        ? (test.success ? 1 : 0)
+        : rangedHitCount(item, fireMode, test.degrees, test.success);
+      const jamInfo = isMelee
+        ? { jam: false, jamKey: "" }
+        : rangedJamResult(item, test.value, { criticalSuccess: test.criticalSuccess });
+
+      const specialNotes = [];
+      if (test.success && weaponHasSpecial(item, "tearing")) specialNotes.push(localize("RT.Combat.SpecialNote.Tearing"));
+      if (test.success && weaponHasSpecial(item, "force")) specialNotes.push(localize("RT.Combat.SpecialNote.Force"));
+      if (test.success && weaponHasSpecial(item, "shocking")) specialNotes.push(localize("RT.Combat.SpecialNote.Shocking"));
+      if (test.success && test.degrees >= 2 && weaponHasSpecial(item, "razorSharp")) {
+        specialNotes.push(localize("RT.Combat.SpecialNote.RazorSharp"));
       }
-    );
-    await ChatMessage.create({
-      speaker: ChatMessage.getSpeaker({ actor: this.document }),
-      content,
-      rolls: test.roll ? [test.roll] : [],
-      flavor: item.name,
-      flags: {
-        [SYSTEM_ID]: {
-          weaponAttack: {
-            itemId: item.id,
-            degrees: test.degrees,
-            success: test.success,
-            aimId,
-            hits
+      if (!isMelee && test.success && weaponHasSpecial(item, "accurate") && aimId !== "none" && test.degrees >= 1) {
+        specialNotes.push(localize("RT.Combat.SpecialNote.Accurate"));
+      }
+      if (isMelee && meleeDef.noteKey) specialNotes.push(localize(meleeDef.noteKey));
+      if (!isMelee && rangedDef.noteKey) specialNotes.push(localize(rangedDef.noteKey));
+
+      const label = attackCount > 1
+        ? `${item.name} (${i + 1}/${attackCount})`
+        : item.name;
+
+      const content = await foundry.applications.handlebars.renderTemplate(
+        "systems/rogue-trader/templates/dice/weapon-attack-card.hbs",
+        {
+          label,
+          mode: test.mode,
+          modeLabel: test.modeLabel || ROLL_MODES[test.mode],
+          tens: test.tens,
+          units: test.units,
+          target: test.target,
+          modifier: test.modifier ? (test.modifier > 0 ? `+${test.modifier}` : `${test.modifier}`) : "",
+          finalTarget: test.finalTarget,
+          value: test.value,
+          success: test.success,
+          criticalSuccess: test.criticalSuccess,
+          criticalFailure: test.criticalFailure,
+          degrees: test.degrees,
+          degreesKey: test.degreesKey,
+          hits,
+          jam: jamInfo.jam,
+          jamKey: jamInfo.jamKey,
+          specialNotes: specialNotes.join(" · "),
+          modsSummary
+        }
+      );
+      await ChatMessage.create({
+        speaker,
+        content,
+        rolls: test.roll ? [test.roll] : [],
+        flavor: label,
+        flags: {
+          [SYSTEM_ID]: {
+            weaponAttack: {
+              itemId: item.id,
+              degrees: test.degrees,
+              success: test.success,
+              aimId,
+              hits,
+              attackIndex: i + 1,
+              attackCount
+            }
           }
         }
-      }
-    });
+      });
+      if (test.success) lastSuccess = { degrees: test.degrees, hits };
+    }
+
+    mods.lastDegrees = lastSuccess?.degrees ?? 0;
+    mods.lastHits = lastSuccess?.hits ?? 0;
   }
 
   static async #onRollWeaponDamage(event, target) {
@@ -1470,17 +1510,17 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         };
       }
       const rof = i.system.rateOfFire ?? {};
-      const singleOk = (Number(rof.single) || 0) > 0 || (!rof.burst && !rof.full);
       const semiOk = (Number(rof.burst) || 0) > 0;
       const fullOk = (Number(rof.full) || 0) > 0;
       return {
         ...row,
         rangeOptions: RANGE_OPTIONS.map((o) => ({ ...o, selected: mods.range === o.id })),
-        fireModes: FIRE_MODES.map((o) => ({
-          ...o,
-          selected: mods.fireMode === o.id,
-          disabled: o.id === "single" ? !singleOk && (semiOk || fullOk) : o.id === "semi" ? !semiOk : !fullOk
-        }))
+        fireModes: FIRE_MODES.map((o) => {
+          let disabled = false;
+          if (o.needsBurst) disabled = !semiOk;
+          else if (o.needsFull) disabled = !fullOk;
+          return { ...o, selected: mods.fireMode === o.id, disabled };
+        })
       };
     };
 
