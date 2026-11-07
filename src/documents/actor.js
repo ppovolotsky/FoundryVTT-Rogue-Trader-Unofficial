@@ -186,7 +186,23 @@ export class RTActor extends Actor {
       run = 0;
     }
 
-    system.movement = { half, full, charge, run, mode, naturalAb: Math.floor((system.characteristics?.ag?.unpenalized ?? 0) / 10) };
+    // Half-speed state (fatigue / conditions): halve all rates after other mods.
+    if (system.movementHalf) {
+      half = Math.floor(half / 2);
+      full = Math.floor(full / 2);
+      charge = Math.floor(charge / 2);
+      run = Math.floor(run / 2);
+    }
+
+    const naturalAb = Math.floor((system.characteristics?.ag?.unpenalized ?? 0) / 10);
+    system.movement = { half, full, charge, run, mode, naturalAb };
+
+    // Jump distances (metres): horizontal ≈ AB; vertical ≈ floor(AB/2). SB adds to horizontal.
+    const sb = system.characteristics?.s?.bonus ?? 0;
+    system.jumps = {
+      horizontal: naturalAb + Math.floor(sb / 2),
+      vertical: Math.max(0, Math.floor(naturalAb / 2))
+    };
 
     const sizeDef = SIZES.find((s) => s.id === (system.size || "average")) ?? SIZES[3];
     system.sizeHitMod = sizeDef.hitMod;

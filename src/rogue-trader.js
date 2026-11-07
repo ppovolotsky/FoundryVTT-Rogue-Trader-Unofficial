@@ -5,6 +5,7 @@ import { RTItem } from "./documents/item.js";
 import { RTCharacterSheet, RTShipSheet, RTColonySheet } from "./sheets/actor-sheet.js";
 import { RTItemSheet } from "./sheets/item-sheet.js";
 import { rollTest, showRollDialog } from "./dice.js";
+import { registerChatListeners } from "./chat.js";
 
 const { Actors, Items } = foundry.documents.collections;
 
@@ -37,6 +38,8 @@ Hooks.once("init", () => {
     makeDefault: true,
     label: "RT.Sheets.Item"
   });
+
+  registerChatListeners();
 });
 
 Hooks.once("ready", async () => {
