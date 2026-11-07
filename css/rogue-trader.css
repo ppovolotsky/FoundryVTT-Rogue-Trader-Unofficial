@@ -1535,21 +1535,36 @@ body.theme-dark,
   border: 1px solid var(--rt-border);
   border-radius: 3px;
   padding: 2px 6px;
-  min-width: 36px;
+  min-width: 40px;
 }
 
-.rogue-trader.sheet .rt-paper-doll__head span,
-.rogue-trader.sheet .rt-paper-doll__body span,
-.rogue-trader.sheet .rt-paper-doll__arm span,
-.rogue-trader.sheet .rt-paper-doll__leg span {
+.rogue-trader.sheet .rt-paper-doll__ap {
+  width: 2.4em;
+  text-align: center;
   font-weight: bold;
   font-size: 1.05em;
+  padding: 0 2px;
+  margin: 0;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.rogue-trader.sheet .rt-paper-doll__ap::-webkit-outer-spin-button,
+.rogue-trader.sheet .rt-paper-doll__ap::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .rogue-trader.sheet .rt-paper-doll small {
   font-size: 0.65em;
   color: var(--rt-muted);
   text-transform: uppercase;
+}
+
+.rogue-trader.sheet .rt-paper-doll__band {
+  font-size: 0.6em;
+  color: var(--rt-muted);
+  line-height: 1.1;
 }
 
 .rogue-trader.sheet .rt-paper-doll__arms,
@@ -1560,16 +1575,70 @@ body.theme-dark,
 }
 
 .rogue-trader.sheet .rt-paper-doll__body {
-  min-width: 48px;
-  min-height: 40px;
+  min-width: 52px;
+  min-height: 44px;
 }
 
-.rogue-trader.sheet .rt-combat-speed-bar {
+.rogue-trader.sheet .rt-movement--rates {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px 10px;
+  margin-bottom: 8px;
+}
+
+.rogue-trader.sheet .rt-movement__cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-weight: 600;
+}
+
+.rogue-trader.sheet .rt-movement__label {
+  font-weight: 400;
+  font-size: 0.75em;
+  color: var(--rt-muted);
+}
+
+.rogue-trader.sheet .rt-movement-flags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 14px;
+  gap: 12px 18px;
   align-items: center;
+  margin-bottom: 8px;
+}
+
+.rogue-trader.sheet .rt-movement-flags .rt-field--check label,
+.rogue-trader.sheet .rt-movement-flags.rt-field--check {
+  margin-top: 0;
+}
+
+.rogue-trader.sheet .rt-movement-size-row {
   margin-bottom: 6px;
+}
+
+.rogue-trader.sheet .rt-combat-force-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rogue-trader.sheet .rt-combat-force-field {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  font-size: 0.9em;
+}
+
+.rogue-trader.sheet .rt-unarmed-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rogue-trader.sheet .rt-unarmed-block__profile {
+  font-size: 0.9em;
+  color: var(--rt-muted);
 }
 
 .rogue-trader.sheet .rt-button.active {
@@ -1928,9 +1997,22 @@ body.theme-dark,
   font-size: 0.85em;
 }
 
-.rogue-trader.sheet .rt-combat-weapon__clip .rt-stepper input {
-  width: 2.5em;
+.rogue-trader.sheet .rt-combat-weapon__clip .rt-stepper input,
+.rogue-trader.sheet .rt-stepper--clip input[type="number"] {
+  width: 3.2em;
+  min-width: 3.2em;
   text-align: center;
+  padding-right: 16px;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.rogue-trader.sheet .rt-combat-weapon__clip .rt-stepper input::-webkit-outer-spin-button,
+.rogue-trader.sheet .rt-combat-weapon__clip .rt-stepper input::-webkit-inner-spin-button,
+.rogue-trader.sheet .rt-stepper--clip input::-webkit-outer-spin-button,
+.rogue-trader.sheet .rt-stepper--clip input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .rogue-trader.sheet .rt-combat-weapon__clip-label {

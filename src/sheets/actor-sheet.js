@@ -34,18 +34,24 @@ import {
   normalizeWeaponClass,
   normalizeWeaponKind,
   craftsmanshipDef,
-  normalizeCraftsmanship
+  normalizeCraftsmanship,
+  formatTestMod,
+  HIT_LOCATIONS
 } from "../config.js";
 import {
   rangedJamResult,
   rangedHitCount,
   rollWeaponDamage,
+  rollDamageFormula,
   weaponHasSpecial,
   aimMod,
   rangeMod,
   meleeAttackMod,
   meleeAttackCount,
-  rangedAttackMod
+  rangedAttackMod,
+  forceFieldOverloadFor,
+  resolveForceFieldRoll,
+  buildUnarmedProfile
 } from "../combat.js";
 import { normalizeGroupRows } from "../documents/actor.js";
 
@@ -150,6 +156,7 @@ const INVENTORY_SECTIONS = [
   { key: "armour", label: "RT.Inventory.Armour", type: "armour", category: "", newName: "RT.Inventory.NewArmour", column: "right" },
   { key: "gear", label: "RT.Inventory.Gear", type: "gear", category: "gear", newName: "RT.Inventory.NewGear", column: "right" },
   { key: "cybernetics", label: "RT.Inventory.Cybernetics", type: "gear", category: "cybernetic", newName: "RT.Inventory.NewCybernetic", column: "right" },
+  { key: "forceFields", label: "RT.Inventory.ForceFields", type: "gear", category: "forceField", newName: "RT.Inventory.NewForceField", column: "right" },
   { key: "ammo", label: "RT.Inventory.Ammo", type: "ammo", category: "", newName: "RT.Inventory.NewAmmo", column: "right" },
   { key: "weaponMods", label: "RT.Inventory.WeaponMods", type: "gear", category: "weaponMod", newName: "RT.Inventory.NewWeaponMod", column: "right" }
 ];
@@ -217,7 +224,9 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       sendCritWoundHint: RTCharacterSheet.#onSendCritWoundHint,
       testForceField: RTCharacterSheet.#onTestForceField,
       rollSpecialAttack: RTCharacterSheet.#onRollSpecialAttack,
-      setMovementMode: RTCharacterSheet.#onSetMovementMode
+      rollUnarmedDamage: RTCharacterSheet.#onRollUnarmedDamage,
+      setMovementMode: RTCharacterSheet.#onSetMovementMode,
+      toggleUnarmedTalent: RTCharacterSheet.#onToggleUnarmedTalent
     }
   };
 
@@ -271,6 +280,13 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     if (data.system?.settings?.freeSkillChars === false) {
       for (const def of SKILLS) {
         if (data.system?.skills?.[def.key]) data.system.skills[def.key].characteristic = def.char;
+      }
+    }
+    // Empty paper-doll AP overrides stay "" so equipped armour fills the display.
+    const apOv = data.system?.armourApOverride;
+    if (apOv && typeof apOv === "object") {
+      for (const key of Object.keys(apOv)) {
+        if (apOv[key] === null || apOv[key] === undefined || apOv[key] === "") apOv[key] = "";
       }
     }
     await this.document.update(data);
@@ -867,6 +883,13 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const name = game.i18n.localize(section?.newName ?? "RT.Inventory.NewGear");
     const data = { name, type, img: "icons/svg/item-bag.svg", system: {} };
     if (type === "gear" && category) data.system.category = category;
+    if (type === "gear" && category === "forceField") {
+      data.system.rating = 30;
+      data.system.craftsmanship = "common";
+      data.system.equipped = false;
+      data.system.exotic = false;
+      data.system.overload = 0;
+    }
     if (type === "weapon" && weaponKind === "melee") {
       data.system.kind = "melee";
       data.system.class = "melee";
@@ -890,7 +913,8 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   static async #onToggleItemEquipped(event, target) {
     const item = this.document.items.get(target.dataset.itemId);
-    if (!item || !["weapon", "armour"].includes(item.type)) return;
+    const isForceField = item?.type === "gear" && item.system?.category === "forceField";
+    if (!item || (!["weapon", "armour"].includes(item.type) && !isForceField)) return;
     await item.update({ "system.equipped": !item.system.equipped });
   }
 
@@ -1227,30 +1251,63 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     await item.update({ "system.clip.value": next });
   }
 
-  static async #onTestForceField(event) {
-    const ff = this.document.system.forceField ?? {};
-    if (!ff.active) {
+  static async #onTestForceField(event, target) {
+    const itemId = target?.dataset?.itemId;
+    let item = itemId ? this.document.items.get(itemId) : null;
+    if (!item) {
+      item = this.document.items.find(
+        (i) => i.type === "gear" && i.system?.category === "forceField" && i.system?.equipped
+      );
+    }
+    if (!item || item.type !== "gear" || item.system?.category !== "forceField") {
       ui.notifications.warn(game.i18n.localize("RT.Combat.ForceFieldInactive"));
       return;
     }
-    const overload = Number(ff.overload) || 0;
-    const rating = Number(ff.rating) || 0;
-    const roll = await new Roll("1d100").evaluate();
-    const overloaded = roll.total <= overload;
-    const craft = craftsmanshipDef(ff.craftsmanship);
-    const content = `<div class="rt-roll-card">
-      <div class="rt-roll-card__label">${game.i18n.localize("RT.Combat.ForceField")}</div>
-      <div class="rt-roll-card__row">${game.i18n.localize("RT.Combat.ForceFieldRating")}: ${rating} · ${game.i18n.localize(craft.label)}</div>
-      <div class="rt-roll-card__row">1d100 = ${roll.total} vs ${game.i18n.localize("RT.Combat.ForceFieldOverload")} ${overload}</div>
-      <div class="rt-roll-card__result ${overloaded ? "rt-roll-card__result--fail" : "rt-roll-card__result--ok"}">
-        ${overloaded ? game.i18n.localize("RT.Combat.ForceFieldOverloaded") : game.i18n.localize("RT.Combat.ForceFieldHolds")}
-      </div>
-      ${!overloaded ? `<div class="rt-roll-card__row">${game.i18n.localize("RT.Combat.ForceFieldSoak")}: ${rating}</div>` : ""}
-    </div>`;
+    if (!item.system.equipped) {
+      ui.notifications.warn(game.i18n.localize("RT.Combat.ForceFieldInactive"));
+      return;
+    }
+    const rating = Number(item.system.rating) || 0;
+    const overload = forceFieldOverloadFor(item);
+    const mode = this.document.system.settings?.rollMode || null;
+    const raw = await rollRawD100({ mode });
+    const outcome = resolveForceFieldRoll(raw.value, rating, overload);
+    const craft = craftsmanshipDef(item.system.craftsmanship);
+    const resultKey = {
+      overloaded: "RT.Combat.ForceFieldOverloaded",
+      holds: "RT.Combat.ForceFieldHolds",
+      fails: "RT.Combat.ForceFieldFails"
+    }[outcome];
+    const resultClass = {
+      overloaded: "rt-roll-card--failure",
+      holds: "rt-roll-card--success",
+      fails: "rt-roll-card--failure"
+    }[outcome];
+    if (outcome === "overloaded") {
+      await item.update({ "system.equipped": false }).catch(() => {});
+    }
+    const content = await foundry.applications.handlebars.renderTemplate(
+      "systems/rogue-trader/templates/dice/simple-roll-card.hbs",
+      {
+        label: `${item.name} — ${game.i18n.localize("RT.Combat.ForceField")}`,
+        mode: raw.mode,
+        modeLabel: ROLL_MODES[raw.mode],
+        tens: raw.tens,
+        units: raw.units,
+        value: raw.value,
+        summary: `${game.i18n.localize("RT.Combat.ForceFieldRating")} ${rating} · ${game.i18n.localize("RT.Combat.ForceFieldOverload")} ${overload}`,
+        result: game.i18n.localize(resultKey),
+        resultClass,
+        hasDetails: true,
+        detailRows: [
+          `${game.i18n.localize(craft.label)} · ${game.i18n.localize("RT.Roll.Result")} ${raw.value}`
+        ]
+      }
+    );
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.document }),
       content,
-      rolls: [roll]
+      rolls: [raw.roll]
     });
   }
 
@@ -1269,7 +1326,16 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       9: "RT.Combat.ScatterDir.SE",
       10: "RT.Combat.ScatterDir.S"
     };
-    const content = `<div class="rt-roll-card"><div class="rt-roll-card__label">${game.i18n.localize("RT.Combat.Scatter")}</div><div class="rt-roll-card__row">1d10 = ${dir} → ${game.i18n.localize(dirs[dir] || "RT.Combat.ScatterDir.N")}</div><div class="rt-roll-card__muted">${game.i18n.localize("RT.Combat.ScatterHint")}</div></div>`;
+    const content = await foundry.applications.handlebars.renderTemplate(
+      "systems/rogue-trader/templates/dice/simple-roll-card.hbs",
+      {
+        label: game.i18n.localize("RT.Combat.Scatter"),
+        summary: `1d10 = ${dir} → ${game.i18n.localize(dirs[dir] || "RT.Combat.ScatterDir.N")}`,
+        hasDetails: true,
+        detailRows: [game.i18n.localize("RT.Combat.ScatterHint")],
+        value: dir
+      }
+    );
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.document }),
       content,
@@ -1316,11 +1382,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       rightLeg: "RT.Items.Armour.RightLeg"
     }[location] || "RT.Items.Armour.Body";
 
-    let armour = 0;
-    for (const item of this.document.items) {
-      if (item.type !== "armour" || !item.system.equipped) continue;
-      armour += Number(item.system.locations?.[location]) || 0;
-    }
+    const armour = Number(this.document.system.armourAp?.[location]) || 0;
     const effectiveArmour = Math.max(0, armour - pen);
     const tb = Number(this.document.system.characteristics?.t?.bonus) || 0;
     const wounds = Math.max(0, damage - effectiveArmour - tb);
@@ -1366,21 +1428,62 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       stun: "RT.Combat.SpecialAttack.StunNote"
     };
     const ws = Number(this.document.system.characteristics?.ws?.total) || 0;
+    const profile = kind === "unarmed" ? buildUnarmedProfile(this.document) : null;
+    const label = profile
+      ? `${localize(labels.unarmed)} (${profile.summary})`
+      : localize(labels[kind] || labels.unarmed);
     await showRollDialog({
       target: ws,
       modifier: 0,
-      label: localize(labels[kind] || labels.unarmed),
+      label,
       speaker: ChatMessage.getSpeaker({ actor: this.document }),
       actor: this.document,
       showTarget: false
     });
     const note = localize(notes[kind] || notes.unarmed);
-    if (note) {
+    if (note && kind !== "unarmed") {
+      const content = await foundry.applications.handlebars.renderTemplate(
+        "systems/rogue-trader/templates/dice/simple-roll-card.hbs",
+        { label: localize(labels[kind]), summary: note, hasDetails: false }
+      );
       await ChatMessage.create({
         speaker: ChatMessage.getSpeaker({ actor: this.document }),
-        content: `<div class="rt-roll-card"><div class="rt-roll-card__row rt-roll-card__muted">${note}</div></div>`
+        content
       });
     }
+  }
+
+  static async #onRollUnarmedDamage(event) {
+    const profile = buildUnarmedProfile(this.document);
+    const result = await rollDamageFormula(profile.formula, { pen: profile.penetration });
+    if (!result) {
+      ui.notifications.error(game.i18n.localize("RT.Combat.DamageFormulaInvalid"));
+      return;
+    }
+    const content = await foundry.applications.handlebars.renderTemplate(
+      "systems/rogue-trader/templates/dice/weapon-damage-card.hbs",
+      {
+        label: game.i18n.localize("RT.Combat.SpecialAttack.Unarmed"),
+        formula: profile.summary,
+        total: result.total,
+        pen: result.pen,
+        detail: result.diceDetail,
+        shocking: ""
+      }
+    );
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      content,
+      flavor: `${game.i18n.localize("RT.Combat.SpecialAttack.Unarmed")} — ${game.i18n.localize("RT.Combat.Damage")}`
+    });
+  }
+
+  static async #onToggleUnarmedTalent(event, target) {
+    const key = target.dataset.talent;
+    if (!key) return;
+    const path = `system.unarmedTalents.${key}`;
+    const current = !!foundry.utils.getProperty(this.document, path);
+    await this.document.update({ [path]: !current });
   }
 
   static async #onSetMovementMode(event, target) {
@@ -1402,20 +1505,21 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         if (section.type !== "gear") return true;
         const cat = item.system.category || "gear";
         if (section.category === "gear") {
-          return !["cybernetic", "weaponMod"].includes(cat);
+          return !["cybernetic", "weaponMod", "forceField"].includes(cat);
         }
         return cat === section.category;
       });
       return {
         ...section,
         items: filtered.map((item) => {
-          const showEquipped = item.type === "weapon" || item.type === "armour";
-          const showQuantity = item.type === "gear" || item.type === "ammo";
+          const sys = item.system;
+          const isForceField = item.type === "gear" && (sys.category || "") === "forceField";
+          const showEquipped = item.type === "weapon" || item.type === "armour" || isForceField;
+          const showQuantity = (item.type === "gear" || item.type === "ammo") && !isForceField;
           const description = String(item.system.description ?? "").trim();
           const unitWeight = Number(item.system.weight) || 0;
           const qty = showQuantity ? Math.max(1, Number(item.system.quantity) || 1) : 1;
           const totalWeight = Math.round(unitWeight * qty * 100) / 100;
-          const sys = item.system;
           const isWeaponMod = item.type === "gear" && (sys.category || "") === "weaponMod";
           const showUsedFor = item.type === "ammo" || isWeaponMod;
 
@@ -1430,6 +1534,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             showQuantity,
             showUsedFor,
             isWeaponMod,
+            isForceField,
             description,
             weight: unitWeight,
             weightLabel: `${totalWeight}`,
@@ -1493,9 +1598,23 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
               locLeftLeg: loc.leftLeg ?? 0,
               locRightLeg: loc.rightLeg ?? 0
             });
-          } else if (item.type === "gear" || item.type === "ammo") {
+          } else if (isForceField) {
             Object.assign(row, {
-              summary: sys.usedFor || sys.weaponType || sys.category || "",
+              summary: `${game.i18n.localize("RT.Combat.ForceFieldRating")} ${sys.rating ?? 0}`,
+              category: "forceField",
+              rating: sys.rating ?? 0,
+              exotic: !!sys.exotic,
+              overload: sys.overload ?? 0,
+              derivedOverload: forceFieldOverloadFor(item),
+              craftOptions: CRAFTSMANSHIP.map((c) => ({
+                ...c,
+                selected: normalizeCraftsmanship(sys.craftsmanship) === c.id
+              }))
+            });
+          } else if (item.type === "gear" || item.type === "ammo") {
+            // Never show raw category ids (cybernetic / weaponMod / gear) on the card.
+            Object.assign(row, {
+              summary: sys.usedFor || sys.weaponType || "",
               category: sys.category ?? "",
               usedFor: sys.usedFor ?? "",
               weaponType: sys.weaponType ?? ""
@@ -1547,12 +1666,24 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
           rightLeg: loc.rightLeg ?? 0
         };
       });
-    const armourAp = { head: 0, body: 0, leftArm: 0, rightArm: 0, leftLeg: 0, rightLeg: 0 };
-    for (const a of combatArmour) {
-      for (const key of Object.keys(armourAp)) {
-        armourAp[key] = Math.max(armourAp[key], Number(a[key]) || 0);
-      }
-    }
+    const armourApEquipped = this.document.system.armourApEquipped ?? {
+      head: 0, body: 0, leftArm: 0, rightArm: 0, leftLeg: 0, rightLeg: 0
+    };
+    const armourAp = this.document.system.armourAp ?? armourApEquipped;
+    const ov = this.document.system.armourApOverride ?? {};
+    const armourApFields = ["head", "body", "leftArm", "rightArm", "leftLeg", "rightLeg"].map((key) => {
+      const raw = ov[key];
+      const empty = raw === "" || raw === null || raw === undefined;
+      return {
+        key,
+        value: empty ? "" : raw,
+        equipped: armourApEquipped[key] ?? 0,
+        resolved: armourAp[key] ?? 0
+      };
+    });
+    const hitBands = Object.fromEntries(HIT_LOCATIONS.map((h) => [h.id, h.band]));
+
+    const modLabel = (labelKey, mod) => `${game.i18n.localize(labelKey)} (${formatTestMod(mod)})`;
 
     const mapWeapon = (i, isRanged) => {
       const classDef = weaponClassDef(i.system.class, i.system.range);
@@ -1582,14 +1713,19 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         showClip,
         clipValue: Number(i.system.clip?.value) || 0,
         clipMax: Number(i.system.clip?.max) || 0,
-        aimOptions: AIM_OPTIONS.map((o) => ({ ...o, selected: mods.aim === o.id }))
+        aimOptions: AIM_OPTIONS.map((o) => ({
+          ...o,
+          selected: mods.aim === o.id,
+          optionLabel: modLabel(o.label, o.mod)
+        }))
       };
       if (!isRanged) {
         return {
           ...row,
           attackTypes: MELEE_ATTACK_TYPES.map((o) => ({
             ...o,
-            selected: mods.attackType === o.id
+            selected: mods.attackType === o.id,
+            optionLabel: modLabel(o.label, o.mod)
           }))
         };
       }
@@ -1598,12 +1734,21 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       const fullOk = (Number(rof.full) || 0) > 0;
       return {
         ...row,
-        rangeOptions: RANGE_OPTIONS.map((o) => ({ ...o, selected: mods.range === o.id })),
+        rangeOptions: RANGE_OPTIONS.map((o) => ({
+          ...o,
+          selected: mods.range === o.id,
+          optionLabel: modLabel(o.label, o.mod)
+        })),
         fireModes: FIRE_MODES.map((o) => {
           let disabled = false;
           if (o.needsBurst) disabled = !semiOk;
           else if (o.needsFull) disabled = !fullOk;
-          return { ...o, selected: mods.fireMode === o.id, disabled };
+          return {
+            ...o,
+            selected: mods.fireMode === o.id,
+            disabled,
+            optionLabel: modLabel(o.label, o.mod)
+          };
         })
       };
     };
@@ -1616,25 +1761,47 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       .filter((i) => weaponCombatKind(i) === "ranged")
       .map((i) => mapWeapon(i, true));
 
-    const ff = this.document.system.forceField ?? {};
-    const ffCraft = normalizeCraftsmanship(ff.craftsmanship);
+    const combatForceFields = this.document.items
+      .filter((i) => i.type === "gear" && i.system?.category === "forceField")
+      .map((i) => ({
+        id: i.id,
+        name: i.name,
+        equipped: !!i.system.equipped,
+        rating: Number(i.system.rating) || 0,
+        overload: forceFieldOverloadFor(i),
+        craftLabel: craftsmanshipDef(i.system.craftsmanship).label
+      }));
+
+    const unarmedTalents = this.document.system.unarmedTalents ?? {};
+    const unarmedProfile = buildUnarmedProfile(this.document);
+    const sizeDef = SIZES.find((s) => s.id === size) ?? SIZES[3];
+
     return {
       encumbranceLevelLabel,
-      sizeOptions: SIZES.map((s) => ({ ...s, selected: size === s.id })),
-      movementModes: [
-        { id: "normal", label: "RT.Combat.MovementNormal", selected: movementMode === "normal" },
-        { id: "flyer", label: "RT.Combat.MovementFlyer", selected: movementMode === "flyer" },
-        { id: "custom", label: "RT.Combat.MovementCustom", selected: movementMode === "custom" }
-      ],
+      sizeOptions: SIZES.map((s) => ({
+        ...s,
+        selected: size === s.id,
+        hitModLabel: formatTestMod(s.hitMod),
+        speedModLabel: formatTestMod(s.speedMod)
+      })),
+      sizeHitModLabel: formatTestMod(sizeDef.hitMod),
+      sizeSpeedModLabel: formatTestMod(sizeDef.speedMod),
       isCustomMovement: movementMode === "custom",
       combatArmour,
       armourAp,
+      armourApEquipped,
+      armourApFields,
+      hitBands,
       combatMelee,
       combatRanged,
-      forceFieldCraftOptions: CRAFTSMANSHIP.map((c) => ({
-        ...c,
-        selected: ffCraft === c.id
-      }))
+      combatForceFields,
+      unarmedProfile,
+      unarmedTalentOpts: [
+        { id: "streetFighting", label: "RT.Combat.UnarmedTalent.StreetFighting", active: !!unarmedTalents.streetFighting },
+        { id: "crushingBlow", label: "RT.Combat.UnarmedTalent.CrushingBlow", active: !!unarmedTalents.crushingBlow },
+        { id: "unarmedWarrior", label: "RT.Combat.UnarmedTalent.UnarmedWarrior", active: !!unarmedTalents.unarmedWarrior },
+        { id: "unarmedMaster", label: "RT.Combat.UnarmedTalent.UnarmedMaster", active: !!unarmedTalents.unarmedMaster }
+      ]
     };
   }
 
@@ -1914,7 +2081,9 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       const el = event.target;
       if (!el.dataset.equipToggle) return;
       const item = this.document.items.get(el.dataset.itemId);
-      if (!item || !["weapon", "armour"].includes(item.type)) return;
+      if (!item) return;
+      const isForceField = item.type === "gear" && item.system?.category === "forceField";
+      if (!["weapon", "armour"].includes(item.type) && !isForceField) return;
       await item.update({ "system.equipped": !!el.checked }).catch(() => {});
     });
     // Expanded inventory editors: data-item-field + data-item-id → embedded Item.update.

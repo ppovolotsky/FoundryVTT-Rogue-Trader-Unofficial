@@ -108,6 +108,20 @@
                                                                           "charge":  0,
                                                                           "run":  0
                                                                       },
+                                                   "armourApOverride":  {
+                                                                            "head":  "",
+                                                                            "body":  "",
+                                                                            "leftArm":  "",
+                                                                            "rightArm":  "",
+                                                                            "leftLeg":  "",
+                                                                            "rightLeg":  ""
+                                                                        },
+                                                   "unarmedTalents":  {
+                                                                          "streetFighting":  false,
+                                                                          "crushingBlow":  false,
+                                                                          "unarmedWarrior":  false,
+                                                                          "unarmedMaster":  false
+                                                                      },
                                                    "forceField":  {
                                                                       "active":  false,
                                                                       "rating":  0,
@@ -639,7 +653,12 @@
                                             ],
                               "category":  "gear",
                               "usedFor":  "",
-                              "quantity":  1
+                              "quantity":  1,
+                              "rating":  0,
+                              "craftsmanship":  "common",
+                              "exotic":  false,
+                              "overload":  0,
+                              "equipped":  false
                           },
                  "ammo":  {
                               "templates":  [

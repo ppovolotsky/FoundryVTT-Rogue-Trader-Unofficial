@@ -414,6 +414,11 @@ export const ITEM_FIELDS = {
     { path: "category", label: "RT.Items.Category", input: "text" },
     { path: "usedFor", label: "RT.Items.UsedFor", input: "text" },
     { path: "quantity", label: "RT.Items.Quantity", input: "number" },
+    { path: "rating", label: "RT.Combat.ForceFieldRating", input: "number" },
+    { path: "craftsmanship", label: "RT.Items.Craftsmanship", input: "select", options: CRAFTSMANSHIP },
+    { path: "exotic", label: "RT.Items.Weapon.Exotic", input: "checkbox" },
+    { path: "overload", label: "RT.Combat.ForceFieldOverload", input: "number" },
+    { path: "equipped", label: "RT.Items.Equipped", input: "checkbox" },
     { path: "availability", label: "RT.Items.Availability", input: "text" },
     { path: "weight", label: "RT.Items.Weight", input: "number" },
     { path: "cost", label: "RT.Items.Cost", input: "text" },
@@ -435,8 +440,17 @@ export const GEAR_CATEGORIES = {
   gear: "RT.Inventory.Categories.Gear",
   cybernetic: "RT.Inventory.Categories.Cybernetic",
   weaponMod: "RT.Inventory.Categories.WeaponMod",
+  forceField: "RT.Inventory.Categories.ForceField",
   consumable: "RT.Inventory.Categories.Consumable",
   tool: "RT.Inventory.Categories.Tool"
+};
+
+/** RT-style craftsmanship → force field overload band (lower = safer). */
+export const FORCE_FIELD_OVERLOAD_BY_CRAFT = {
+  poor: 15,
+  common: 10,
+  good: 5,
+  best: 1
 };
 
 /**
@@ -634,16 +648,32 @@ export function encumbranceForBonus(totalBonus) {
   return ENCUMBRANCE_BY_BONUS[n] ?? ENCUMBRANCE_BY_BONUS[0];
 }
 
-// Creature size catalog (hit modifier when targeting this size).
+// Creature size catalog (hit mod when targeting this size; speedMod adjusts AB for movement).
 export const SIZES = [
-  { id: "minuscule", label: "RT.Size.Minuscule", hitMod: -30 },
-  { id: "puny", label: "RT.Size.Puny", hitMod: -20 },
-  { id: "scrawny", label: "RT.Size.Scrawny", hitMod: -10 },
-  { id: "average", label: "RT.Size.Average", hitMod: 0 },
-  { id: "hulking", label: "RT.Size.Hulking", hitMod: 10 },
-  { id: "enormous", label: "RT.Size.Enormous", hitMod: 20 },
-  { id: "massive", label: "RT.Size.Massive", hitMod: 30 }
+  { id: "minuscule", label: "RT.Size.Minuscule", hitMod: -30, speedMod: -2 },
+  { id: "puny", label: "RT.Size.Puny", hitMod: -20, speedMod: -1 },
+  { id: "scrawny", label: "RT.Size.Scrawny", hitMod: -10, speedMod: 0 },
+  { id: "average", label: "RT.Size.Average", hitMod: 0, speedMod: 0 },
+  { id: "hulking", label: "RT.Size.Hulking", hitMod: 10, speedMod: 1 },
+  { id: "enormous", label: "RT.Size.Enormous", hitMod: 20, speedMod: 2 },
+  { id: "massive", label: "RT.Size.Massive", hitMod: 30, speedMod: 3 }
 ];
+
+/** Hit location d100 bands (RT Core) for paper-doll labels. */
+export const HIT_LOCATIONS = [
+  { id: "head", band: "01–10", label: "RT.Combat.Doll.Head" },
+  { id: "rightArm", band: "11–20", label: "RT.Combat.Doll.RA" },
+  { id: "leftArm", band: "21–30", label: "RT.Combat.Doll.LA" },
+  { id: "body", band: "31–70", label: "RT.Combat.Doll.Body" },
+  { id: "rightLeg", band: "71–85", label: "RT.Combat.Doll.RL" },
+  { id: "leftLeg", band: "86–00", label: "RT.Combat.Doll.LL" }
+];
+
+/** Format a test modifier for option labels (always signed, including +0). */
+export function formatTestMod(mod) {
+  const n = Number(mod) || 0;
+  return n >= 0 ? `+${n}` : `${n}`;
+}
 
 // Weapon attack modifier dropdowns (combat tab).
 export const AIM_OPTIONS = [
