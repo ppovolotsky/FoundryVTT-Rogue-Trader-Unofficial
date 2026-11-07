@@ -47,6 +47,7 @@ Foundry VTT **game system** `rogue-trader`. This file is the map. Do not re-scan
 - `src/dice.js` — `rollTest` / `showRollDialog`: d100 (`1d100` or `2d10`), degrees, crits, chat card.
 - `src/combat.js` — weapon jam/hits, damage (RF, Tearing, Proven, Vengeful, Accurate, Force), attack mod helpers.
 - `src/chat.js` — chat-card button hooks (attack → damage with DoS/aim).
+- Force fields: gear category `forceField` in Inventory; Combat shows equipped field + Test (`rollRawD100`, overload from craft / exotic).
 - `src/documents/actor.js` — `RTActor.prepareDerivedData`, `normalizeGroupRows` (array<->object repair).
 - `src/documents/item.js` — `RTItem` (empty subclass).
 - `src/sheets/actor-sheet.js` — `RTCharacterSheet` (+ `RTShipSheet`/`RTColonySheet` stubs): PARTS, `actions`, tabs (incl. Inventory).

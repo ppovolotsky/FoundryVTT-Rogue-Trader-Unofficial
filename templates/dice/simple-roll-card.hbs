@@ -1,0 +1,40 @@
+<details class="rt-roll-card {{#if resultClass}}{{resultClass}}{{/if}}">
+  <summary class="rt-roll-card__summary">
+    <div class="rt-roll-card__summary-top">
+      {{#if label}}<span class="rt-roll-card__label">{{label}}</span>{{/if}}
+      {{#if modeLabel}}<span class="rt-roll-card__mode">{{localize modeLabel}}</span>{{/if}}
+    </div>
+    <div class="rt-roll-card__summary-line">
+      {{#if summary}}<span>{{summary}}</span>{{/if}}
+      {{#if result}}<span class="rt-roll-card__result">{{result}}</span>{{/if}}
+    </div>
+    {{#if hasDetails}}<span class="rt-roll-card__expand-hint">{{localize "RT.Roll.ShowDetails"}}</span>{{/if}}
+  </summary>
+
+  {{#if hasDetails}}
+  <div class="rt-roll-card__details">
+    {{#if (eq mode "2d10")}}
+    <div class="rt-roll-card__dice">
+      <div class="rt-roll-card__die">
+        <span class="rt-roll-card__die-caption">{{localize "RT.Roll.Tens"}}</span>
+        <span class="rt-roll-card__die-value">{{tens}}</span>
+      </div>
+      <span class="rt-roll-card__operator">+</span>
+      <div class="rt-roll-card__die">
+        <span class="rt-roll-card__die-caption">{{localize "RT.Roll.Units"}}</span>
+        <span class="rt-roll-card__die-value">{{units}}</span>
+      </div>
+      <span class="rt-roll-card__operator">=</span>
+      <span class="rt-roll-card__value">{{value}}</span>
+    </div>
+    {{else if value}}
+    <div class="rt-roll-card__row">{{#if modeLabel}}{{localize modeLabel}}{{else}}{{localize "RT.Roll.Result"}}{{/if}}: {{value}}</div>
+    {{/if}}
+    {{#if detailRows}}
+    {{#each detailRows as |row|}}
+    <div class="rt-roll-card__row">{{row}}</div>
+    {{/each}}
+    {{/if}}
+  </div>
+  {{/if}}
+</details>

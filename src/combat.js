@@ -1,10 +1,12 @@
 import {
   craftsmanshipDef,
+  normalizeCraftsmanship,
   resolveWeaponSpecialDisplay,
   AIM_OPTIONS,
   RANGE_OPTIONS,
   FIRE_MODES,
-  MELEE_ATTACK_TYPES
+  MELEE_ATTACK_TYPES,
+  FORCE_FIELD_OVERLOAD_BY_CRAFT
 } from "./config.js";
 
 const { Roll } = foundry.dice;
@@ -202,6 +204,82 @@ export function meleeAttackMod(attackId) {
 
 export function meleeAttackCount(attackId) {
   return MELEE_ATTACK_TYPES.find((o) => o.id === attackId)?.attacks ?? 1;
+}
+
+/**
+ * Overload threshold for a force-field gear item.
+ * Exotic items may set system.overload manually; otherwise craftsmanship table.
+ */
+export function forceFieldOverloadFor(item) {
+  if (item?.system?.exotic) {
+    const custom = Number(item.system.overload);
+    if (Number.isFinite(custom) && custom > 0) return custom;
+  }
+  const craft = normalizeCraftsmanship(item?.system?.craftsmanship);
+  return FORCE_FIELD_OVERLOAD_BY_CRAFT[craft] ?? FORCE_FIELD_OVERLOAD_BY_CRAFT.common;
+}
+
+/**
+ * Resolve a force-field protection roll (RT Core style).
+ * @returns {"overloaded"|"holds"|"fails"}
+ */
+export function resolveForceFieldRoll(value, rating, overload) {
+  const v = Number(value) || 0;
+  const ov = Number(overload) || 0;
+  const rt = Number(rating) || 0;
+  if (v <= ov) return "overloaded";
+  if (v <= rt) return "holds";
+  return "fails";
+}
+
+/**
+ * Unarmed attack profile from actor talent toggles.
+ * Base 1d5-3+SB I Primitive; Warrior → 1d10+SB Primitive; Master → 1d10+SB (not Primitive).
+ * Street Fighting / Crushing Blow each add +2 damage (flat talent bonuses).
+ */
+export function buildUnarmedProfile(actor) {
+  const talents = actor?.system?.unarmedTalents ?? {};
+  const sb = Number(actor?.system?.characteristics?.s?.bonus) || 0;
+  let dice = "1d5";
+  let flat = -3 + sb;
+  let primitive = true;
+  if (talents.unarmedMaster || talents.unarmedWarrior) {
+    dice = "1d10";
+    flat = sb;
+  }
+  if (talents.unarmedMaster) primitive = false;
+  // Street Fighting + Crushing Blow: flat +2 each (RT talent damage bumps).
+  if (talents.streetFighting) flat += 2;
+  if (talents.crushingBlow) flat += 2;
+  const flatStr = flat >= 0 ? `+${flat}` : `${flat}`;
+  const formula = `${dice}${flatStr}`;
+  return {
+    formula,
+    damageType: "I",
+    penetration: 0,
+    primitive,
+    summary: primitive ? `${formula} I (Primitive)` : `${formula} I`
+  };
+}
+
+/** Roll damage from a bare formula string (unarmed / ad-hoc). */
+export async function rollDamageFormula(formula, { pen = 0 } = {}) {
+  const parsed = parseDamageFormula(formula);
+  if (!parsed) return null;
+  let sum = 0;
+  const detail = [];
+  for (let i = 0; i < parsed.dice; i++) {
+    const d = await rollDamageDie(parsed.faces, {});
+    sum += d.total;
+    detail.push(`${d.total}${d.notes.length ? ` [${d.notes.join(",")}]` : ""}`);
+  }
+  return {
+    total: sum + parsed.flat,
+    pen: Number(pen) || 0,
+    flat: parsed.flat,
+    diceDetail: detail.join(", "),
+    formula
+  };
 }
 
 export { AIM_OPTIONS, RANGE_OPTIONS, FIRE_MODES, MELEE_ATTACK_TYPES };

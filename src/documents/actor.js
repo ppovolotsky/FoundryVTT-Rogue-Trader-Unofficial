@@ -149,10 +149,40 @@ export class RTActor extends Actor {
       level
     };
 
+    // Equipped armour AP (max per location); overrides fill blanks on the paper doll.
+    const armourApEquipped = { head: 0, body: 0, leftArm: 0, rightArm: 0, leftLeg: 0, rightLeg: 0 };
+    for (const item of this.items) {
+      if (item.type !== "armour" || !item.system?.equipped) continue;
+      const loc = item.system.locations ?? {};
+      for (const key of Object.keys(armourApEquipped)) {
+        armourApEquipped[key] = Math.max(armourApEquipped[key], Number(loc[key]) || 0);
+      }
+    }
+    system.armourApEquipped = armourApEquipped;
+    const ov = system.armourApOverride ?? {};
+    const resolveAp = (key) => {
+      const raw = ov[key];
+      if (raw === "" || raw === null || raw === undefined) return armourApEquipped[key];
+      return Number(raw) || 0;
+    };
+    system.armourAp = {
+      head: resolveAp("head"),
+      body: resolveAp("body"),
+      leftArm: resolveAp("leftArm"),
+      rightArm: resolveAp("rightArm"),
+      leftLeg: resolveAp("leftLeg"),
+      rightLeg: resolveAp("rightLeg")
+    };
+
+    const sizeDef = SIZES.find((s) => s.id === (system.size || "average")) ?? SIZES[3];
+    system.sizeHitMod = sizeDef.hitMod;
+    system.sizeSpeedMod = sizeDef.speedMod ?? 0;
+
     // Movement (RT Core table): natural Agility Bonus only (ignore Unnatural
-    // Characteristic bonusMod). Half/Full/Charge/Run = AB / 2AB / 3AB / 6AB.
-    // Unnatural Speed doubles AB for movement; Flyer doubles the resulting rates.
-    let ab = Math.floor((system.characteristics?.ag?.unpenalized ?? 0) / 10);
+    // Characteristic bonusMod). Size speedMod adjusts AB; Unnatural Speed doubles AB;
+    // Flyer doubles the resulting rates. Half/Full/Charge/Run = AB / 2AB / 3AB / 6AB.
+    const naturalAb = Math.floor((system.characteristics?.ag?.unpenalized ?? 0) / 10);
+    let ab = Math.max(0, naturalAb + (system.sizeSpeedMod || 0));
     if (system.unnaturalSpeed) ab *= 2;
 
     let half = ab;
@@ -194,17 +224,13 @@ export class RTActor extends Actor {
       run = Math.floor(run / 2);
     }
 
-    const naturalAb = Math.floor((system.characteristics?.ag?.unpenalized ?? 0) / 10);
     system.movement = { half, full, charge, run, mode, naturalAb };
 
-    // Jump distances (metres): horizontal ≈ AB; vertical ≈ floor(AB/2). SB adds to horizontal.
+    // Jump distances (metres): long = SB m; high = SB × 20 cm (= 0.2 m).
     const sb = system.characteristics?.s?.bonus ?? 0;
     system.jumps = {
-      horizontal: naturalAb + Math.floor(sb / 2),
-      vertical: Math.max(0, Math.floor(naturalAb / 2))
+      horizontal: sb,
+      vertical: Math.round(sb * 0.2 * 100) / 100
     };
-
-    const sizeDef = SIZES.find((s) => s.id === (system.size || "average")) ?? SIZES[3];
-    system.sizeHitMod = sizeDef.hitMod;
   }
 }

@@ -18,14 +18,14 @@
               <label>{{localize "RT.Combat.Aim.Label"}}
                 <select data-combat-mod="aim" data-item-id="{{w.id}}">
                   {{#each w.aimOptions as |o|}}
-                  <option value="{{o.id}}" {{#if o.selected}}selected{{/if}}>{{localize o.label}}</option>
+                  <option value="{{o.id}}" {{#if o.selected}}selected{{/if}}>{{o.optionLabel}}</option>
                   {{/each}}
                 </select>
               </label>
               <label>{{localize "RT.Combat.MeleeAttack.Label"}}
                 <select data-combat-mod="attackType" data-item-id="{{w.id}}">
                   {{#each w.attackTypes as |o|}}
-                  <option value="{{o.id}}" {{#if o.selected}}selected{{/if}}>{{localize o.label}}</option>
+                  <option value="{{o.id}}" {{#if o.selected}}selected{{/if}}>{{o.optionLabel}}</option>
                   {{/each}}
                 </select>
               </label>
@@ -54,7 +54,7 @@
               {{#if w.showClip}}
               <div class="rt-combat-weapon__clip" title="{{localize "RT.Items.Weapon.ClipValue"}}">
                 <span class="rt-combat-weapon__clip-label">{{localize "RT.Combat.Clip"}}</span>
-                <div class="rt-stepper">
+                <div class="rt-stepper rt-stepper--clip">
                   <input type="number" value="{{w.clipValue}}" data-dtype="Number" data-item-clip="1" data-item-id="{{w.id}}"/>
                   <div class="rt-stepper__buttons">
                     <button type="button" class="rt-stepper__btn" data-action="adjustWeaponClip" data-item-id="{{w.id}}" data-delta="1" title="+1"><i class="fa-solid fa-chevron-up"></i></button>
@@ -73,21 +73,21 @@
               <label>{{localize "RT.Combat.Aim.Label"}}
                 <select data-combat-mod="aim" data-item-id="{{w.id}}">
                   {{#each w.aimOptions as |o|}}
-                  <option value="{{o.id}}" {{#if o.selected}}selected{{/if}}>{{localize o.label}}</option>
+                  <option value="{{o.id}}" {{#if o.selected}}selected{{/if}}>{{o.optionLabel}}</option>
                   {{/each}}
                 </select>
               </label>
               <label>{{localize "RT.Combat.RangedAttack.Label"}}
                 <select data-combat-mod="fireMode" data-item-id="{{w.id}}">
                   {{#each w.fireModes as |o|}}
-                  <option value="{{o.id}}" {{#if o.selected}}selected{{/if}} {{#if o.disabled}}disabled{{/if}}>{{localize o.label}}</option>
+                  <option value="{{o.id}}" {{#if o.selected}}selected{{/if}} {{#if o.disabled}}disabled{{/if}}>{{o.optionLabel}}</option>
                   {{/each}}
                 </select>
               </label>
               <label>{{localize "RT.Combat.Range.Label"}}
                 <select data-combat-mod="range" data-item-id="{{w.id}}">
                   {{#each w.rangeOptions as |o|}}
-                  <option value="{{o.id}}" {{#if o.selected}}selected{{/if}}>{{localize o.label}}</option>
+                  <option value="{{o.id}}" {{#if o.selected}}selected{{/if}}>{{o.optionLabel}}</option>
                   {{/each}}
                 </select>
               </label>
@@ -106,10 +106,19 @@
 
       <section class="rt-sheet-section">
         <label class="rt-sheet-section__title">{{localize "RT.Combat.SpecialAttacks"}}</label>
-        <div class="rt-combat-macros__row">
-          <button type="button" class="rt-button rt-button--small" data-action="rollSpecialAttack" data-special="unarmed">{{localize "RT.Combat.SpecialAttack.Unarmed"}}</button>
-          <button type="button" class="rt-button rt-button--small" data-action="rollSpecialAttack" data-special="grapple">{{localize "RT.Combat.SpecialAttack.Grapple"}}</button>
-          <button type="button" class="rt-button rt-button--small" data-action="rollSpecialAttack" data-special="stun">{{localize "RT.Combat.SpecialAttack.Stun"}}</button>
+        <div class="rt-unarmed-block">
+          <div class="rt-unarmed-block__profile">{{localize "RT.Combat.UnarmedProfile"}}: <strong>{{unarmedProfile.summary}}</strong></div>
+          <div class="rt-combat-macros__row">
+            {{#each unarmedTalentOpts as |t|}}
+            <button type="button" class="rt-button rt-button--small {{#if t.active}}active{{/if}}" data-action="toggleUnarmedTalent" data-talent="{{t.id}}">{{localize t.label}}</button>
+            {{/each}}
+          </div>
+          <div class="rt-combat-macros__row">
+            <button type="button" class="rt-button rt-button--small" data-action="rollSpecialAttack" data-special="unarmed">{{localize "RT.Combat.Attack"}}</button>
+            <button type="button" class="rt-button rt-button--small" data-action="rollUnarmedDamage">{{localize "RT.Combat.Damage"}}</button>
+            <button type="button" class="rt-button rt-button--small" data-action="rollSpecialAttack" data-special="grapple">{{localize "RT.Combat.SpecialAttack.Grapple"}}</button>
+            <button type="button" class="rt-button rt-button--small" data-action="rollSpecialAttack" data-special="stun">{{localize "RT.Combat.SpecialAttack.Stun"}}</button>
+          </div>
         </div>
       </section>
     </div>
@@ -117,15 +126,39 @@
     <div class="rt-combat-col rt-combat-col--right">
       <div class="rt-combat-right-top">
         <div class="rt-paper-doll" title="{{localize "RT.Combat.Armour"}}">
-          <div class="rt-paper-doll__head"><span>{{armourAp.head}}</span><small>{{localize "RT.Combat.Doll.Head"}}</small></div>
+          <div class="rt-paper-doll__head">
+            <input type="number" class="rt-paper-doll__ap" name="system.armourApOverride.head" value="{{system.armourApOverride.head}}" placeholder="{{armourApEquipped.head}}"/>
+            <small>{{localize "RT.Combat.Doll.Head"}}</small>
+            <span class="rt-paper-doll__band">{{hitBands.head}}</span>
+          </div>
           <div class="rt-paper-doll__arms">
-            <div class="rt-paper-doll__arm"><span>{{armourAp.leftArm}}</span><small>{{localize "RT.Combat.Doll.LA"}}</small></div>
-            <div class="rt-paper-doll__body"><span>{{armourAp.body}}</span><small>{{localize "RT.Combat.Doll.Body"}}</small></div>
-            <div class="rt-paper-doll__arm"><span>{{armourAp.rightArm}}</span><small>{{localize "RT.Combat.Doll.RA"}}</small></div>
+            <div class="rt-paper-doll__arm">
+              <input type="number" class="rt-paper-doll__ap" name="system.armourApOverride.leftArm" value="{{system.armourApOverride.leftArm}}" placeholder="{{armourApEquipped.leftArm}}"/>
+              <small>{{localize "RT.Combat.Doll.LA"}}</small>
+              <span class="rt-paper-doll__band">{{hitBands.leftArm}}</span>
+            </div>
+            <div class="rt-paper-doll__body">
+              <input type="number" class="rt-paper-doll__ap" name="system.armourApOverride.body" value="{{system.armourApOverride.body}}" placeholder="{{armourApEquipped.body}}"/>
+              <small>{{localize "RT.Combat.Doll.Body"}}</small>
+              <span class="rt-paper-doll__band">{{hitBands.body}}</span>
+            </div>
+            <div class="rt-paper-doll__arm">
+              <input type="number" class="rt-paper-doll__ap" name="system.armourApOverride.rightArm" value="{{system.armourApOverride.rightArm}}" placeholder="{{armourApEquipped.rightArm}}"/>
+              <small>{{localize "RT.Combat.Doll.RA"}}</small>
+              <span class="rt-paper-doll__band">{{hitBands.rightArm}}</span>
+            </div>
           </div>
           <div class="rt-paper-doll__legs">
-            <div class="rt-paper-doll__leg"><span>{{armourAp.leftLeg}}</span><small>{{localize "RT.Combat.Doll.LL"}}</small></div>
-            <div class="rt-paper-doll__leg"><span>{{armourAp.rightLeg}}</span><small>{{localize "RT.Combat.Doll.RL"}}</small></div>
+            <div class="rt-paper-doll__leg">
+              <input type="number" class="rt-paper-doll__ap" name="system.armourApOverride.leftLeg" value="{{system.armourApOverride.leftLeg}}" placeholder="{{armourApEquipped.leftLeg}}"/>
+              <small>{{localize "RT.Combat.Doll.LL"}}</small>
+              <span class="rt-paper-doll__band">{{hitBands.leftLeg}}</span>
+            </div>
+            <div class="rt-paper-doll__leg">
+              <input type="number" class="rt-paper-doll__ap" name="system.armourApOverride.rightLeg" value="{{system.armourApOverride.rightLeg}}" placeholder="{{armourApEquipped.rightLeg}}"/>
+              <small>{{localize "RT.Combat.Doll.RL"}}</small>
+              <span class="rt-paper-doll__band">{{hitBands.rightLeg}}</span>
+            </div>
           </div>
         </div>
 
@@ -181,61 +214,48 @@
 
       <section class="rt-sheet-section">
         <label class="rt-sheet-section__title">{{localize "RT.Combat.ForceField"}}</label>
-        <div class="rt-identity-row">
-          <div class="rt-field rt-field--check">
-            <label>
-              <input type="checkbox" name="system.forceField.active" {{checked system.forceField.active}}/>
+        {{#if combatForceFields.length}}
+        <div class="rt-combat-force-fields">
+          {{#each combatForceFields as |ff|}}
+          <div class="rt-combat-force-field">
+            <button type="button" class="rt-inventory-row__name" data-action="editInventoryItem" data-item-id="{{ff.id}}">{{ff.name}}</button>
+            <span>{{localize "RT.Combat.ForceFieldRating"}} {{ff.rating}}</span>
+            <span title="{{localize ff.craftLabel}}">{{localize "RT.Combat.ForceFieldOverload"}} {{ff.overload}}</span>
+            <label class="rt-field--check">
+              <input type="checkbox" {{checked ff.equipped}} data-item-id="{{ff.id}}" data-equip-toggle="1"/>
               {{localize "RT.Combat.ForceFieldActive"}}
             </label>
+            <button type="button" class="rt-button rt-button--small" data-action="testForceField" data-item-id="{{ff.id}}" title="{{localize "RT.Combat.ForceFieldTestHint"}}">{{localize "RT.Combat.ForceFieldTest"}}</button>
           </div>
-          <div class="rt-field">
-            <label>{{localize "RT.Combat.ForceFieldRating"}}</label>
-            <input type="number" name="system.forceField.rating" value="{{system.forceField.rating}}" data-dtype="Number"/>
-          </div>
-          <div class="rt-field">
-            <label>{{localize "RT.Combat.ForceFieldOverload"}}</label>
-            <input type="number" name="system.forceField.overload" value="{{system.forceField.overload}}" data-dtype="Number"/>
-          </div>
-          <div class="rt-field">
-            <label>{{localize "RT.Items.Craftsmanship"}}</label>
-            <select name="system.forceField.craftsmanship">
-              {{#each forceFieldCraftOptions as |c|}}
-              <option value="{{c.id}}" {{#if c.selected}}selected{{/if}}>{{localize c.label}}</option>
-              {{/each}}
-            </select>
-          </div>
+          {{/each}}
         </div>
-        <button type="button" class="rt-button rt-button--small" data-action="testForceField" title="{{localize "RT.Combat.ForceFieldTestHint"}}">{{localize "RT.Combat.ForceFieldTest"}}</button>
+        {{else}}
+        <p class="rt-inventory-empty">{{localize "RT.Combat.ForceFieldNone"}}</p>
+        {{/if}}
       </section>
 
       <section class="rt-sheet-section">
         <label class="rt-sheet-section__title">{{localize "RT.Combat.Movement"}}</label>
-        <div class="rt-combat-speed-bar">
-          <div class="rt-movement">
-            <span>{{localize "RT.Combat.MoveHalf"}}: {{system.movement.half}}</span>
-            <span>{{localize "RT.Combat.MoveFull"}}: {{system.movement.full}}</span>
-            <span>{{localize "RT.Combat.MoveCharge"}}: {{system.movement.charge}}</span>
-            <span>{{localize "RT.Combat.MoveRun"}}: {{system.movement.run}}</span>
-          </div>
+
+        <div class="rt-movement rt-movement--rates">
+          <span class="rt-movement__cell"><span class="rt-movement__label">{{localize "RT.Combat.MoveHalf"}}</span> {{system.movement.half}}</span>
+          <span class="rt-movement__cell"><span class="rt-movement__label">{{localize "RT.Combat.MoveFull"}}</span> {{system.movement.full}}</span>
+          <span class="rt-movement__cell"><span class="rt-movement__label">{{localize "RT.Combat.MoveCharge"}}</span> {{system.movement.charge}}</span>
+          <span class="rt-movement__cell"><span class="rt-movement__label">{{localize "RT.Combat.MoveRun"}}</span> {{system.movement.run}}</span>
+        </div>
+
+        <div class="rt-movement-flags">
           <label class="rt-field--check">
             <input type="checkbox" name="system.movementHalf" {{checked system.movementHalf}}/>
             {{localize "RT.Combat.MovementHalf"}}
           </label>
-          <div class="rt-encumbrance rt-encumbrance--compact" title="{{localize "RT.Encumbrance.Hint"}}">
-            <span class="rt-encumbrance__label">{{localize "RT.Encumbrance.Load"}}</span>
-            <span class="rt-encumbrance__value">{{system.encumbrance.carried}} / {{system.encumbrance.carry}}</span>
-            <span class="rt-encumbrance__level rt-encumbrance__level--{{system.encumbrance.level}}">{{localize encumbranceLevelLabel}}</span>
-          </div>
+          <label class="rt-field--check">
+            <input type="checkbox" name="system.unnaturalSpeed" {{checked system.unnaturalSpeed}}/>
+            {{localize "RT.Combat.UnnaturalSpeed"}}
+          </label>
         </div>
-        <div class="rt-identity-row">
-          <div class="rt-field">
-            <label>{{localize "RT.Combat.JumpLong"}}</label>
-            <input type="text" disabled value="{{system.jumps.horizontal}}"/>
-          </div>
-          <div class="rt-field">
-            <label>{{localize "RT.Combat.JumpHigh"}}</label>
-            <input type="text" disabled value="{{system.jumps.vertical}}"/>
-          </div>
+
+        <div class="rt-identity-row rt-movement-size-row">
           <div class="rt-field">
             <label>{{localize "RT.Combat.Size"}}</label>
             <select name="system.size">
@@ -244,17 +264,37 @@
               {{/each}}
             </select>
           </div>
-          <div class="rt-field rt-field--check">
-            <label>
-              <input type="checkbox" name="system.unnaturalSpeed" {{checked system.unnaturalSpeed}}/>
-              {{localize "RT.Combat.UnnaturalSpeed"}}
-            </label>
+          <div class="rt-field rt-field--readonly">
+            <label>{{localize "RT.Combat.SizeHitMod"}}</label>
+            <input type="text" disabled value="{{sizeHitModLabel}}"/>
+          </div>
+          <div class="rt-field rt-field--readonly">
+            <label>{{localize "RT.Combat.SizeSpeedMod"}}</label>
+            <input type="text" disabled value="{{sizeSpeedModLabel}}"/>
           </div>
         </div>
-        <div class="rt-combat-macros__row">
+
+        <div class="rt-identity-row">
+          <div class="rt-field" title="{{localize "RT.Combat.JumpLongHint"}}">
+            <label>{{localize "RT.Combat.JumpLong"}}</label>
+            <input type="text" disabled value="{{system.jumps.horizontal}}"/>
+          </div>
+          <div class="rt-field" title="{{localize "RT.Combat.JumpHighHint"}}">
+            <label>{{localize "RT.Combat.JumpHigh"}}</label>
+            <input type="text" disabled value="{{system.jumps.vertical}}"/>
+          </div>
+        </div>
+
+        <div class="rt-encumbrance rt-encumbrance--compact" title="{{localize "RT.Encumbrance.Hint"}}">
+          <span class="rt-encumbrance__label">{{localize "RT.Encumbrance.Load"}}</span>
+          <span class="rt-encumbrance__value">{{system.encumbrance.carried}} / {{system.encumbrance.carry}}</span>
+          <span class="rt-encumbrance__level rt-encumbrance__level--{{system.encumbrance.level}}">{{localize encumbranceLevelLabel}}</span>
+        </div>
+
+        <div class="rt-combat-macros__row rt-movement-modes">
           <button type="button" class="rt-button rt-button--small {{#if (eq system.movementMode "normal")}}active{{/if}}" data-action="setMovementMode" data-mode="normal">{{localize "RT.Combat.MovementNormal"}}</button>
           <button type="button" class="rt-button rt-button--small {{#if (eq system.movementMode "flyer")}}active{{/if}}" data-action="setMovementMode" data-mode="flyer">{{localize "RT.Combat.MovementFlyer"}}</button>
-          <button type="button" class="rt-button rt-button--small {{#if isCustomMovement}}active{{/if}}" data-action="setMovementMode" data-mode="custom">{{localize "RT.Combat.MovementCustom"}}</button>
+          <button type="button" class="rt-button rt-button--small {{#if isCustomMovement}}active{{/if}}" data-action="setMovementMode" data-mode="custom">{{localize "RT.Combat.MovementCustomAdd"}}</button>
         </div>
         {{#if isCustomMovement}}
         <div class="rt-identity-row">
