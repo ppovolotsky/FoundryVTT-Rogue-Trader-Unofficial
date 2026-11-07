@@ -19,6 +19,17 @@
     <span class="rt-roll-card__expand-hint">{{localize "RT.Roll.ShowDetails"}}</span>
   </summary>
 
+  {{#if showDamage}}
+  <div class="rt-roll-card__actions">
+    <button type="button" class="rt-button rt-button--small rt-roll-card__damage-btn"
+            data-rt-action="weapon-damage"
+            data-actor-uuid="{{actorUuid}}"
+            data-item-id="{{itemId}}"
+            data-degrees="{{degrees}}"
+            data-aim-id="{{aimId}}">{{localize "RT.Combat.Damage"}}</button>
+  </div>
+  {{/if}}
+
   <div class="rt-roll-card__details">
     {{#if (eq mode "2d10")}}
     <div class="rt-roll-card__dice">

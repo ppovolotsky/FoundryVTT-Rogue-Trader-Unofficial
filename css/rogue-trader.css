@@ -1458,10 +1458,130 @@ body.theme-dark,
   margin-bottom: 0;
 }
 
+.rogue-trader.sheet .rt-inventory-columns {
+  column-count: 2;
+  column-gap: 14px;
+}
+
+.rogue-trader.sheet .rt-inventory-section {
+  break-inside: avoid;
+  margin-bottom: 10px;
+}
+
+.rogue-trader.sheet .rt-inv-edit__mini-title {
+  display: block;
+  font-size: 0.8em;
+  color: var(--rt-muted);
+  margin: 4px 0 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.rogue-trader.sheet .rt-inv-edit__row--rof {
+  gap: 4px 6px;
+}
+
+.rogue-trader.sheet .rt-inv-edit__row--rof > label {
+  min-width: 3.5em;
+}
+
+.rogue-trader.sheet .rt-inv-edit__row--rof > label input {
+  max-width: 3.5em;
+  min-width: 3em;
+}
+
 .rogue-trader.sheet .rt-inventory-list {
   display: flex;
   flex-direction: column;
   gap: 2px;
+}
+
+.rogue-trader.sheet .rt-combat-columns {
+  display: grid;
+  grid-template-columns: 1.15fr 0.95fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.rogue-trader.sheet .rt-combat-right-top {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  margin-bottom: 8px;
+  align-items: start;
+}
+
+.rogue-trader.sheet .rt-paper-doll {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 120px;
+  padding: 6px;
+  background: var(--rt-panel);
+  border: 1px solid var(--rt-border);
+  border-radius: 4px;
+}
+
+.rogue-trader.sheet .rt-paper-doll__head,
+.rogue-trader.sheet .rt-paper-doll__body,
+.rogue-trader.sheet .rt-paper-doll__arm,
+.rogue-trader.sheet .rt-paper-doll__leg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--rt-field);
+  border: 1px solid var(--rt-border);
+  border-radius: 3px;
+  padding: 2px 6px;
+  min-width: 36px;
+}
+
+.rogue-trader.sheet .rt-paper-doll__head span,
+.rogue-trader.sheet .rt-paper-doll__body span,
+.rogue-trader.sheet .rt-paper-doll__arm span,
+.rogue-trader.sheet .rt-paper-doll__leg span {
+  font-weight: bold;
+  font-size: 1.05em;
+}
+
+.rogue-trader.sheet .rt-paper-doll small {
+  font-size: 0.65em;
+  color: var(--rt-muted);
+  text-transform: uppercase;
+}
+
+.rogue-trader.sheet .rt-paper-doll__arms,
+.rogue-trader.sheet .rt-paper-doll__legs {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.rogue-trader.sheet .rt-paper-doll__body {
+  min-width: 48px;
+  min-height: 40px;
+}
+
+.rogue-trader.sheet .rt-combat-speed-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.rogue-trader.sheet .rt-button.active {
+  outline: 1px solid var(--rt-accent);
+}
+
+.rt-roll-card__actions {
+  margin-top: 6px;
+}
+
+.rt-roll-card__damage-btn {
+  pointer-events: auto;
 }
 
 .rogue-trader.sheet .rt-inventory-row {

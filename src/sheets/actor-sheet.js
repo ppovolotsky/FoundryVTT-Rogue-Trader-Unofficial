@@ -23,7 +23,7 @@ import {
   meleeAttackDef,
   rangedAttackDef,
   CRAFTSMANSHIP,
-  WEAPON_KINDS,
+  WEAPON_CLASSES,
   WEAPON_SPECIALS,
   resolveWeaponSpecialDisplay,
   serializeWeaponSpecials,
@@ -129,12 +129,29 @@ async function findNavigatorMutationTable() {
 }
 
 const INVENTORY_SECTIONS = [
-  { key: "weapons", label: "RT.Inventory.Weapons", type: "weapon", category: "", newName: "RT.Inventory.NewWeapon" },
-  { key: "armour", label: "RT.Inventory.Armour", type: "armour", category: "", newName: "RT.Inventory.NewArmour" },
-  { key: "gear", label: "RT.Inventory.Gear", type: "gear", category: "gear", newName: "RT.Inventory.NewGear" },
-  { key: "cybernetics", label: "RT.Inventory.Cybernetics", type: "gear", category: "cybernetic", newName: "RT.Inventory.NewCybernetic" },
-  { key: "ammo", label: "RT.Inventory.Ammo", type: "ammo", category: "", newName: "RT.Inventory.NewAmmo" },
-  { key: "weaponMods", label: "RT.Inventory.WeaponMods", type: "gear", category: "weaponMod", newName: "RT.Inventory.NewWeaponMod" }
+  {
+    key: "weaponsMelee",
+    label: "RT.Inventory.WeaponsMelee",
+    type: "weapon",
+    category: "",
+    weaponKind: "melee",
+    newName: "RT.Inventory.NewWeaponMelee",
+    column: "left"
+  },
+  {
+    key: "weaponsRanged",
+    label: "RT.Inventory.WeaponsRanged",
+    type: "weapon",
+    category: "",
+    weaponKind: "ranged",
+    newName: "RT.Inventory.NewWeaponRanged",
+    column: "left"
+  },
+  { key: "armour", label: "RT.Inventory.Armour", type: "armour", category: "", newName: "RT.Inventory.NewArmour", column: "right" },
+  { key: "gear", label: "RT.Inventory.Gear", type: "gear", category: "gear", newName: "RT.Inventory.NewGear", column: "right" },
+  { key: "cybernetics", label: "RT.Inventory.Cybernetics", type: "gear", category: "cybernetic", newName: "RT.Inventory.NewCybernetic", column: "right" },
+  { key: "ammo", label: "RT.Inventory.Ammo", type: "ammo", category: "", newName: "RT.Inventory.NewAmmo", column: "right" },
+  { key: "weaponMods", label: "RT.Inventory.WeaponMods", type: "gear", category: "weaponMod", newName: "RT.Inventory.NewWeaponMod", column: "right" }
 ];
 
 export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
@@ -198,7 +215,9 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       rollScatter: RTCharacterSheet.#onRollScatter,
       rollDamageReceived: RTCharacterSheet.#onRollDamageReceived,
       sendCritWoundHint: RTCharacterSheet.#onSendCritWoundHint,
-      testForceField: RTCharacterSheet.#onTestForceField
+      testForceField: RTCharacterSheet.#onTestForceField,
+      rollSpecialAttack: RTCharacterSheet.#onRollSpecialAttack,
+      setMovementMode: RTCharacterSheet.#onSetMovementMode
     }
   };
 
@@ -838,12 +857,23 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static async #onCreateInventoryItem(event, target) {
     const type = target.dataset.type || "gear";
     const category = target.dataset.category || "";
-    const section = INVENTORY_SECTIONS.find(
-      (s) => s.type === type && (s.category || "") === category
-    );
+    const weaponKind = target.dataset.weaponKind || "";
+    const section = INVENTORY_SECTIONS.find((s) => {
+      if (s.type !== type) return false;
+      if ((s.category || "") !== category) return false;
+      if (weaponKind) return s.weaponKind === weaponKind;
+      return !s.weaponKind;
+    });
     const name = game.i18n.localize(section?.newName ?? "RT.Inventory.NewGear");
-    const data = { name, type, img: "icons/svg/item-bag.svg" };
-    if (type === "gear" && category) data.system = { category };
+    const data = { name, type, img: "icons/svg/item-bag.svg", system: {} };
+    if (type === "gear" && category) data.system.category = category;
+    if (type === "weapon" && weaponKind === "melee") {
+      data.system.kind = "melee";
+      data.system.class = "melee";
+    } else if (type === "weapon" && weaponKind === "ranged") {
+      data.system.kind = "ranged";
+      data.system.class = "pistol";
+    }
     await this.document.createEmbeddedDocuments("Item", [data]);
   }
 
@@ -898,10 +928,9 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     }
 
     if (field === "system.class") {
-      const kind = normalizeWeaponKind(item);
       const cls = normalizeWeaponClass(value, item.system.range);
-      const allowed = weaponClassesForKind(kind).map((c) => c.id);
-      await item.update({ "system.class": allowed.includes(cls) ? cls : allowed[0] });
+      const kind = weaponClassDef(cls, item.system.range).kind;
+      await item.update({ "system.class": cls, "system.kind": kind });
       return;
     }
 
@@ -1013,7 +1042,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     if (!item || item.type !== "weapon") return;
     const localize = (key) => game.i18n.localize(key);
     const isMelee = weaponCombatKind(item) === "melee";
-    const mods = this.#weaponModsFor(item.id);
+    const mods = RTCharacterSheet.#weaponModsFor(this, item.id);
     const aimId = mods.aim || "none";
     const rangeId = mods.range || "normal";
     const fireMode = isMelee ? "single" : (mods.fireMode || "single");
@@ -1120,7 +1149,11 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
           jam: jamInfo.jam,
           jamKey: jamInfo.jamKey,
           specialNotes: specialNotes.join(" · "),
-          modsSummary
+          modsSummary,
+          showDamage: test.success,
+          actorUuid: this.document.uuid,
+          itemId: item.id,
+          aimId
         }
       );
       await ChatMessage.create({
@@ -1131,6 +1164,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         flags: {
           [SYSTEM_ID]: {
             weaponAttack: {
+              actorUuid: this.document.uuid,
               itemId: item.id,
               degrees: test.degrees,
               success: test.success,
@@ -1152,11 +1186,10 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static async #onRollWeaponDamage(event, target) {
     const item = this.document.items.get(target.dataset.itemId);
     if (!item || item.type !== "weapon") return;
-    const mods = this.#weaponModsFor(item.id);
-    const degrees = Number(target.dataset.degrees ?? mods.lastDegrees ?? 0);
+    // Sheet button: plain damage (no DoS-based Accurate / Razor Sharp).
     const result = await rollWeaponDamage(item, {
-      degrees,
-      aimId: mods.aim || "none",
+      degrees: 0,
+      aimId: "none",
       psyRating: Number(this.document.system.psykana?.pr) || 0
     });
     if (!result) {
@@ -1319,6 +1352,42 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     });
   }
 
+  static async #onRollSpecialAttack(event, target) {
+    const kind = target.dataset.special || "unarmed";
+    const localize = (key) => game.i18n.localize(key);
+    const labels = {
+      unarmed: "RT.Combat.SpecialAttack.Unarmed",
+      grapple: "RT.Combat.SpecialAttack.Grapple",
+      stun: "RT.Combat.SpecialAttack.Stun"
+    };
+    const notes = {
+      unarmed: "RT.Combat.SpecialAttack.UnarmedNote",
+      grapple: "RT.Combat.SpecialAttack.GrappleNote",
+      stun: "RT.Combat.SpecialAttack.StunNote"
+    };
+    const ws = Number(this.document.system.characteristics?.ws?.total) || 0;
+    await showRollDialog({
+      target: ws,
+      modifier: 0,
+      label: localize(labels[kind] || labels.unarmed),
+      speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      actor: this.document,
+      showTarget: false
+    });
+    const note = localize(notes[kind] || notes.unarmed);
+    if (note) {
+      await ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor: this.document }),
+        content: `<div class="rt-roll-card"><div class="rt-roll-card__row rt-roll-card__muted">${note}</div></div>`
+      });
+    }
+  }
+
+  static async #onSetMovementMode(event, target) {
+    const mode = target.dataset.mode || "normal";
+    await this.document.update({ "system.movementMode": mode });
+  }
+
   #prepareInventorySections() {
     const items = this.document.items.contents.slice().sort((a, b) => a.name.localeCompare(b.name));
     const firearmClasses = new Set(["pistol", "basic", "heavy"]);
@@ -1327,6 +1396,9 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     return INVENTORY_SECTIONS.map((section) => {
       const filtered = items.filter((item) => {
         if (item.type !== section.type) return false;
+        if (item.type === "weapon" && section.weaponKind) {
+          return weaponCombatKind(item) === section.weaponKind;
+        }
         if (section.type !== "gear") return true;
         const cat = item.system.category || "gear";
         if (section.category === "gear") {
@@ -1344,6 +1416,8 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
           const qty = showQuantity ? Math.max(1, Number(item.system.quantity) || 1) : 1;
           const totalWeight = Math.round(unitWeight * qty * 100) / 100;
           const sys = item.system;
+          const isWeaponMod = item.type === "gear" && (sys.category || "") === "weaponMod";
+          const showUsedFor = item.type === "ammo" || isWeaponMod;
 
           const row = {
             id: item.id,
@@ -1354,6 +1428,8 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             quantity: sys.quantity ?? 0,
             showEquipped,
             showQuantity,
+            showUsedFor,
+            isWeaponMod,
             description,
             weight: unitWeight,
             weightLabel: `${totalWeight}`,
@@ -1369,7 +1445,10 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
           if (item.type === "weapon") {
             const classDef = weaponClassDef(sys.class, sys.range);
-            const kind = normalizeWeaponKind(item);
+            const kind = section.weaponKind || normalizeWeaponKind(item);
+            const classPool = section.weaponKind
+              ? weaponClassesForKind(section.weaponKind)
+              : WEAPON_CLASSES;
             const specials = resolveWeaponSpecialDisplay(sys.specialQualities, sys.specialText);
             const bits = [
               game.i18n.localize(classDef.label),
@@ -1379,9 +1458,8 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             Object.assign(row, {
               summary: bits.join(" · "),
               kind,
-              kindOptions: WEAPON_KINDS.map((k) => ({ ...k, selected: kind === k.id })),
               classId: classDef.id,
-              classOptions: weaponClassesForKind(kind).map((c) => ({
+              classOptions: classPool.map((c) => ({
                 ...c,
                 selected: classDef.id === c.id
               })),
@@ -1432,16 +1510,16 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     });
   }
 
-  #weaponModsFor(itemId) {
-    if (!this.weaponCombatMods[itemId]) {
-      this.weaponCombatMods[itemId] = {
+  static #weaponModsFor(sheet, itemId) {
+    if (!sheet.weaponCombatMods[itemId]) {
+      sheet.weaponCombatMods[itemId] = {
         aim: "none",
         fireMode: "single",
         range: "normal",
         attackType: "standard"
       };
     }
-    return this.weaponCombatMods[itemId];
+    return sheet.weaponCombatMods[itemId];
   }
 
   #prepareCombatContext() {
@@ -1469,6 +1547,12 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
           rightLeg: loc.rightLeg ?? 0
         };
       });
+    const armourAp = { head: 0, body: 0, leftArm: 0, rightArm: 0, leftLeg: 0, rightLeg: 0 };
+    for (const a of combatArmour) {
+      for (const key of Object.keys(armourAp)) {
+        armourAp[key] = Math.max(armourAp[key], Number(a[key]) || 0);
+      }
+    }
 
     const mapWeapon = (i, isRanged) => {
       const classDef = weaponClassDef(i.system.class, i.system.range);
@@ -1486,7 +1570,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         game.i18n.localize(craft.label)
       ].filter(Boolean);
       const showClip = isRanged && ["pistol", "basic", "heavy"].includes(classId);
-      const mods = this.#weaponModsFor(i.id);
+      const mods = RTCharacterSheet.#weaponModsFor(this, i.id);
       const description = String(i.system.description ?? "").trim();
       const row = {
         id: i.id,
@@ -1542,7 +1626,9 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         { id: "flyer", label: "RT.Combat.MovementFlyer", selected: movementMode === "flyer" },
         { id: "custom", label: "RT.Combat.MovementCustom", selected: movementMode === "custom" }
       ],
+      isCustomMovement: movementMode === "custom",
       combatArmour,
+      armourAp,
       combatMelee,
       combatRanged,
       forceFieldCraftOptions: CRAFTSMANSHIP.map((c) => ({
@@ -1572,7 +1658,10 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     context.system = this.document.system;
     context.activeTab = this.activeTabs.main;
     context.activeXpTab = this.activeTabs.xp;
-    context.inventorySections = this.#prepareInventorySections();
+    const inventorySections = this.#prepareInventorySections();
+    context.inventorySections = inventorySections;
+    context.inventoryLeft = inventorySections.filter((s) => s.column === "left");
+    context.inventoryRight = inventorySections.filter((s) => s.column !== "left");
     Object.assign(context, this.#prepareCombatContext());
 
     const charAbbr = (key) => game.i18n.localize(CHARACTERISTICS[key]?.abbrKey ?? key);
@@ -1844,7 +1933,7 @@ export class RTCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       const field = el.dataset.combatMod;
       const itemId = el.dataset.itemId;
       if (!field || !itemId) return;
-      const mods = this.#weaponModsFor(itemId);
+      const mods = RTCharacterSheet.#weaponModsFor(this, itemId);
       mods[field] = el.value;
     });
     // Combat clip value (firearms): direct edit of clip.value.

@@ -4,10 +4,9 @@ import {
   parseWeaponSpecials,
   resolveWeaponSpecialDisplay,
   normalizeWeaponClass,
-  normalizeWeaponKind,
   normalizeCraftsmanship,
-  weaponClassesForKind,
-  WEAPON_KINDS
+  weaponClassDef,
+  WEAPON_CLASSES
 } from "../config.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
@@ -42,19 +41,12 @@ export class RTItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
         foundry.utils.setProperty(data, "system.specialQualities", parsed.qualities);
         foundry.utils.setProperty(data, "system.specialText", parsed.specialText);
       }
-      const kind = normalizeWeaponKind(
-        data.system?.kind,
-        data.system?.class ?? this.document.system.class,
-        data.system?.range ?? this.document.system.range
-      );
-      data.system.kind = kind;
       let cls = normalizeWeaponClass(
         data.system?.class ?? this.document.system.class,
         data.system?.range ?? this.document.system.range
       );
-      const allowed = weaponClassesForKind(kind).map((c) => c.id);
-      if (!allowed.includes(cls)) cls = allowed[0];
       data.system.class = cls;
+      data.system.kind = weaponClassDef(cls, data.system?.range ?? this.document.system.range).kind;
       if (data.system?.craftsmanship !== undefined) {
         data.system.craftsmanship = normalizeCraftsmanship(data.system.craftsmanship);
       }
@@ -73,20 +65,11 @@ export class RTItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     const weaponClass = item.type === "weapon"
       ? normalizeWeaponClass(item.system.class, item.system.range)
       : null;
-    const weaponKind = item.type === "weapon" ? normalizeWeaponKind(item) : null;
 
     if (item.type === "weapon") {
-      context.weaponKind = {
-        value: weaponKind,
-        options: WEAPON_KINDS.map((k) => ({
-          id: k.id,
-          label: k.label,
-          selected: weaponKind === k.id
-        }))
-      };
       context.weaponClass = {
         value: weaponClass,
-        options: weaponClassesForKind(weaponKind).map((c) => ({
+        options: WEAPON_CLASSES.map((c) => ({
           id: c.id,
           label: c.label,
           selected: weaponClass === c.id

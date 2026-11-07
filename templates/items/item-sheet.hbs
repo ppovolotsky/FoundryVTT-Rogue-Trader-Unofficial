@@ -6,17 +6,7 @@
   </header>
 
   <section class="rt-sheet-section">
-    {{#if weaponKind}}
-    <div class="form-group">
-      <label>{{localize "RT.Items.Weapon.Kind"}}</label>
-      <div class="form-fields">
-        <select name="system.kind">
-          {{#each weaponKind.options as |opt|}}
-          <option value="{{opt.id}}" {{#if opt.selected}}selected{{/if}}>{{localize opt.label}}</option>
-          {{/each}}
-        </select>
-      </div>
-    </div>
+    {{#if weaponClass}}
     <div class="form-group">
       <label>{{localize "RT.Items.Weapon.Class"}}</label>
       <div class="form-fields">
